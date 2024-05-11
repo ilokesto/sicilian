@@ -1,9 +1,11 @@
 import { Context, useContext } from "react";
 import { Formula } from "../Formula";
 
-const useGetState = (form: Context<Formula>) => () => {
-  const { getStore } = useContext(form);
+const useGetState =
+  <T extends { [key: string]: any }>(form: Context<Formula<T>>) =>
+  () => {
+    const { getStore } = useContext(form);
 
-  return getStore();
-};
+    return getStore();
+  };
 export default useGetState;

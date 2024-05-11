@@ -1,11 +1,11 @@
-import { Formula, Store } from "../Formula";
+import { Formula } from "../Formula";
 
-const createFormula = (initialState: Store): Formula => {
+const createFormula = <T>(initialState: T): Formula<T> => {
   let store = initialState;
   const callbacks = new Set<() => void>();
   const getStore = () => store;
 
-  const setStore = (nextState: Store) => {
+  const setStore = (nextState: T) => {
     store = { ...store, ...nextState };
     callbacks.forEach((callback) => callback());
   };

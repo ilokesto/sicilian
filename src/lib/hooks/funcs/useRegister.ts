@@ -1,23 +1,26 @@
 import { ChangeEvent, Context, useContext, useSyncExternalStore } from "react";
-import { Formula, Store } from "../Formula";
+import { Formula } from "../Formula";
 
-const useRegister = (form: Context<Formula>) => (name: string) => {
-  const { getStore, setStore, subscribe } = useContext(form);
+const useRegister =
+  <T extends { [key: string]: any }>(form: Context<Formula<T>>) =>
+  (name: string) => {
+    const { getStore, setStore, subscribe } = useContext(form);
 
-  const selector = (store: Store) => store[name];
+    const selector = (store: T) => store[name];
 
-  const value = useSyncExternalStore(
-    subscribe,
-    () => selector(getStore()),
-    () => selector(getStore())
-  );
+    const value = useSyncExternalStore(
+      subscribe,
+      () => selector(getStore()),
+      () => selector(getStore())
+    );
 
-  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setStore({ [e.target.name]: value });
+    const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+      const name = e.target.name;
+      const value = e.target.value;
+      setStore({ [name]: value } as T);
+    };
+
+    return { value, onChange, name };
   };
-
-  return { value, onChange, name };
-};
 
 export default useRegister;

@@ -1,4 +1,4 @@
-# Caro-Kann
+# Formula
 
 Caro-Kann is a TypeScript Library for managing 'global state' in React.js and Next.js.
 
@@ -8,13 +8,13 @@ If you looking for a very simple form of state-management solution, Caro-kann co
 
 ## install
 
-`npm i caro-kann`
+`npm i Formula`
 
 ## import
 
-`import { playTartakower } from "caro-kann";`
+`import { Formula } from "Formula";`
 
-## create a store
+## create a FormController
 
 playTartakower is a custom hook that creates a store that contains global states.
 

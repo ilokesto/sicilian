@@ -3,19 +3,18 @@ import useRegister from "./funcs/useRegister";
 import useGetState from "./funcs/useGetState";
 import createFormula from "./funcs/createFormula";
 
-export type Store = { [key: string]: string };
-export interface Formula {
-  getStore: () => Store;
-  setStore: (action: Store) => void;
+export interface Formula<T extends { [key: string]: any }> {
+  getStore: () => T;
+  setStore: (action: T) => void;
   subscribe: (callback: () => void) => () => void;
 }
 
-export const formula = (initialState: Store) => {
-  const form = createContext<Formula>(createFormula(initialState));
+export const formula = <T extends { [key: string]: any }>(initialState: T) => {
+  const form = createContext<Formula<T>>(createFormula(initialState));
 
-  const formState = useGetState(form);
+  const formState = useGetState<T>(form);
 
-  const register = useRegister(form);
+  const register = useRegister<T>(form);
 
   return { register, formState };
 };
