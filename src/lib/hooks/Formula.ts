@@ -1,20 +1,43 @@
-import { createContext } from "react";
+import { createContext, useContext, useSyncExternalStore } from "react";
 import useRegister from "./funcs/useRegister";
-import useGetState from "./funcs/useGetState";
 import createFormula from "./funcs/createFormula";
 
-export interface Formula<T extends { [key: string]: any }> {
+export type InitState = { [key: string]: string };
+export interface Form<T extends InitState> {
   getStore: () => T;
   setStore: (action: T) => void;
   subscribe: (callback: () => void) => () => void;
 }
 
-export const formula = <T extends { [key: string]: any }>(initialState: T) => {
-  const form = createContext<Formula<T>>(createFormula(initialState));
+export const Formula = <T extends InitState>(initialState: T) => {
+  const Form = createContext<Form<T>>(createFormula(initialState));
+  const Error = createContext<Form<T>>(createFormula(initialState));
 
-  const formState = useGetState<T>(form);
+  const FormState = () => {
+    const { getStore, subscribe } = useContext(Form);
 
-  const register = useRegister<T>(form);
+    const value = useSyncExternalStore(
+      subscribe,
+      () => getStore(),
+      () => getStore()
+    );
 
-  return { register, formState };
+    return value;
+  };
+
+  const ErrorState = () => {
+    const { getStore, subscribe } = useContext(Error);
+
+    const value = useSyncExternalStore(
+      subscribe,
+      () => getStore(),
+      () => getStore()
+    );
+
+    return value;
+  };
+
+  const register = useRegister<T>(Form, Error);
+
+  return { register, FormState, ErrorState };
 };

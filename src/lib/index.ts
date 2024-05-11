@@ -1,3 +1,3 @@
-import { formula } from "./hooks/Formula";
+import { Formula } from "./hooks/Formula";
 
-export { formula };
+export { Formula };

@@ -1,2 +1,2 @@
-import { formula } from "./hooks/Formula";
-export { formula };
+import { Formula } from "./hooks/Formula";
+export { Formula };

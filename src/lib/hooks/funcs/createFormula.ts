@@ -1,6 +1,6 @@
-import { Formula } from "../Formula";
+import { Form, InitState } from "../Formula";
 
-const createFormula = <T>(initialState: T): Formula<T> => {
+const createFormula = <T extends InitState>(initialState: T): Form<T> => {
   let store = initialState;
   const callbacks = new Set<() => void>();
   const getStore = () => store;
