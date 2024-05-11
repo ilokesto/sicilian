@@ -9,5 +9,6 @@ declare const playDragon: <T extends import("./hooks/Sicilian").InitState>(initi
     };
     FormState: () => T;
     ErrorState: () => T;
+    handleSubmit: (fn: (data: import("./hooks/Sicilian").InitState) => Promise<void>) => (e: SubmitEvent) => Promise<void>;
 };
 export { playDragon };
