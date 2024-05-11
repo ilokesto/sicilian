@@ -3,10 +3,12 @@ import registOnChange from "./registOnChange";
 import registOnBlur from "./registOnBlur";
 import { Form, InitState } from "../Formula";
 
+export type RegExpErrorObj = { RegExp: RegExp; message: string };
+
 export type ErrorObj = {
   minLength?: { number: number; message: string };
   maxLength?: { number: number; message: string };
-  RegExp?: { RegExp: RegExp; message: string };
+  RegExp?: RegExpErrorObj | Array<RegExpErrorObj>;
 };
 
 const useRegister =

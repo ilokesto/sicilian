@@ -1,11 +1,15 @@
 import { ChangeEvent } from "react";
-import { ErrorObj } from "./useRegister";
+import { ErrorObj, RegExpErrorObj } from "./useRegister";
 import { InitState } from "../Formula";
 
 type OnBlurProps = {
   ErrorObj?: ErrorObj;
   value: string;
   setError: (action: any) => void;
+};
+
+const isArray = (thing: RegExpErrorObj | Array<RegExpErrorObj>): thing is RegExpErrorObj => {
+  return "at" in thing;
 };
 
 const registOnBlur =
@@ -17,23 +21,34 @@ const registOnBlur =
 
         switch (v) {
           case "minLength":
-            if (value.length < ErrorObj[v].number) {
+            if (value.length < ErrorObj[v]!.number) {
               setError({ [e.target.name]: ErrorObj[v]?.message } as InitState);
               flag++;
             }
             break;
 
           case "maxLength":
-            if (value.length > ErrorObj[v].number) {
+            if (value.length > ErrorObj[v]!.number) {
               setError({ [e.target.name]: ErrorObj[v]?.message } as InitState);
               flag++;
             }
             break;
 
           case "RegExp":
-            if (!value.match(ErrorObj[v].RegExp)) {
-              setError({ [e.target.name]: ErrorObj[v]?.message } as InitState);
-              flag++;
+            if (isArray(ErrorObj.RegExp!)) {
+              if (!value.match(ErrorObj.RegExp!.RegExp)) {
+                setError({ [e.target.name]: ErrorObj.RegExp.message } as InitState);
+                flag++;
+              }
+            } else {
+              for (const RegExp of ErrorObj.RegExp!) {
+                if (!value.match(RegExp.RegExp)) {
+                  setError({ [e.target.name]: RegExp.message } as InitState);
+                  flag++;
+
+                  if (flag === 1) break;
+                }
+              }
             }
             break;
 
