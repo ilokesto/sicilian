@@ -6,6 +6,7 @@ import { Form, InitState } from "../Formula";
 export type RegExpErrorObj = { RegExp: RegExp; message: string };
 
 export type ErrorObj = {
+  required?: { required: boolean; message: string };
   minLength?: { number: number; message: string };
   maxLength?: { number: number; message: string };
   RegExp?: RegExpErrorObj | Array<RegExpErrorObj>;
