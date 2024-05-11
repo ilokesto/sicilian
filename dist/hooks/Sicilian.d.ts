@@ -7,7 +7,7 @@ export interface Form<T extends InitState> {
     setStore: (action: T) => void;
     subscribe: (callback: () => void) => () => void;
 }
-export declare const Formula: <T extends InitState>(initialState: T) => {
+export declare const Sicilian: <T extends InitState>(initialState: T) => {
     register: (name: string, ErrorObj?: import("./funcs/useRegister").ErrorObj | undefined) => {
         value: string;
         onChange: (e: import("react").ChangeEvent<HTMLInputElement>) => void;

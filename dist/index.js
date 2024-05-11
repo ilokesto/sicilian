@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Formula = void 0;
-const Formula_1 = require("./hooks/Formula");
-Object.defineProperty(exports, "Formula", { enumerable: true, get: function () { return Formula_1.Formula; } });
+exports.playDragon = void 0;
+const Sicilian_1 = require("./hooks/Sicilian");
+const playDragon = Sicilian_1.Sicilian;
+exports.playDragon = playDragon;

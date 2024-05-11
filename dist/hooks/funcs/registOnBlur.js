@@ -1,26 +1,47 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const isArray = (thing) => {
+    return "at" in thing;
+};
 const registOnBlur = ({ ErrorObj, value, setError }) => (e) => {
     if (ErrorObj) {
         for (const v in ErrorObj) {
             let flag = 0;
             switch (v) {
+                case "required":
+                    if (!value.length) {
+                        setError({ [e.target.name]: ErrorObj[v].message });
+                        flag++;
+                    }
+                    break;
                 case "minLength":
                     if (value.length < ErrorObj[v].number) {
-                        setError({ [e.target.name]: ErrorObj[v]?.message });
+                        setError({ [e.target.name]: ErrorObj[v].message });
                         flag++;
                     }
                     break;
                 case "maxLength":
                     if (value.length > ErrorObj[v].number) {
-                        setError({ [e.target.name]: ErrorObj[v]?.message });
+                        setError({ [e.target.name]: ErrorObj[v].message });
                         flag++;
                     }
                     break;
                 case "RegExp":
-                    if (!value.match(ErrorObj[v].RegExp)) {
-                        setError({ [e.target.name]: ErrorObj[v]?.message });
-                        flag++;
+                    if (isArray(ErrorObj.RegExp)) {
+                        for (const RegExp of ErrorObj.RegExp) {
+                            if (!value.match(RegExp.RegExp)) {
+                                setError({ [e.target.name]: RegExp.message });
+                                flag++;
+                                if (flag === 1)
+                                    break;
+                            }
+                        }
+                    }
+                    else {
+                        if (!value.match(ErrorObj.RegExp.RegExp)) {
+                            setError({ [e.target.name]: ErrorObj.RegExp.message });
+                            flag++;
+                        }
                     }
                     break;
                 default:
