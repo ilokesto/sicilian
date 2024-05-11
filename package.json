@@ -6,8 +6,7 @@
     "react-dom": "^18.2.0"
   },
   "scripts": {
-    "build": "rm -rf lib && npx tsc",
-    "prepublishOnly": "rm -rf lib && npx tsc"
+    "build": "tsc"
   },
   "types": "dist/index.d.ts",
   "module": "dist/index.js",
