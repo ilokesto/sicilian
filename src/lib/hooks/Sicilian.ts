@@ -9,7 +9,7 @@ export interface Form<T extends InitState> {
   subscribe: (callback: () => void) => () => void;
 }
 
-export const Formula = <T extends InitState>(initialState: T) => {
+export const Sicilian = <T extends InitState>(initialState: T) => {
   const Form = createContext<Form<T>>(createFormula(initialState));
   const Error = createContext<Form<T>>(createFormula(initialState));
 

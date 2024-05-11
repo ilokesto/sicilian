@@ -1,6 +1,6 @@
 import { ChangeEvent } from "react";
 import { ErrorObj, RegExpErrorObj } from "./useRegister";
-import { InitState } from "../Formula";
+import { InitState } from "../Sicilian";
 
 type OnBlurProps = {
   ErrorObj?: ErrorObj;

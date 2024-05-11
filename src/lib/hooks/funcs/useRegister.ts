@@ -1,7 +1,7 @@
 import { ChangeEvent, Context, useContext, useSyncExternalStore } from "react";
 import registOnChange from "./registOnChange";
 import registOnBlur from "./registOnBlur";
-import { Form, InitState } from "../Formula";
+import { Form, InitState } from "../Sicilian";
 
 export type RegExpErrorObj = { RegExp: RegExp; message: string };
 

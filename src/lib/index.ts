@@ -1,3 +1,5 @@
-import { Formula } from "./hooks/Formula";
+import { Sicilian } from "./hooks/Sicilian";
 
-export { Formula };
+const playDragon = Sicilian;
+
+export { playDragon };
