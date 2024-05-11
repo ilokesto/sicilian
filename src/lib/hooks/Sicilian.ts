@@ -19,7 +19,7 @@ export const Sicilian = <T extends InitState>(initialState: T) => {
 
   const register = useRegister<T>(Form, Error);
 
-  const handleSubmit = (f: (data: InitState) => void) => (e: SubmitEvent) => {
+  const handleSubmit = (fn: (data: InitState) => Promise<void>) => async (e: SubmitEvent) => {
     e.preventDefault();
     const errorState = ErrorState();
     const formState = FormState();
@@ -28,7 +28,7 @@ export const Sicilian = <T extends InitState>(initialState: T) => {
       if (v !== "") return;
     }
 
-    f(formState);
+    await fn(formState);
   };
 
   return { register, FormState, ErrorState, handleSubmit };

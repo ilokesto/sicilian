@@ -17,4 +17,5 @@ export declare const Sicilian: <T extends InitState>(initialState: T) => {
     };
     FormState: () => T;
     ErrorState: () => T;
+    handleSubmit: (fn: (data: InitState) => Promise<void>) => (e: SubmitEvent) => Promise<void>;
 };
