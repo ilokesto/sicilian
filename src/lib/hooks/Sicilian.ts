@@ -19,9 +19,17 @@ export const Sicilian = <T extends InitState>(initialState: T) => {
 
   const register = useRegister<T>(Form, Error);
 
-  const onSubmit = (f: (data: InitState) => void) => (e: SubmitEvent) => {
+  const handleSubmit = (f: (data: InitState) => void) => (e: SubmitEvent) => {
     e.preventDefault();
+    const errorState = ErrorState();
+    const formState = FormState();
+
+    for (const v of Object.values(errorState)) {
+      if (v !== "") return;
+    }
+
+    f(formState);
   };
 
-  return { register, FormState, ErrorState, onSubmit };
+  return { register, FormState, ErrorState, handleSubmit };
 };
