@@ -1,26 +1,20 @@
-import { createContext, useContext, useSyncExternalStore } from "react";
+import { createContext } from "react";
 import useRegister from "./funcs/useRegister";
 import createFormula from "./funcs/createFormula";
-import getState from "./funcs/getState";
+import useContextState from "./funcs/useContextState";
 import registOnSubmit from "./funcs/registOnSubmit";
-
-export type InitState = { [key: string]: string };
-export interface Form<T extends InitState> {
-  getStore: () => T;
-  setStore: (action: T) => void;
-  subscribe: (callback: () => void) => () => void;
-}
+import { Form, InitState } from "./Types";
 
 export const Sicilian = <T extends InitState>(initialState: T) => {
   const Form = createContext<Form<T>>(createFormula(initialState));
   const Error = createContext<Form<T>>(createFormula(initialState));
 
-  const FormState = () => getState(Form);
-  const ErrorState = () => getState(Error);
-
   const register = useRegister<T>(Form, Error);
 
-  const handleSubmit = registOnSubmit(FormState(), ErrorState());
+  const FormState = () => useContextState(Form);
+  const ErrorState = () => useContextState(Error);
+
+  const handleSubmit = registOnSubmit(Form, Error);
 
   return { register, FormState, ErrorState, handleSubmit };
 };

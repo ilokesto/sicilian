@@ -1,4 +1,4 @@
-import { Form, InitState } from "../Sicilian";
+import { Form, InitState } from "../Types";
 
 const createFormula = <T extends InitState>(initialState: T): Form<T> => {
   let store = initialState;
