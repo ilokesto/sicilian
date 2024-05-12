@@ -1,5 +1,5 @@
 import { ChangeEvent } from "react";
-import { ErrorObj } from "./useRegister";
+import { ErrorObj } from "../Types";
 type OnBlurProps = {
     ErrorObj?: ErrorObj;
     value: string;

@@ -1,20 +1,6 @@
-/// <reference types="react" />
-export type InitState = {
-    [key: string]: string;
-};
-export interface Form<T extends InitState> {
-    getStore: () => T;
-    setStore: (action: T) => void;
-    subscribe: (callback: () => void) => () => void;
-}
+import { InitState } from "./Types";
 export declare const Sicilian: <T extends InitState>(initialState: T) => {
-    register: (name: string, ErrorObj?: import("./funcs/useRegister").ErrorObj | undefined) => {
-        value: string;
-        onChange: (e: import("react").ChangeEvent<HTMLInputElement>) => void;
-        onBlur: (e: import("react").ChangeEvent<HTMLInputElement>) => void;
-        onFocus: (e: import("react").ChangeEvent<HTMLInputElement>) => void;
-        name: string;
-    };
+    register: import("./Types").Register<keyof T>;
     FormState: () => T;
     ErrorState: () => T;
     handleSubmit: (fn: (data: InitState) => Promise<void>) => (e: SubmitEvent) => Promise<void>;
