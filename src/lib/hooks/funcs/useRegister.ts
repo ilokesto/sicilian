@@ -1,7 +1,7 @@
-import { ChangeEvent, Context, useContext, useSyncExternalStore } from "react";
+import { useContext, useSyncExternalStore } from "react";
 import registOnChange from "./registOnChange";
 import registOnBlur from "./registOnBlur";
-import { UseRegister } from "../Types";
+import { RegistOnFocus, UseRegister } from "../Types";
 
 const useRegister: UseRegister = (Form, Error) => (name, ErrorObj) => {
   const { getStore, setStore, subscribe } = useContext(Form);
@@ -17,7 +17,7 @@ const useRegister: UseRegister = (Form, Error) => (name, ErrorObj) => {
 
   const onChange = registOnChange(setStore);
 
-  const onFocus = (e: ChangeEvent<HTMLInputElement>) => {
+  const onFocus: RegistOnFocus = (e) => {
     setError({ [e.target.name]: "" } as ReturnType<typeof getStore>);
   };
 
