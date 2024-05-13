@@ -1,20 +1,12 @@
-import { ChangeEvent } from "react";
-import { ErrorObj } from "../Types";
-import { InitState } from "../Types";
-
-type OnBlurProps = {
-  ErrorObj?: ErrorObj;
-  value: string;
-  setError: (action: any) => void;
-};
+import { InitState, RegistOnBlur } from "../Types";
 
 const isArray = <T extends object>(thing: T | Array<T>): thing is Array<T> => {
   return "at" in thing;
 };
 
-const registOnBlur =
-  ({ ErrorObj, value, setError }: OnBlurProps) =>
-  (e: ChangeEvent<HTMLInputElement>) => {
+const registOnBlur: RegistOnBlur =
+  ({ ErrorObj, value, setError }) =>
+  (e) => {
     if (ErrorObj) {
       for (const v in ErrorObj) {
         let flag = 0;
@@ -62,13 +54,13 @@ const registOnBlur =
           case "customChecker":
             if (isArray(ErrorObj.customChecker!)) {
               for (const customChecker of ErrorObj.customChecker!) {
-                if (!customChecker.checkFn(value)) {
+                if (customChecker.checkFn(value)) {
                   setError({ [e.target.name]: customChecker.message } as InitState);
                   flag++;
                 }
               }
             } else {
-              if (!ErrorObj.customChecker!.checkFn(value)) {
+              if (ErrorObj.customChecker!.checkFn(value)) {
                 setError({ [e.target.name]: ErrorObj.customChecker!.message } as InitState);
                 flag++;
               }
