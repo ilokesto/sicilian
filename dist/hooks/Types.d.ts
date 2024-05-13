@@ -16,7 +16,7 @@ export type CustomCheckerErrorObj = {
     checkFn: (value: string) => boolean;
     message: string;
 };
-export type ErrorObj = {
+export type RegisterErrorObj = {
     required?: {
         required: boolean;
         message: string;
@@ -32,7 +32,7 @@ export type ErrorObj = {
     RegExp?: RegExpErrorObj | Array<RegExpErrorObj>;
     customChecker?: CustomCheckerErrorObj | Array<CustomCheckerErrorObj>;
 };
-export type Register<K> = (name: K, ErrorObj?: ErrorObj) => {
+export type Register<K> = (name: K, ErrorObj?: RegisterErrorObj) => {
     value: string;
     name: K;
     onChange: (e: ChangeEvent<HTMLInputElement>) => void;
@@ -41,4 +41,11 @@ export type Register<K> = (name: K, ErrorObj?: ErrorObj) => {
 };
 export type UseRegister = <T extends InitState>(From: Context<Store<T>>, Error: Context<Store<T>>) => Register<keyof T>;
 export type UseContextState = <T extends InitState>(context: Context<Store<T>>) => T;
+type OnBlurProps = {
+    ErrorObj?: RegisterErrorObj;
+    value: string;
+    setError: (action: any) => void;
+};
+export type RegistOnBlur = (onblurProps: OnBlurProps) => (e: ChangeEvent<HTMLInputElement>) => void;
 export type RegistOnSubmit = <T extends InitState>(FormState: () => T, ErrorState: () => T) => (fn: (data: InitState) => void) => (e: FormEvent) => void;
+export {};
