@@ -9,7 +9,15 @@ const registOnSubmit: RegistOnSubmit = (FormState, ErrorState) => (fn) => async 
     if (v !== "") return;
   }
 
-  await fn({ a: "A" });
+  let count = 0;
+  let length = 0;
+  for (const v of Object.values(formState)) {
+    if (v === "") count++;
+    length++;
+  }
+  if (count === length) return;
+
+  await fn(formState);
 };
 
 export default registOnSubmit;
