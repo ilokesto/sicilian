@@ -35,7 +35,7 @@ export type RegistOnChange = <T extends InitState>(
 export type RegistOnSubmit = <T extends InitState>(
   FormState: () => T,
   ErrorState: () => T
-) => (fn: (data: InitState) => void) => (e: FormEvent) => void;
+) => (fn: (data: InitState) => Promise<void>) => (e: FormEvent) => void;
 
 export type RegistOnFocus = (e: ChangeEvent<HTMLInputElement>) => void;
 

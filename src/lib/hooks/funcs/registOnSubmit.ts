@@ -9,7 +9,7 @@ const registOnSubmit: RegistOnSubmit = (FormState, ErrorState) => (fn) => async 
     if (v !== "") return;
   }
 
-  fn(formState);
+  await fn(formState);
 };
 
 export default registOnSubmit;
