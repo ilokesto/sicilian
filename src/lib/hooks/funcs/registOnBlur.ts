@@ -1,5 +1,5 @@
 import { ChangeEvent } from "react";
-import { ErrorObj, RegExpErrorObj } from "../Types";
+import { ErrorObj } from "../Types";
 import { InitState } from "../Types";
 
 type OnBlurProps = {
@@ -8,7 +8,7 @@ type OnBlurProps = {
   setError: (action: any) => void;
 };
 
-const isArray = (thing: RegExpErrorObj | Array<RegExpErrorObj>): thing is Array<RegExpErrorObj> => {
+const isArray = <T extends object>(thing: T | Array<T>): thing is Array<T> => {
   return "at" in thing;
 };
 
@@ -54,6 +54,22 @@ const registOnBlur =
             } else {
               if (!value.match(ErrorObj.RegExp!.RegExp)) {
                 setError({ [e.target.name]: ErrorObj.RegExp!.message } as InitState);
+                flag++;
+              }
+            }
+            break;
+
+          case "customChecker":
+            if (isArray(ErrorObj.customChecker!)) {
+              for (const customChecker of ErrorObj.customChecker!) {
+                if (!customChecker.checkFn(value)) {
+                  setError({ [e.target.name]: customChecker.message } as InitState);
+                  flag++;
+                }
+              }
+            } else {
+              if (!ErrorObj.customChecker!.checkFn(value)) {
+                setError({ [e.target.name]: ErrorObj.customChecker!.message } as InitState);
                 flag++;
               }
             }

@@ -9,12 +9,14 @@ export interface Form<T extends InitState> {
 }
 
 export type RegExpErrorObj = { RegExp: RegExp; message: string };
+export type CustomCheckerErrorObj = { checkFn: (value: string) => boolean; message: string };
 
 export type ErrorObj = {
   required?: { required: boolean; message: string };
   minLength?: { number: number; message: string };
   maxLength?: { number: number; message: string };
   RegExp?: RegExpErrorObj | Array<RegExpErrorObj>;
+  customChecker?: CustomCheckerErrorObj | Array<CustomCheckerErrorObj>;
 };
 
 export type Register<K> = (
