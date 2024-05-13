@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const createFormula = (initialState) => {
+const createFormStore = (initialState) => {
     let store = initialState;
     const callbacks = new Set();
     const getStore = () => store;
@@ -16,4 +16,4 @@ const createFormula = (initialState) => {
     };
     return { getStore, setStore, subscribe };
 };
-exports.default = createFormula;
+exports.default = createFormStore;

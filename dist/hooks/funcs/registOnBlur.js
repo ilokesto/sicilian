@@ -44,6 +44,22 @@ const registOnBlur = ({ ErrorObj, value, setError }) => (e) => {
                         }
                     }
                     break;
+                case "customChecker":
+                    if (isArray(ErrorObj.customChecker)) {
+                        for (const customChecker of ErrorObj.customChecker) {
+                            if (!customChecker.checkFn(value)) {
+                                setError({ [e.target.name]: customChecker.message });
+                                flag++;
+                            }
+                        }
+                    }
+                    else {
+                        if (!ErrorObj.customChecker.checkFn(value)) {
+                            setError({ [e.target.name]: ErrorObj.customChecker.message });
+                            flag++;
+                        }
+                    }
+                    break;
                 default:
                     break;
             }
