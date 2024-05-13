@@ -3,6 +3,6 @@ declare const playDragon: <T extends import("./hooks/Types").InitState>(initialS
     register: import("./hooks/Types").Register<keyof T>;
     FormState: () => T;
     ErrorState: () => T;
-    handleSubmit: (fn: (data: import("./hooks/Types").InitState) => void) => (e: import("react").FormEvent<Element>) => void;
+    handleSubmit: (fn: (data: import("./hooks/Types").InitState) => Promise<void>) => (e: import("react").FormEvent<Element>) => void;
 };
 export { playDragon };

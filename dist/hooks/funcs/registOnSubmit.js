@@ -8,6 +8,6 @@ const registOnSubmit = (FormState, ErrorState) => (fn) => async (e) => {
         if (v !== "")
             return;
     }
-    fn(formState);
+    await fn({ a: "A", ...formState });
 };
 exports.default = registOnSubmit;
