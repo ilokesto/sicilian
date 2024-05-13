@@ -1,11 +1,11 @@
-import { Form, InitState } from "../Types";
+import { CreateFormStore } from "../Types";
 
-const createFormula = <T extends InitState>(initialState: T): Form<T> => {
+const createFormStore: CreateFormStore = (initialState) => {
   let store = initialState;
   const callbacks = new Set<() => void>();
   const getStore = () => store;
 
-  const setStore = (nextState: T) => {
+  const setStore = (nextState: typeof initialState) => {
     store = { ...store, ...nextState };
     callbacks.forEach((callback) => callback());
   };
@@ -20,4 +20,4 @@ const createFormula = <T extends InitState>(initialState: T): Form<T> => {
 
   return { getStore, setStore, subscribe };
 };
-export default createFormula;
+export default createFormStore;

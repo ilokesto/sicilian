@@ -1,23 +1,15 @@
-import { Context, useContext } from "react";
-import { Form, InitState } from "../Types";
+import { RegistOnSubmit } from "../Types";
 
-const registOnSubmit =
-  <T extends InitState>(Form: Context<Form<T>>, Error: Context<Form<T>>) =>
-  (fn: (data: InitState) => Promise<void>) =>
-  async (e: SubmitEvent) => {
-    const { getStore } = useContext(Form);
-    const { getStore: getError } = useContext(Error);
+const registOnSubmit: RegistOnSubmit = (FormState, ErrorState) => (fn) => async (e) => {
+  e.preventDefault();
+  const formState = FormState();
+  const errorState = ErrorState();
 
-    const errorState = getError();
-    const formState = getStore();
+  for (const v of Object.values(errorState)) {
+    if (v !== "") return;
+  }
 
-    e.preventDefault();
-
-    for (const v of Object.values(errorState)) {
-      if (v !== "") return;
-    }
-
-    await fn(formState);
-  };
+  fn(formState);
+};
 
 export default registOnSubmit;

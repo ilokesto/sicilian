@@ -1,16 +1,16 @@
-import { Context, useContext, useSyncExternalStore } from "react";
-import { Form, InitState } from "../Types";
+import { useContext, useSyncExternalStore } from "react";
+import { UseContextState } from "../Types";
 
-const useContextState = <T extends InitState>(context: Context<Form<T>>) => {
+const useContextState: UseContextState = (context) => {
   const { getStore, subscribe } = useContext(context);
 
-  const value = useSyncExternalStore(
+  const state = useSyncExternalStore(
     subscribe,
     () => getStore(),
     () => getStore()
   );
 
-  return value;
+  return state;
 };
 
 export default useContextState;
