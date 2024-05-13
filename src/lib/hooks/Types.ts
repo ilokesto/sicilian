@@ -1,13 +1,14 @@
-import { ChangeEvent } from "react";
+import { ChangeEvent, Context, FormEvent } from "react";
 
 export type InitState = { [key: string]: string };
 
-export interface Form<T extends InitState> {
+export interface Store<T extends InitState> {
   getStore: () => T;
   setStore: (action: T) => void;
   subscribe: (callback: () => void) => () => void;
 }
 
+export type CreateFormStore = <T extends InitState>(initialState: T) => Store<T>;
 export type RegExpErrorObj = { RegExp: RegExp; message: string };
 export type CustomCheckerErrorObj = { checkFn: (value: string) => boolean; message: string };
 
@@ -29,3 +30,11 @@ export type Register<K> = (
   onBlur: (e: ChangeEvent<HTMLInputElement>) => void;
   onFocus: (e: ChangeEvent<HTMLInputElement>) => void;
 };
+
+export type UseRegister = <T extends InitState>(From: Context<Store<T>>, Error: Context<Store<T>>) => Register<keyof T>;
+export type UseContextState = <T extends InitState>(context: Context<Store<T>>) => T;
+
+export type RegistOnSubmit = <T extends InitState>(
+  FormState: () => T,
+  ErrorState: () => T
+) => (fn: (data: InitState) => void) => (e: FormEvent) => void;
