@@ -1,12 +1,9 @@
-import { ChangeEvent } from "react";
-import { InitState } from "../Types";
+import { RegistOnChange } from "../Types";
 
-const registOnChange =
-  <T extends InitState>(setStore: (action: T) => void) =>
-  (e: ChangeEvent<HTMLInputElement>) => {
-    const name = e.target.name;
-    const value = e.target.value;
-    setStore({ [name]: value } as T);
-  };
+const registOnChange: RegistOnChange = (setStore) => (e, customValue) => {
+  const name = e.target.name;
+  const value = customValue ?? e.target.value;
+  setStore({ [name]: value } as Parameters<typeof setStore>[number]);
+};
 
 export default registOnChange;
