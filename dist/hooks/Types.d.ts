@@ -39,7 +39,7 @@ type OnBlurProps = {
 };
 export type RegistOnBlur = (onBlurProps: OnBlurProps) => (e: ChangeEvent<HTMLInputElement>) => void;
 export type RegistOnChange = <T extends InitState>(setStore: (action: T) => void) => (e: ChangeEvent<HTMLInputElement>, customValue?: string) => void;
-export type RegistOnSubmit = <T extends InitState>(FormState: () => T, ErrorState: () => T) => (fn: (data: InitState) => Promise<void>) => (e: FormEvent) => void;
+export type RegistOnSubmit = <T extends InitState>(FormState: () => T, ErrorState: () => T) => (fn: (data: T) => Promise<void>) => (e: FormEvent) => void;
 export type RegistOnFocus = (e: ChangeEvent<HTMLInputElement>) => void;
 export type Register<K> = (name: K, ErrorObj?: RegisterErrorObj) => {
     value: string;
