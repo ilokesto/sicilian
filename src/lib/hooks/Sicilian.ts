@@ -2,8 +2,8 @@ import { createContext } from "react";
 import useRegister from "./funcs/useRegister";
 import useContextState from "./funcs/useContextState";
 import registOnSubmit from "./funcs/registOnSubmit";
-import { Store, InitState } from "./Types";
 import createFormStore from "./funcs/createFormStore";
+import { InitState, Store } from "./Types";
 
 export const Sicilian = <T extends InitState>(initialState: T) => {
   const FormStore = createFormStore(initialState);

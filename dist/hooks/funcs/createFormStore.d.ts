@@ -1,3 +1,3 @@
-import { CreateFormStore } from "../Types";
-declare const createFormStore: CreateFormStore;
+import { CreateFormState } from "../Types";
+declare const createFormStore: CreateFormState;
 export default createFormStore;

@@ -1,4 +1,4 @@
-import { InitState, RegistOnBlur } from "../Types";
+import { RegistOnBlur } from "../Types";
 
 const isArray = <T extends object>(thing: T | Array<T>): thing is Array<T> => {
   return "at" in thing;
@@ -14,21 +14,24 @@ const registOnBlur: RegistOnBlur =
         switch (v) {
           case "required":
             if (!value.length) {
-              setError({ [e.target.name]: ErrorObj[v]!.message } as InitState);
+              // @ts-ignore
+              setError({ [e.target.name]: ErrorObj[v]!.message });
               flag++;
             }
             break;
 
           case "minLength":
             if (value.length < ErrorObj[v]!.number) {
-              setError({ [e.target.name]: ErrorObj[v]!.message } as InitState);
+              // @ts-ignore
+              setError({ [e.target.name]: ErrorObj[v]!.message });
               flag++;
             }
             break;
 
           case "maxLength":
             if (value.length > ErrorObj[v]!.number) {
-              setError({ [e.target.name]: ErrorObj[v]!.message } as InitState);
+              // @ts-ignore
+              setError({ [e.target.name]: ErrorObj[v]!.message });
               flag++;
             }
             break;
@@ -37,7 +40,8 @@ const registOnBlur: RegistOnBlur =
             if (isArray(ErrorObj.RegExp!)) {
               for (const RegExp of ErrorObj.RegExp!) {
                 if (!value.match(RegExp.RegExp)) {
-                  setError({ [e.target.name]: RegExp.message } as InitState);
+                  // @ts-ignore
+                  setError({ [e.target.name]: RegExp.message });
                   flag++;
 
                   if (flag === 1) break;
@@ -45,7 +49,8 @@ const registOnBlur: RegistOnBlur =
               }
             } else {
               if (!value.match(ErrorObj.RegExp!.RegExp)) {
-                setError({ [e.target.name]: ErrorObj.RegExp!.message } as InitState);
+                // @ts-ignore
+                setError({ [e.target.name]: ErrorObj.RegExp!.message });
                 flag++;
               }
             }
@@ -55,13 +60,15 @@ const registOnBlur: RegistOnBlur =
             if (isArray(ErrorObj.customChecker!)) {
               for (const customChecker of ErrorObj.customChecker!) {
                 if (customChecker.checkFn(value)) {
-                  setError({ [e.target.name]: customChecker.message } as InitState);
+                  // @ts-ignore
+                  setError({ [e.target.name]: customChecker.message });
                   flag++;
                 }
               }
             } else {
               if (ErrorObj.customChecker!.checkFn(value)) {
-                setError({ [e.target.name]: ErrorObj.customChecker!.message } as InitState);
+                // @ts-ignore
+                setError({ [e.target.name]: ErrorObj.customChecker!.message });
                 flag++;
               }
             }

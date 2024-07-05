@@ -13,6 +13,7 @@ const useRegister = (Form, Error) => (name, ErrorObj) => {
     const value = (0, react_1.useSyncExternalStore)(subscribe, () => selector(getStore()), () => selector(getStore()));
     const onChange = (0, registOnChange_1.default)(setStore);
     const onFocus = (e) => {
+        // @ts-ignore
         setError({ [e.target.name]: "" });
     };
     const onBlur = (0, registOnBlur_1.default)({ ErrorObj, value, setError });

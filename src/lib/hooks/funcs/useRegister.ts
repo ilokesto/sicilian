@@ -1,7 +1,7 @@
 import { useContext, useSyncExternalStore } from "react";
 import registOnChange from "./registOnChange";
 import registOnBlur from "./registOnBlur";
-import { RegistOnFocus, UseRegister } from "../Types";
+import { InitState, RegistOnFocus, UseRegister } from "../Types";
 
 const useRegister: UseRegister = (Form, Error) => (name, ErrorObj) => {
   const { getStore, setStore, subscribe } = useContext(Form);
@@ -18,7 +18,8 @@ const useRegister: UseRegister = (Form, Error) => (name, ErrorObj) => {
   const onChange = registOnChange(setStore);
 
   const onFocus: RegistOnFocus = (e) => {
-    setError({ [e.target.name]: "" } as ReturnType<typeof getStore>);
+    // @ts-ignore
+    setError({ [e.target.name]: "" });
   };
 
   const onBlur = registOnBlur({ ErrorObj, value, setError });

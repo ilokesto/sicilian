@@ -10,18 +10,21 @@ const registOnBlur = ({ ErrorObj, value, setError }) => (e) => {
             switch (v) {
                 case "required":
                     if (!value.length) {
+                        // @ts-ignore
                         setError({ [e.target.name]: ErrorObj[v].message });
                         flag++;
                     }
                     break;
                 case "minLength":
                     if (value.length < ErrorObj[v].number) {
+                        // @ts-ignore
                         setError({ [e.target.name]: ErrorObj[v].message });
                         flag++;
                     }
                     break;
                 case "maxLength":
                     if (value.length > ErrorObj[v].number) {
+                        // @ts-ignore
                         setError({ [e.target.name]: ErrorObj[v].message });
                         flag++;
                     }
@@ -30,6 +33,7 @@ const registOnBlur = ({ ErrorObj, value, setError }) => (e) => {
                     if (isArray(ErrorObj.RegExp)) {
                         for (const RegExp of ErrorObj.RegExp) {
                             if (!value.match(RegExp.RegExp)) {
+                                // @ts-ignore
                                 setError({ [e.target.name]: RegExp.message });
                                 flag++;
                                 if (flag === 1)
@@ -39,6 +43,7 @@ const registOnBlur = ({ ErrorObj, value, setError }) => (e) => {
                     }
                     else {
                         if (!value.match(ErrorObj.RegExp.RegExp)) {
+                            // @ts-ignore
                             setError({ [e.target.name]: ErrorObj.RegExp.message });
                             flag++;
                         }
@@ -48,6 +53,7 @@ const registOnBlur = ({ ErrorObj, value, setError }) => (e) => {
                     if (isArray(ErrorObj.customChecker)) {
                         for (const customChecker of ErrorObj.customChecker) {
                             if (customChecker.checkFn(value)) {
+                                // @ts-ignore
                                 setError({ [e.target.name]: customChecker.message });
                                 flag++;
                             }
@@ -55,6 +61,7 @@ const registOnBlur = ({ ErrorObj, value, setError }) => (e) => {
                     }
                     else {
                         if (ErrorObj.customChecker.checkFn(value)) {
+                            // @ts-ignore
                             setError({ [e.target.name]: ErrorObj.customChecker.message });
                             flag++;
                         }
