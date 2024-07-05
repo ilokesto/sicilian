@@ -18,6 +18,11 @@ const Sicilian = (initialState) => {
     const FormState = () => (0, useContextState_1.default)(Form);
     const ErrorState = () => (0, useContextState_1.default)(Error);
     const handleSubmit = (0, registOnSubmit_1.default)(FormStore.getStore, ErrorStore.getStore);
-    return { register, FormState, ErrorState, handleSubmit };
+    const testStateInit = (testState) => {
+        for (let key in testState) {
+            register(key).onChange({ target: { name: key, value: testState[key] } });
+        }
+    };
+    return { register, FormState, ErrorState, handleSubmit, testStateInit };
 };
 exports.Sicilian = Sicilian;
