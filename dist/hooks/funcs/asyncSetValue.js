@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const registOnValue = (FormStore) => (fn) => {
-    FormStore(fn);
+const registOnValue = (setState) => (asyncState) => {
+    // @ts-ignore
+    setState(asyncState);
 };
 exports.default = registOnValue;
