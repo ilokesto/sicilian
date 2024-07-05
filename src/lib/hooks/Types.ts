@@ -1,4 +1,6 @@
-import { ChangeEvent, Context, FormEvent } from "react";
+import { Context, FormEvent } from "react";
+
+type Input = { target: { value: string; name: string } };
 
 export type InitState = { [key: string]: string };
 
@@ -26,18 +28,18 @@ type OnBlurProps = {
   setError: (action: any) => void;
 };
 
-export type RegistOnBlur = (onBlurProps: OnBlurProps) => (e: ChangeEvent<HTMLInputElement>) => void;
+export type RegistOnBlur = (onBlurProps: OnBlurProps) => (e: Input) => void;
 
 export type RegistOnChange = <T extends InitState>(
   setStore: (action: T) => void
-) => (e: ChangeEvent<HTMLInputElement>, customValue?: string) => void;
+) => (e: Input, customValue?: string) => void;
 
 export type RegistOnSubmit = <T extends InitState>(
   FormState: () => T,
   ErrorState: () => T
 ) => (fn: (data: T) => Promise<void>) => (e: FormEvent) => void;
 
-export type RegistOnFocus = (e: ChangeEvent<HTMLInputElement>) => void;
+export type RegistOnFocus = (e: Input) => void;
 
 export type Register<K> = (
   name: K,
