@@ -53,4 +53,4 @@ export type RegistOnSubmit = <T extends InitState>(
   ErrorState: () => T
 ) => (fn: (data: T) => Promise<void>) => (e: FormEvent) => void;
 
-export type RegistOnValue = (setState: (action: SetStore) => void) => (a: any) => void;
+export type RegistOnValue = <T extends InitState>(setState: (action: SetStore) => void) => (asyncState: any) => void;

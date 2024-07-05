@@ -1,7 +1,7 @@
 import { RegistOnValue } from "../Types";
 
-const registOnValue: RegistOnValue = (FormStore) => (fn) => {
-  FormStore(fn);
+const registOnValue: RegistOnValue = (FormStore) => (asyncState) => {
+  FormStore(asyncState);
 };
 
 export default registOnValue;
