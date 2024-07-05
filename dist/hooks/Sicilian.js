@@ -18,14 +18,6 @@ const Sicilian = (initialState) => {
     const FormState = () => (0, useContextState_1.default)(Form);
     const ErrorState = () => (0, useContextState_1.default)(Error);
     const handleSubmit = (0, registOnSubmit_1.default)(FormStore.getStore, ErrorStore.getStore);
-    const useInitializer = () => (testState) => {
-        const { setStore } = (0, react_1.useContext)(Form);
-        for (let key in testState) {
-            // @ts-ignore
-            setStore({ key: testState[key] });
-        }
-        return true;
-    };
-    return { register, FormState, ErrorState, handleSubmit, useInitializer };
+    return { register, FormState, ErrorState, handleSubmit };
 };
 exports.Sicilian = Sicilian;
