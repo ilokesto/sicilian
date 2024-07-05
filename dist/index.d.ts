@@ -1,5 +1,5 @@
 /// <reference types="react" />
-declare const playDragon: <T extends import("./hooks/Types").InitState>(initialState: T) => {
+declare const playDragon: <T extends InitStaate>(initialState: T) => {
     register: import("./hooks/Types").Register<keyof T>;
     FormState: () => T;
     ErrorState: () => T;

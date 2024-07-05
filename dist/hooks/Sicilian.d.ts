@@ -1,6 +1,5 @@
 /// <reference types="react" />
-import { InitState } from "./Types";
-export declare const Sicilian: <T extends InitState>(initialState: T) => {
+export declare const Sicilian: <T extends InitStaate>(initialState: T) => {
     register: import("./Types").Register<keyof T>;
     FormState: () => T;
     ErrorState: () => T;

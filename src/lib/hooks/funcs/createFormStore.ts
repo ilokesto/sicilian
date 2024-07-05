@@ -1,11 +1,11 @@
-import { CreateFormStore } from "../Types";
+import { CreateFormStore, InitState } from "../Types";
 
 const createFormStore: CreateFormStore = (initialState) => {
   let store = initialState;
   const callbacks = new Set<() => void>();
   const getStore = () => store;
 
-  const setStore = (nextState: typeof initialState) => {
+  const setStore = (nextState: InitState) => {
     store = { ...store, ...nextState };
     callbacks.forEach((callback) => callback());
   };

@@ -1,9 +1,7 @@
 import { RegistOnChange } from "../Types";
 
-const registOnChange: RegistOnChange = (setStore) => (e, customValue) => {
-  const name = e.target.name;
-  const value = customValue ?? e.target.value;
-  setStore({ [name]: value } as Parameters<typeof setStore>[number]);
+const registOnChange: RegistOnChange = (setStore) => (e) => {
+  setStore({ [e.target.name]: e.target.value });
 };
 
 export default registOnChange;
