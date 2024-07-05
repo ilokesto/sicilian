@@ -3,7 +3,7 @@ import useRegister from "./funcs/useRegister";
 import useContextState from "./funcs/useContextState";
 import registOnSubmit from "./funcs/registOnSubmit";
 import createFormStore from "./funcs/createFormStore";
-import { InitState, Store } from "./Types";
+import { InitState, Input, Store } from "./Types";
 
 export const Sicilian = <T extends InitState>(initialState: T) => {
   const FormStore = createFormStore(initialState);
@@ -19,5 +19,9 @@ export const Sicilian = <T extends InitState>(initialState: T) => {
 
   const handleSubmit = registOnSubmit(FormStore.getStore, ErrorStore.getStore);
 
-  return { register, FormState, ErrorState, handleSubmit };
+  const init = <K>(name: K, value: string) => {
+    return { target: { name, value } } as Input<typeof name>;
+  };
+
+  return { register, FormState, ErrorState, handleSubmit, init };
 };

@@ -18,6 +18,9 @@ const Sicilian = (initialState) => {
     const FormState = () => (0, useContextState_1.default)(Form);
     const ErrorState = () => (0, useContextState_1.default)(Error);
     const handleSubmit = (0, registOnSubmit_1.default)(FormStore.getStore, ErrorStore.getStore);
-    return { register, FormState, ErrorState, handleSubmit };
+    const init = (name, value) => {
+        return { target: { name, value } };
+    };
+    return { register, FormState, ErrorState, handleSubmit, init };
 };
 exports.Sicilian = Sicilian;
