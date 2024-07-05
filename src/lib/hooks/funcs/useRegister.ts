@@ -1,7 +1,7 @@
 import { useContext, useSyncExternalStore } from "react";
 import registOnChange from "./registOnChange";
 import registOnBlur from "./registOnBlur";
-import { InitState, RegistOnFocus, UseRegister } from "../Types";
+import { RegistOnFocus, UseRegister } from "../Types";
 
 const useRegister: UseRegister = (Form, Error) => (name, ErrorObj) => {
   const { getStore, setStore, subscribe } = useContext(Form);

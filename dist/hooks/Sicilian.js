@@ -9,6 +9,7 @@ const useRegister_1 = __importDefault(require("./funcs/useRegister"));
 const useContextState_1 = __importDefault(require("./funcs/useContextState"));
 const registOnSubmit_1 = __importDefault(require("./funcs/registOnSubmit"));
 const createFormStore_1 = __importDefault(require("./funcs/createFormStore"));
+const asyncSetValue_1 = __importDefault(require("./funcs/asyncSetValue"));
 const Sicilian = (initialState) => {
     const FormStore = (0, createFormStore_1.default)(initialState);
     const ErrorStore = (0, createFormStore_1.default)(initialState);
@@ -18,20 +19,7 @@ const Sicilian = (initialState) => {
     const FormState = () => (0, useContextState_1.default)(Form);
     const ErrorState = () => (0, useContextState_1.default)(Error);
     const handleSubmit = (0, registOnSubmit_1.default)(FormStore.getStore, ErrorStore.getStore);
-    const handleValue = (a) => {
-        Object.entries(a).forEach(([name, value]) => {
-            init({ name, value });
-        });
-    };
-    const init = ({ name, value }) => {
-        const { onChange } = register(name);
-        const mapper = (name, value) => {
-            return { target: { name, value } };
-        };
-        (0, react_1.useEffect)(() => {
-            onChange(mapper(name, value));
-        }, []);
-    };
-    return { register, FormState, ErrorState, handleSubmit, handleValue };
+    const setValue = (0, asyncSetValue_1.default)(FormStore.setStore);
+    return { register, FormState, ErrorState, handleSubmit, setValue };
 };
 exports.Sicilian = Sicilian;
