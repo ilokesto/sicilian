@@ -1,9 +1,9 @@
-import { createContext, useContext } from "react";
+import { createContext, useContext, useEffect } from "react";
 import useRegister from "./funcs/useRegister";
 import useContextState from "./funcs/useContextState";
 import registOnSubmit from "./funcs/registOnSubmit";
 import createFormStore from "./funcs/createFormStore";
-import { InitState, Input, Store } from "./Types";
+import { InitState, Store } from "./Types";
 
 export const Sicilian = <T extends InitState>(initialState: T) => {
   const FormStore = createFormStore(initialState);
@@ -19,18 +19,16 @@ export const Sicilian = <T extends InitState>(initialState: T) => {
 
   const handleSubmit = registOnSubmit(FormStore.getStore, ErrorStore.getStore);
 
-  const initializer = (testState: Partial<Record<keyof T, string>>) => {
-    const Comp = () => {
-      const { setStore } = useContext(Form);
+  const useInitializer = (testState: Partial<Record<keyof T, string>>) => {
+    const { setStore } = useContext(Form);
 
+    useEffect(() => {
       for (let key in testState) {
         // @ts-ignore
         setStore({ key: testState[key] });
       }
-    };
-
-    Comp();
+    }, []);
   };
 
-  return { register, FormState, ErrorState, handleSubmit, initializer };
+  return { register, FormState, ErrorState, handleSubmit, useInitializer };
 };
