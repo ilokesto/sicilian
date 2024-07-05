@@ -19,15 +19,15 @@ export const Sicilian = <T extends InitState>(initialState: T) => {
 
   const handleSubmit = registOnSubmit(FormStore.getStore, ErrorStore.getStore);
 
-  const useInitializer = (testState: Partial<Record<keyof T, string>>) => {
+  const useInitializer = () => (testState: Partial<Record<keyof T, string>>) => {
     const { setStore } = useContext(Form);
 
-    useEffect(() => {
-      for (let key in testState) {
-        // @ts-ignore
-        setStore({ key: testState[key] });
-      }
-    }, []);
+    for (let key in testState) {
+      // @ts-ignore
+      setStore({ key: testState[key] });
+    }
+
+    return true;
   };
 
   return { register, FormState, ErrorState, handleSubmit, useInitializer };
