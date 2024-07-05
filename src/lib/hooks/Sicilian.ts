@@ -5,7 +5,7 @@ import registOnSubmit from "./funcs/registOnSubmit";
 import { Store, InitState } from "./Types";
 import createFormStore from "./funcs/createFormStore";
 
-export const Sicilian = <T extends InitState>(initialState: T) => {
+export const Sicilian = <T extends object>(initialState: T) => {
   const FormStore = createFormStore(initialState);
   const ErrorStore = createFormStore(initialState);
 

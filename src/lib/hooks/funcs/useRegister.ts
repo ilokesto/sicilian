@@ -15,13 +15,13 @@ const useRegister: UseRegister = (Form, Error) => (name, ErrorObj) => {
     () => selector(getStore())
   );
 
-  const onChange = registOnChange(setStore);
+  const onChange = registOnChange<ReturnType<typeof getStore>>(setStore);
 
   const onFocus: RegistOnFocus = (e) => {
-    setError({ [e.target.name]: "" } as ReturnType<typeof getStore>);
+    setError({ [e.target.name]: "" });
   };
 
-  const onBlur = registOnBlur({ ErrorObj, value, setError });
+  const onBlur = registOnBlur<ReturnType<typeof getStore>>({ ErrorObj, value, setError });
 
   return { value, onChange, onBlur, onFocus, name };
 };

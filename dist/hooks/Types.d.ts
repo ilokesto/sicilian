@@ -1,13 +1,19 @@
-import { ChangeEvent, Context, FormEvent } from "react";
+import { Context, FormEvent } from "react";
+type Input<T> = {
+    target: {
+        name: keyof T;
+        value: string;
+    };
+};
 export type InitState = {
     [key: string]: string;
 };
-export interface Store<T extends InitState> {
+export interface Store<T> {
     getStore: () => T;
-    setStore: (action: T) => void;
+    setStore: (action: InitState) => void;
     subscribe: (callback: () => void) => () => void;
 }
-export type CreateFormStore = <T extends InitState>(initialState: T) => Store<T>;
+export type CreateFormStore = <T>(initialState: T) => Store<T>;
 export type RegExpErrorObj = {
     RegExp: RegExp;
     message: string;
@@ -35,12 +41,12 @@ export type RegisterErrorObj = {
 type OnBlurProps = {
     ErrorObj?: RegisterErrorObj;
     value: string;
-    setError: (action: any) => void;
+    setError: (action: InitState) => void;
 };
-export type RegistOnBlur = (onBlurProps: OnBlurProps) => (e: ChangeEvent<HTMLInputElement>) => void;
-export type RegistOnChange = <T extends InitState>(setStore: (action: T) => void) => (e: ChangeEvent<HTMLInputElement>, customValue?: string) => void;
-export type RegistOnSubmit = <T extends InitState>(FormState: () => T, ErrorState: () => T) => (fn: (data: T) => Promise<void>) => (e: FormEvent) => void;
-export type RegistOnFocus = (e: ChangeEvent<HTMLInputElement>) => void;
+export type RegistOnBlur = <T>(onBlurProps: OnBlurProps) => (e: Input<T>) => void;
+export type RegistOnChange = <T>(setStore: (action: InitState) => void) => (e: Input<T>, customValue?: string) => void;
+export type RegistOnSubmit = <T extends object>(FormState: () => T, ErrorState: () => T) => (fn: (data: T) => Promise<void>) => (e: FormEvent) => void;
+export type RegistOnFocus = <T>(e: Input<T>) => void;
 export type Register<K> = (name: K, ErrorObj?: RegisterErrorObj) => {
     value: string;
     name: K;
@@ -48,6 +54,6 @@ export type Register<K> = (name: K, ErrorObj?: RegisterErrorObj) => {
     onBlur: ReturnType<RegistOnBlur>;
     onFocus: RegistOnFocus;
 };
-export type UseRegister = <T extends InitState>(From: Context<Store<T>>, Error: Context<Store<T>>) => Register<keyof T>;
-export type UseContextState = <T extends InitState>(context: Context<Store<T>>) => T;
+export type UseRegister = <T extends object>(From: Context<Store<T>>, Error: Context<Store<T>>) => Register<keyof T>;
+export type UseContextState = <T extends object>(context: Context<Store<T>>) => T;
 export {};
