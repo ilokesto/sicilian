@@ -1,6 +1,6 @@
 {
   "name": "sicilian",
-  "version": "1.0.14",
+  "version": "1.0.15",
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
