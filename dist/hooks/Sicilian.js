@@ -18,9 +18,20 @@ const Sicilian = (initialState) => {
     const FormState = () => (0, useContextState_1.default)(Form);
     const ErrorState = () => (0, useContextState_1.default)(Error);
     const handleSubmit = (0, registOnSubmit_1.default)(FormStore.getStore, ErrorStore.getStore);
-    const init = (name, value) => {
-        return { target: { name, value } };
+    const handleValue = (a) => {
+        Object.entries(a).forEach(([name, value]) => {
+            init({ name, value });
+        });
     };
-    return { register, FormState, ErrorState, handleSubmit, init };
+    const init = ({ name, value }) => {
+        const { onChange } = register(name);
+        const mapper = (name, value) => {
+            return { target: { name, value } };
+        };
+        (0, react_1.useEffect)(() => {
+            onChange(mapper(name, value));
+        }, []);
+    };
+    return { register, FormState, ErrorState, handleSubmit, handleValue };
 };
 exports.Sicilian = Sicilian;

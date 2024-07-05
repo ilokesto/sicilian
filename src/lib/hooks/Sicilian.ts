@@ -19,9 +19,23 @@ export const Sicilian = <T extends InitState>(initialState: T) => {
 
   const handleSubmit = registOnSubmit(FormStore.getStore, ErrorStore.getStore);
 
-  const init = <K>(name: K, value: string) => {
-    return { target: { name, value } } as Input<typeof name>;
+  const handleValue = (a: Record<keyof T, string>) => {
+    Object.entries(a).forEach(([name, value]: Array<string>) => {
+      init({ name, value });
+    });
   };
 
-  return { register, FormState, ErrorState, handleSubmit, init };
+  const init = ({ name, value }: { name: string; value: string }) => {
+    const { onChange } = register(name);
+
+    const mapper = <K>(name: K, value: string) => {
+      return { target: { name, value } } as Input<typeof name>;
+    };
+
+    useEffect(() => {
+      onChange(mapper(name, value));
+    }, []);
+  };
+
+  return { register, FormState, ErrorState, handleSubmit, handleValue };
 };
