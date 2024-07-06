@@ -6,6 +6,10 @@ In the frontend field, react-hook-form, a widely used form state management tool
 
 Sicilian was developed to address these inconveniences by operating based on global state. This means Sicilian manages each input as state, helping you create forms using a controlled component approach. Additionally, since it is based on global state, you can call and use it from any component without the need for the context API or other global state management tools.
 
+&nbsp;
+
+&nbsp;
+
 # install and import
 
 ```ts
@@ -140,6 +144,37 @@ export default function Home() {
 One notable point is that the event object uses a unique type, ***Input<"email">***, instead of the usual ChangeEvent<HTMLInputElement>. This is one of the custom types provided by Sicilian and is used to track which input the event originated from.
 
 <img width="603" alt="image" src="https://github.com/ayden94/sicilian/assets/144667387/29e99343-f281-444b-9225-d52d2b3648b5">
+
+
+
+
+
+### onBlur and onFocus
+
+
+
+## handleValidate
+
+
+
+### validator
+
+
+
+### validate
+
+
+
+## setValue
+
+
+
+## handleSubmit
+
+
+
+
+
 
 
 
