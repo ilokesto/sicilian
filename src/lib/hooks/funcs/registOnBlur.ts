@@ -72,17 +72,20 @@ const registOnBlur: RegistOnBlur =
               for (const RegExp of ErrorObj.RegExp!) {
                 if (!value.match(RegExp.RegExp)) {
                   // @ts-ignore
-                  setError({ [e.target.name]: RegExp.message ?? `${e.target.name}의 형식이 올바르지 않습니다.` });
+                  setError({
+                    [e.target.name]: RegExp.message ?? `${e.target.name}의 값이 정규표현식을 만족하지 않습니다.`,
+                  });
                   flag++;
 
-                  if (flag === 1) break;
+                  break;
                 }
               }
             } else {
               if (!value.match(ErrorObj.RegExp!.RegExp)) {
                 // @ts-ignore
                 setError({
-                  [e.target.name]: ErrorObj.RegExp!.message,
+                  [e.target.name]:
+                    ErrorObj.RegExp!.message ?? `${e.target.name}의 값이 정규표현식을 만족하지 않습니다.`,
                 });
                 flag++;
               }
@@ -94,14 +97,22 @@ const registOnBlur: RegistOnBlur =
               for (const customChecker of ErrorObj.customChecker!) {
                 if (customChecker.checkFn(value)) {
                   // @ts-ignore
-                  setError({ [e.target.name]: customChecker.message });
+                  setError({
+                    [e.target.name]: customChecker.message ?? `${e.target.name}의 값이 검증 함수를 만족하지 않습니다.`,
+                  });
+
                   flag++;
+
+                  break;
                 }
               }
             } else {
               if (ErrorObj.customChecker!.checkFn(value)) {
                 // @ts-ignore
-                setError({ [e.target.name]: ErrorObj.customChecker!.message });
+                setError({
+                  [e.target.name]:
+                    ErrorObj.customChecker!.message ?? `${e.target.name}의 값이 검증 함수를 만족하지 않습니다.`,
+                });
                 flag++;
               }
             }
