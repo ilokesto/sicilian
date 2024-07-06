@@ -8,8 +8,6 @@ Sicilian was developed to address these inconveniences by operating based on glo
 
 &nbsp;
 
-&nbsp;
-
 # install and import
 
 ```ts
@@ -18,8 +16,6 @@ npm i sicilian
 ```ts
 import { playDragon } from "Sicilian";
 ```
-
-&nbsp;
 
 &nbsp;
 
@@ -38,8 +34,6 @@ const signUpFormController = playDragon({
  
 export default signUpFormController
 ```
-
-&nbsp;
 
 &nbsp;
 
@@ -62,8 +56,6 @@ export default function SignUp() {
   return <></>
 }
 ```
-
-&nbsp;
 
 ## register
 
@@ -91,7 +83,6 @@ Additionally, if you enter an incorrect input name, a type error will occur. Thi
 
 Now, let's examine how Sicilian works by exploring the various properties and methods returned by register one by one.
 
-&nbsp;
 
 ### name
 
