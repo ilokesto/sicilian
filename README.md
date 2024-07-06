@@ -135,6 +135,8 @@ One notable point is that the event object uses a unique type, ***Input<"email">
 The onBlur handler is triggered when the input tag loses focus. It automatically validates the value of the input based on the handleValidate method and the validator object returned from it. If an issue is found during the validation process, the onBlur handler immediately stops execution and sends the error information to ErrorState. The onFocus handler, on the other hand, is triggered when the input tag gains focus. If there is an error for the input in the ErrorState, it removes that error.
 
 
+&nbsp;
+
 
 ## handleValidate
 Before we begin, it's important to clarify the definitions of two similar terms used in Sicilian. The ***validate object*** is used to validate a single input, while the ***validator object*** is a multidimensional object that groups these validate objects by their name field. The handleValidate method returns a validator object, and this validator object contains multiple validate objects that can be applied to each field. In type terms, it can be described as follows:
@@ -257,6 +259,8 @@ password: { minLength: 10, required: true }
 password: { required: true, minLength: 10 }
 ```
 
+&nbsp;
+
 ## setValue
 If you want to create a feature that allows users to fetch and edit a previously written review, you first need to retrieve the review data from the server and populate each input with this data. The setValue function provides the necessary functionality for this, and it should be used with useEffect to prevent infinite rendering.
 ```ts
@@ -276,6 +280,8 @@ useEffect(() => {
   });
 }, [data]);
 ```
+
+&nbsp;
 
 ## FormState & ErrorState
 The FormState function returns a formState object that stores the state of the inputs managed by formController. The ErrorState function returns an errorState object that contains error messages resulting from validation.
@@ -300,6 +306,8 @@ export default function SignUp() {
   );
 }
 ```
+
+&nbsp;
 
 
 ## handleSubmit
