@@ -129,9 +129,6 @@ export default function Home() {
   return <input {...emailInput} onChange={handleChange} />
 }
 ```
-
-<img width="523" alt="image" src="https://github.com/ayden94/sicilian/assets/144667387/b632984f-f0b9-4346-90c9-35ac74dc1b37">
-
 One notable point is that the event object uses a unique type, ***Input<"email">***, instead of the usual ChangeEvent<HTMLInputElement>. This is one of the custom types provided by Sicilian and is used to track which input the event originated from.
 
 <img width="603" alt="image" src="https://github.com/ayden94/sicilian/assets/144667387/29e99343-f281-444b-9225-d52d2b3648b5">
