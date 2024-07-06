@@ -4,6 +4,10 @@ const isArray = <T extends object>(thing: T | Array<T>): thing is Array<T> => {
   return "at" in thing;
 };
 
+const isNumber = (thing: number | { number: number; message?: string }): thing is number => {
+  return typeof thing === "number";
+};
+
 const registOnBlur: RegistOnBlur =
   ({ ErrorObj, value, setError }) =>
   (e) => {
@@ -15,24 +19,51 @@ const registOnBlur: RegistOnBlur =
           case "required":
             if (!value.length) {
               // @ts-ignore
-              setError({ [e.target.name]: ErrorObj[v]!.message });
+              setError({ [e.target.name]: ErrorObj[v]!.message ?? `${e.target.name}는 비어있을 수 없습니다.` });
               flag++;
             }
             break;
 
           case "minLength":
-            if (value.length < ErrorObj[v]!.number) {
-              // @ts-ignore
-              setError({ [e.target.name]: ErrorObj[v]!.message });
-              flag++;
+            if (isNumber(ErrorObj[v]!)) {
+              if (value.length <= ErrorObj[v]!) {
+                // @ts-ignore
+                setError({
+                  [e.target.name]: `${e.target.name}는 ${ErrorObj[v]!}자 이상이어야 합니다.`,
+                });
+                flag++;
+              }
+            } else {
+              if (value.length <= ErrorObj[v]!.number) {
+                // @ts-ignore
+                setError({
+                  [e.target.name]:
+                    ErrorObj[v]!.message ?? `${e.target.name}는 ${ErrorObj[v]!.number}자 이상이어야 합니다.`,
+                });
+                flag++;
+              }
             }
+
             break;
 
           case "maxLength":
-            if (value.length > ErrorObj[v]!.number) {
-              // @ts-ignore
-              setError({ [e.target.name]: ErrorObj[v]!.message });
-              flag++;
+            if (isNumber(ErrorObj[v]!)) {
+              if (value.length >= ErrorObj[v]!) {
+                // @ts-ignore
+                setError({
+                  [e.target.name]: `${e.target.name}는 ${ErrorObj[v]!}자 이하여야 합니다.`,
+                });
+                flag++;
+              }
+            } else {
+              if (value.length >= ErrorObj[v]!.number) {
+                // @ts-ignore
+                setError({
+                  [e.target.name]:
+                    ErrorObj[v]!.message ?? `${e.target.name}는 ${ErrorObj[v]!.number}자 이하여야 합니다.`,
+                });
+                flag++;
+              }
             }
             break;
 
@@ -41,7 +72,7 @@ const registOnBlur: RegistOnBlur =
               for (const RegExp of ErrorObj.RegExp!) {
                 if (!value.match(RegExp.RegExp)) {
                   // @ts-ignore
-                  setError({ [e.target.name]: RegExp.message });
+                  setError({ [e.target.name]: RegExp.message ?? `${e.target.name}의 형식이 올바르지 않습니다.` });
                   flag++;
 
                   if (flag === 1) break;
@@ -50,7 +81,9 @@ const registOnBlur: RegistOnBlur =
             } else {
               if (!value.match(ErrorObj.RegExp!.RegExp)) {
                 // @ts-ignore
-                setError({ [e.target.name]: ErrorObj.RegExp!.message });
+                setError({
+                  [e.target.name]: ErrorObj.RegExp!.message,
+                });
                 flag++;
               }
             }

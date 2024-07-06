@@ -3,6 +3,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const isArray = (thing) => {
     return "at" in thing;
 };
+const isNumber = (thing) => {
+    return typeof thing === "number";
+};
 const registOnBlur = ({ ErrorObj, value, setError }) => (e) => {
     if (ErrorObj) {
         for (const v in ErrorObj) {
@@ -11,22 +14,48 @@ const registOnBlur = ({ ErrorObj, value, setError }) => (e) => {
                 case "required":
                     if (!value.length) {
                         // @ts-ignore
-                        setError({ [e.target.name]: ErrorObj[v].message });
+                        setError({ [e.target.name]: ErrorObj[v].message ?? `${e.target.name}는 비어있을 수 없습니다.` });
                         flag++;
                     }
                     break;
                 case "minLength":
-                    if (value.length < ErrorObj[v].number) {
-                        // @ts-ignore
-                        setError({ [e.target.name]: ErrorObj[v].message });
-                        flag++;
+                    if (isNumber(ErrorObj[v])) {
+                        if (value.length <= ErrorObj[v]) {
+                            // @ts-ignore
+                            setError({
+                                [e.target.name]: `${e.target.name}는 ${ErrorObj[v]}자 이상이어야 합니다.`,
+                            });
+                            flag++;
+                        }
+                    }
+                    else {
+                        if (value.length <= ErrorObj[v].number) {
+                            // @ts-ignore
+                            setError({
+                                [e.target.name]: ErrorObj[v].message ?? `${e.target.name}는 ${ErrorObj[v].number}자 이상이어야 합니다.`,
+                            });
+                            flag++;
+                        }
                     }
                     break;
                 case "maxLength":
-                    if (value.length > ErrorObj[v].number) {
-                        // @ts-ignore
-                        setError({ [e.target.name]: ErrorObj[v].message });
-                        flag++;
+                    if (isNumber(ErrorObj[v])) {
+                        if (value.length >= ErrorObj[v]) {
+                            // @ts-ignore
+                            setError({
+                                [e.target.name]: `${e.target.name}는 ${ErrorObj[v]}자 이하여야 합니다.`,
+                            });
+                            flag++;
+                        }
+                    }
+                    else {
+                        if (value.length >= ErrorObj[v].number) {
+                            // @ts-ignore
+                            setError({
+                                [e.target.name]: ErrorObj[v].message ?? `${e.target.name}는 ${ErrorObj[v].number}자 이하여야 합니다.`,
+                            });
+                            flag++;
+                        }
                     }
                     break;
                 case "RegExp":
@@ -34,7 +63,7 @@ const registOnBlur = ({ ErrorObj, value, setError }) => (e) => {
                         for (const RegExp of ErrorObj.RegExp) {
                             if (!value.match(RegExp.RegExp)) {
                                 // @ts-ignore
-                                setError({ [e.target.name]: RegExp.message });
+                                setError({ [e.target.name]: RegExp.message ?? `${e.target.name}의 형식이 올바르지 않습니다.` });
                                 flag++;
                                 if (flag === 1)
                                     break;
@@ -44,7 +73,9 @@ const registOnBlur = ({ ErrorObj, value, setError }) => (e) => {
                     else {
                         if (!value.match(ErrorObj.RegExp.RegExp)) {
                             // @ts-ignore
-                            setError({ [e.target.name]: ErrorObj.RegExp.message });
+                            setError({
+                                [e.target.name]: ErrorObj.RegExp.message,
+                            });
                             flag++;
                         }
                     }

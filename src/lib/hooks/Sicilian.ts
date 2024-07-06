@@ -3,7 +3,7 @@ import useRegister from "./funcs/useRegister";
 import useContextState from "./funcs/useContextState";
 import registOnSubmit from "./funcs/registOnSubmit";
 import createFormStore from "./funcs/createFormStore";
-import { InitState, Store } from "./Types";
+import { InitState, Store, Validator } from "./Types";
 import registOnValue from "./funcs/asyncSetValue";
 
 export const Sicilian = <T extends InitState>(initialState: T) => {
@@ -22,5 +22,9 @@ export const Sicilian = <T extends InitState>(initialState: T) => {
 
   const setValue = registOnValue<T>(FormStore.setStore);
 
-  return { register, FormState, ErrorState, handleSubmit, setValue };
+  const handleValidate = (validator: Validator<T>) => {
+    return validator;
+  };
+
+  return { register, FormState, ErrorState, handleSubmit, setValue, handleValidate };
 };

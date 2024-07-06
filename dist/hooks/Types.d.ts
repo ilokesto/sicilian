@@ -1,10 +1,13 @@
 import { ChangeEvent, Context, FormEvent } from "react";
-export type Input<K> = ChangeEvent<HTMLInputElement> & {
+type Roll<T> = {
+    [K in keyof T]: T[K];
+} & {};
+export type Input<K> = Roll<ChangeEvent<HTMLInputElement> & {
     target: {
         name: K;
         value: string;
     };
-};
+}>;
 export type InitState = {
     [key: string]: string;
 };
@@ -25,29 +28,30 @@ export type Register = <K extends string>(name: K, ErrorObj?: RegisterErrorObj) 
     onBlur: ReturnType<RegistOnBlur>;
     onFocus: RegistOnFocus;
 };
+export type Validator<T extends InitState> = Partial<Record<keyof T, RegisterErrorObj>>;
 export type RegisterErrorObj = {
     required?: {
-        required: boolean;
+        required: true;
         message: string;
-    };
+    } | true;
     minLength?: {
         number: number;
         message: string;
-    };
+    } | number;
     maxLength?: {
         number: number;
         message: string;
-    };
+    } | number;
     RegExp?: RegExpErrorObj | Array<RegExpErrorObj>;
     customChecker?: CustomCheckerErrorObj | Array<CustomCheckerErrorObj>;
 };
 export type RegExpErrorObj = {
     RegExp: RegExp;
-    message: string;
+    message?: string;
 };
 export type CustomCheckerErrorObj = {
     checkFn: (value: string) => boolean;
-    message: string;
+    message?: string;
 };
 export type RegistOnChange<K> = (setStore: (action: SetStore) => void) => (e: Input<K>) => void;
 export type RegistOnBlur = <K>(onBlurProps: OnBlurProps) => (e: Input<K>) => void;
