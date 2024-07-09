@@ -1,7 +1,7 @@
 /// <reference types="react" />
 import { InitState, Validator } from "./Types";
 export declare const Sicilian: <T extends InitState>(initialState: T) => {
-    register: import("./Types").Register;
+    register: import("./Types").Register<keyof T>;
     FormState: () => T;
     ErrorState: () => T;
     handleSubmit: (fn: (data: T) => Promise<void>) => (e: import("react").FormEvent<Element>) => void;

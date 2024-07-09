@@ -6,7 +6,9 @@ const registOnSubmit: RegistOnSubmit = (FormState, ErrorState) => (fn) => async 
   const errorState = ErrorState();
 
   for (const v of Object.values(errorState)) {
-    if (v !== "") return;
+    if (v !== "") {
+      return;
+    }
   }
 
   let count = 0;
