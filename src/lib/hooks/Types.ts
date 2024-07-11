@@ -34,7 +34,7 @@ export type Register<K extends Key> = (
 export type Validator<T extends InitState> = Partial<Record<keyof T, RegisterErrorObj<keyof T>>>;
 
 export type RegisterErrorObj<K extends Key> = {
-  required?: { required: true; message: string } | true;
+  required?: { required: boolean; message: string } | boolean;
   minLength?: { number: number; message: string } | number;
   maxLength?: { number: number; message: string } | number;
   RegExp?: RegExpErrorObj | Array<RegExpErrorObj>;
@@ -43,7 +43,7 @@ export type RegisterErrorObj<K extends Key> = {
 
 export type RegExpErrorObj = { RegExp: RegExp; message?: string };
 export type CustomCheckerErrorObj<K extends Key> = {
-  checkFn: (store: Record<K, string>) => boolean;
+  checkFn: (value: string, store: Record<K, string>) => boolean;
   message?: string;
 };
 
@@ -53,8 +53,8 @@ export type RegistOnBlur = <K extends Key>(onBlurProps: OnBlurProps<K>) => (e: F
 
 type OnBlurProps<K extends Key> = {
   store: Record<K, string>;
-  ErrorObj?: RegisterErrorObj<K>;
   value: string;
+  ErrorObj?: RegisterErrorObj<K>;
   setError: (action: SetStore) => void;
 };
 

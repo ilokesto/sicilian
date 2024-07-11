@@ -95,7 +95,7 @@ const registOnBlur: RegistOnBlur =
           case "customChecker":
             if (isArray(ErrorObj.customChecker!)) {
               for (const customChecker of ErrorObj.customChecker!) {
-                if (customChecker.checkFn(store)) {
+                if (customChecker.checkFn(value, store)) {
                   // @ts-ignore
                   setError({
                     [e.target.name]: customChecker.message ?? `${e.target.name}의 값이 검증 함수를 만족하지 않습니다.`,
@@ -107,7 +107,7 @@ const registOnBlur: RegistOnBlur =
                 }
               }
             } else {
-              if (ErrorObj.customChecker!.checkFn(store)) {
+              if (ErrorObj.customChecker!.checkFn(value, store)) {
                 // @ts-ignore
                 setError({
                   [e.target.name]:

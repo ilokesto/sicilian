@@ -12,7 +12,7 @@ export type Input<K> = Roll<ChangeEvent<HTMLInputElement> & {
 export type InitState = {
     [key in Key]: string;
 };
-export type SetStore = <K extends string>(action: {
+export type SetStore = <K extends Key>(action: {
     [key in K]: string;
 }) => void;
 export type CreateFormState = <T extends InitState>(initialState: T) => Store<T>;
@@ -32,9 +32,9 @@ export type Register<K extends Key> = (name: K, ErrorObj?: RegisterErrorObj<K>) 
 export type Validator<T extends InitState> = Partial<Record<keyof T, RegisterErrorObj<keyof T>>>;
 export type RegisterErrorObj<K extends Key> = {
     required?: {
-        required: true;
+        required: boolean;
         message: string;
-    } | true;
+    } | boolean;
     minLength?: {
         number: number;
         message: string;
@@ -51,15 +51,15 @@ export type RegExpErrorObj = {
     message?: string;
 };
 export type CustomCheckerErrorObj<K extends Key> = {
-    checkFn: (store: Record<K, string>) => boolean;
+    checkFn: (value: string, store: Record<K, string>) => boolean;
     message?: string;
 };
 export type RegistOnChange<K extends Key> = (setStore: (action: SetStore) => void) => (e: Input<K>) => void;
 export type RegistOnBlur = <K extends Key>(onBlurProps: OnBlurProps<K>) => (e: FocusEvent<HTMLInputElement>) => void;
 type OnBlurProps<K extends Key> = {
     store: Record<K, string>;
-    ErrorObj?: RegisterErrorObj<K>;
     value: string;
+    ErrorObj?: RegisterErrorObj<K>;
     setError: (action: SetStore) => void;
 };
 export type RegistOnFocus = (e: FocusEvent<HTMLInputElement>) => void;
