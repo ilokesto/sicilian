@@ -70,7 +70,7 @@ const registOnBlur: RegistOnBlur =
           case "RegExp":
             if (isArray(ErrorObj.RegExp!)) {
               for (const RegExp of ErrorObj.RegExp!) {
-                if (!value.match(RegExp.RegExp)) {
+                if (!RegExp.RegExp.test(value)) {
                   // @ts-ignore
                   setError({
                     [e.target.name]: RegExp.message ?? `${e.target.name}의 값이 정규표현식을 만족하지 않습니다.`,
@@ -81,7 +81,7 @@ const registOnBlur: RegistOnBlur =
                 }
               }
             } else {
-              if (!value.match(ErrorObj.RegExp!.RegExp)) {
+              if (!ErrorObj.RegExp!.RegExp.test(value)) {
                 // @ts-ignore
                 setError({
                   [e.target.name]:

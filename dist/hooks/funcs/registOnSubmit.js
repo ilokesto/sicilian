@@ -19,12 +19,13 @@ const registOnSubmit = (setStore, FormState, ErrorState) => (fn) => async (e) =>
     if (count === length)
         return;
     await fn(formState);
-    const cleanState = () => {
+    const cleanState = async () => {
+        const newObj = {};
         for (const key in formState) {
-            formState[key] = "";
+            newObj[key] = "";
         }
-        setStore(formState);
+        setStore(newObj);
     };
-    cleanState();
+    await cleanState();
 };
 exports.default = registOnSubmit;

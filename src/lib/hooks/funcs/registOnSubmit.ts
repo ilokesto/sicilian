@@ -21,15 +21,17 @@ const registOnSubmit: RegistOnSubmit = (setStore, FormState, ErrorState) => (fn)
 
   await fn(formState);
 
-  const cleanState = () => {
+  const cleanState = async () => {
+    const newObj = {} as any;
+
     for (const key in formState) {
-      formState[key] = "" as any;
+      newObj[key] = "" as any;
     }
 
-    setStore(formState);
+    setStore(newObj);
   };
 
-  cleanState();
+  await cleanState();
 };
 
 export default registOnSubmit;
