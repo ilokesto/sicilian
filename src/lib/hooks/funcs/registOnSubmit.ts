@@ -1,6 +1,6 @@
 import { RegistOnSubmit } from "../Types";
 
-const registOnSubmit: RegistOnSubmit = (FormState, ErrorState) => (fn) => async (e) => {
+const registOnSubmit: RegistOnSubmit = (setStore, FormState, ErrorState) => (fn) => async (e) => {
   e.preventDefault();
   const formState = FormState();
   const errorState = ErrorState();
@@ -20,6 +20,16 @@ const registOnSubmit: RegistOnSubmit = (FormState, ErrorState) => (fn) => async 
   if (count === length) return;
 
   await fn(formState);
+
+  const cleanState = () => {
+    for (const key in formState) {
+      formState[key] = "" as any;
+    }
+
+    setStore(formState);
+  };
+
+  cleanState();
 };
 
 export default registOnSubmit;

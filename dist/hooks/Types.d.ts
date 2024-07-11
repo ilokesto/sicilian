@@ -64,7 +64,7 @@ type OnBlurProps<K extends Key> = {
 };
 export type RegistOnFocus = (e: FocusEvent<HTMLInputElement>) => void;
 export type UseContextState = <T extends InitState>(context: Context<Store<T>>) => T;
-export type RegistOnSubmit = <T extends InitState>(FormState: () => T, ErrorState: () => T) => (fn: (data: T) => Promise<void>) => (e: FormEvent) => void;
+export type RegistOnSubmit = <T extends InitState>(setStore: (action: Record<keyof T, string>) => void, FormState: () => T, ErrorState: () => T) => (fn: (data: T) => Promise<void>) => (e: FormEvent) => void;
 export type RegistOnValue = <T extends InitState>(setState: (action: SetStore) => void) => (asyncState: {
     [key in keyof T]?: string;
 }) => void;

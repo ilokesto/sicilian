@@ -18,7 +18,7 @@ const registOnBlur: RegistOnBlur =
         switch (v) {
           case "required":
             if (!value.length) {
-              // @ts-ignore
+              //@ts-ignore
               setError({ [e.target.name]: ErrorObj[v]!.message ?? `${e.target.name}는 비어있을 수 없습니다.` });
               flag++;
             }

@@ -18,8 +18,8 @@ const Sicilian = (initialState) => {
     const register = (0, useRegister_1.default)(Form, Error);
     const FormState = () => (0, useContextState_1.default)(Form);
     const ErrorState = () => (0, useContextState_1.default)(Error);
-    const handleSubmit = (0, registOnSubmit_1.default)(FormStore.getStore, ErrorStore.getStore);
     const setValue = (0, asyncSetValue_1.default)(FormStore.setStore);
+    const handleSubmit = (0, registOnSubmit_1.default)(setValue, FormStore.getStore, ErrorStore.getStore);
     const handleValidate = (validator) => {
         return validator;
     };

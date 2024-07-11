@@ -18,9 +18,9 @@ export const Sicilian = <T extends InitState>(initialState: T) => {
   const FormState = () => useContextState(Form);
   const ErrorState = () => useContextState(Error);
 
-  const handleSubmit = registOnSubmit(FormStore.getStore, ErrorStore.getStore);
-
   const setValue = registOnValue<T>(FormStore.setStore);
+
+  const handleSubmit = registOnSubmit(setValue, FormStore.getStore, ErrorStore.getStore);
 
   const handleValidate = (validator: Validator<T>) => {
     return validator;

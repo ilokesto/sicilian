@@ -4,13 +4,13 @@ import { UseContextState } from "../Types";
 const useContextState: UseContextState = (context) => {
   const { getStore, subscribe } = useContext(context);
 
-  const state = useSyncExternalStore(
+  const value = useSyncExternalStore(
     subscribe,
     () => getStore(),
     () => getStore()
   );
 
-  return state;
+  return value;
 };
 
 export default useContextState;

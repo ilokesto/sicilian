@@ -63,6 +63,7 @@ export type RegistOnFocus = (e: FocusEvent<HTMLInputElement>) => void;
 export type UseContextState = <T extends InitState>(context: Context<Store<T>>) => T;
 
 export type RegistOnSubmit = <T extends InitState>(
+  setStore: (action: Record<keyof T, string>) => void,
   FormState: () => T,
   ErrorState: () => T
 ) => (fn: (data: T) => Promise<void>) => (e: FormEvent) => void;
