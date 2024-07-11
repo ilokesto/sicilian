@@ -8,7 +8,7 @@ export type Input<K> = Roll<ChangeEvent<HTMLInputElement> & { target: { name: K;
 export type InitState = {
   [key in Key]: string;
 };
-export type SetStore = <K extends string>(action: { [key in K]: string }) => void;
+export type SetStore = <K extends Key>(action: { [key in K]: string }) => void;
 
 export type CreateFormState = <T extends InitState>(initialState: T) => Store<T>;
 
