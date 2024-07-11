@@ -9,7 +9,7 @@ const isNumber = (thing: number | { number: number; message?: string }): thing i
 };
 
 const registOnBlur: RegistOnBlur =
-  ({ ErrorObj, value, setError }) =>
+  ({ ErrorObj, value, store, setError }) =>
   (e) => {
     if (ErrorObj) {
       for (const v in ErrorObj) {
@@ -26,7 +26,7 @@ const registOnBlur: RegistOnBlur =
 
           case "minLength":
             if (isNumber(ErrorObj[v]!)) {
-              if (value.length <= ErrorObj[v]!) {
+              if (value.length < ErrorObj[v]!) {
                 // @ts-ignore
                 setError({
                   [e.target.name]: `${e.target.name}는 ${ErrorObj[v]!}자 이상이어야 합니다.`,
@@ -34,7 +34,7 @@ const registOnBlur: RegistOnBlur =
                 flag++;
               }
             } else {
-              if (value.length <= ErrorObj[v]!.number) {
+              if (value.length < ErrorObj[v]!.number) {
                 // @ts-ignore
                 setError({
                   [e.target.name]:
@@ -48,7 +48,7 @@ const registOnBlur: RegistOnBlur =
 
           case "maxLength":
             if (isNumber(ErrorObj[v]!)) {
-              if (value.length >= ErrorObj[v]!) {
+              if (value.length > ErrorObj[v]!) {
                 // @ts-ignore
                 setError({
                   [e.target.name]: `${e.target.name}는 ${ErrorObj[v]!}자 이하여야 합니다.`,
@@ -56,7 +56,7 @@ const registOnBlur: RegistOnBlur =
                 flag++;
               }
             } else {
-              if (value.length >= ErrorObj[v]!.number) {
+              if (value.length > ErrorObj[v]!.number) {
                 // @ts-ignore
                 setError({
                   [e.target.name]:
@@ -95,7 +95,7 @@ const registOnBlur: RegistOnBlur =
           case "customChecker":
             if (isArray(ErrorObj.customChecker!)) {
               for (const customChecker of ErrorObj.customChecker!) {
-                if (customChecker.checkFn(value)) {
+                if (customChecker.checkFn(store)) {
                   // @ts-ignore
                   setError({
                     [e.target.name]: customChecker.message ?? `${e.target.name}의 값이 검증 함수를 만족하지 않습니다.`,
@@ -107,7 +107,7 @@ const registOnBlur: RegistOnBlur =
                 }
               }
             } else {
-              if (ErrorObj.customChecker!.checkFn(value)) {
+              if (ErrorObj.customChecker!.checkFn(store)) {
                 // @ts-ignore
                 setError({
                   [e.target.name]:

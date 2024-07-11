@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect } from "react";
+import { createContext } from "react";
 import useRegister from "./funcs/useRegister";
 import useContextState from "./funcs/useContextState";
 import registOnSubmit from "./funcs/registOnSubmit";

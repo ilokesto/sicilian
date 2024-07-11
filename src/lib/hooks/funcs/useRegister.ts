@@ -15,6 +15,8 @@ const useRegister: UseRegister = (Form, Error) => (name, ErrorObj) => {
     () => selector(getStore())
   );
 
+  const store = useSyncExternalStore(subscribe, getStore, getStore);
+
   const onChange = registOnChange(setStore);
 
   const onFocus: RegistOnFocus = (e) => {
@@ -22,7 +24,7 @@ const useRegister: UseRegister = (Form, Error) => (name, ErrorObj) => {
     setError({ [e.target.name]: "" });
   };
 
-  const onBlur = registOnBlur({ ErrorObj, value, setError });
+  const onBlur = registOnBlur<keyof ReturnType<typeof getStore>>({ ErrorObj, value, store, setError });
 
   return { value, onChange, onBlur, onFocus, name };
 };

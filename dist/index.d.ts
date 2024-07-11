@@ -5,6 +5,6 @@ declare const playDragon: <T extends import("./hooks/Types").InitState>(initialS
     ErrorState: () => T;
     handleSubmit: (fn: (data: T) => Promise<void>) => (e: import("react").FormEvent<Element>) => void;
     setValue: (asyncState: { [key in keyof T]?: string | undefined; }) => void;
-    handleValidate: (validator: Partial<Record<keyof T, import("./hooks/Types").RegisterErrorObj>>) => Partial<Record<keyof T, import("./hooks/Types").RegisterErrorObj>>;
+    handleValidate: (validator: Partial<Record<keyof T, import("./hooks/Types").RegisterErrorObj<keyof T>>>) => Partial<Record<keyof T, import("./hooks/Types").RegisterErrorObj<keyof T>>>;
 };
 export { playDragon };
