@@ -20,7 +20,7 @@ export const Sicilian = <T extends InitState>(initialState: T) => {
 
   const setValue = registOnValue<T>(FormStore.setStore);
 
-  const handleSubmit = registOnSubmit(setValue, FormStore.getStore, ErrorStore.getStore);
+  const handleSubmit = registOnSubmit(FormStore.getStore, ErrorStore.getStore);
 
   const handleValidate = (validator: Validator<T>) => {
     return validator;

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const registOnSubmit = (setStore, FormState, ErrorState) => (fn) => async (e) => {
+const registOnSubmit = (FormState, ErrorState) => (fn) => async (e) => {
     e.preventDefault();
     const formState = FormState();
     const errorState = ErrorState();
@@ -18,14 +18,6 @@ const registOnSubmit = (setStore, FormState, ErrorState) => (fn) => async (e) =>
     }
     if (count === length)
         return;
-    await fn(formState);
-    const cleanState = async () => {
-        const newObj = {};
-        for (const key in formState) {
-            newObj[key] = "";
-        }
-        setStore(newObj);
-    };
-    await cleanState();
+    fn(formState);
 };
 exports.default = registOnSubmit;
