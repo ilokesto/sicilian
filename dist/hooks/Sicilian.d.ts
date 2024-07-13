@@ -1,6 +1,7 @@
 /// <reference types="react" />
 import { InitState, Validator } from "./Types";
-export declare const Sicilian: <T extends InitState>(initialState: T) => {
+export declare const Sicilian: <T extends InitState>(initValue: T) => {
+    initValue: T;
     register: import("./Types").Register<keyof T>;
     FormState: () => T;
     ErrorState: () => T;

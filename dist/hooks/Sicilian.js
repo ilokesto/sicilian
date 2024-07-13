@@ -10,9 +10,9 @@ const useContextState_1 = __importDefault(require("./funcs/useContextState"));
 const registOnSubmit_1 = __importDefault(require("./funcs/registOnSubmit"));
 const createFormStore_1 = __importDefault(require("./funcs/createFormStore"));
 const asyncSetValue_1 = __importDefault(require("./funcs/asyncSetValue"));
-const Sicilian = (initialState) => {
-    const FormStore = (0, createFormStore_1.default)(initialState);
-    const ErrorStore = (0, createFormStore_1.default)(initialState);
+const Sicilian = (initValue) => {
+    const FormStore = (0, createFormStore_1.default)(initValue);
+    const ErrorStore = (0, createFormStore_1.default)(initValue);
     const Form = (0, react_1.createContext)(FormStore);
     const Error = (0, react_1.createContext)(ErrorStore);
     const register = (0, useRegister_1.default)(Form, Error);
@@ -23,6 +23,6 @@ const Sicilian = (initialState) => {
     const handleValidate = (validator) => {
         return validator;
     };
-    return { register, FormState, ErrorState, handleSubmit, setValue, handleValidate };
+    return { initValue, register, FormState, ErrorState, handleSubmit, setValue, handleValidate };
 };
 exports.Sicilian = Sicilian;
