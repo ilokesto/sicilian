@@ -351,7 +351,7 @@ export default function SignUp() {
 
 
 ## handleSubmit
-The handleSubmit function takes a callback function as its argument. This callback function should operate asynchronously and receives the entire state of the form as its argument. This allows you to include necessary functions, such as fetch, within it. Internally, e.preventDefault() is handled, preventing redirection due to form submission.
+The handleSubmit function takes a callback function as its argument. This callback function receives the entire formState as an argument. Additionally, it internally handles e.preventDefault(), preventing redirection due to form submission.
 
 ```ts
 <form
@@ -364,7 +364,7 @@ The handleSubmit function takes a callback function as its argument. This callba
   })}
 >
 ```
-You can implement the submit logic yourself by accessing the formState object directly. However, using handleSubmit provides two significant advantages:
+You can retrieve the entire formState from the FormState method and implement the submit logic yourself. However, using handleSubmit provides two significant advantages.
 
 1. If there are any unresolved error messages, handleSubmit will stop the submission, preventing unwanted values from being sent to the backend.
 2. Similarly, if all inputs managed by the formController are empty, handleSubmit will also stop the submission. This ensures that even if the user accidentally clicks the submit button, no unnecessary HTTP communication occurs.
