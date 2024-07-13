@@ -143,7 +143,21 @@ Before we begin, it's important to clarify the definitions of two similar terms 
 ```ts
 type Validator = Partial<Record<keyof initValue, Validate>>;
 ```
-If desired, you can create validate objects and validator objects without handleValidate. However, using handleValidate provides the advantage of performing type checks internally, allowing you to write code in a more type-safe manner.
+If necessary, you can create and use the validate and validator objects directly without handleValidate. However, using handleValidate has the advantage of incorporating type checking, allowing you to write more type-safe code. To achieve this, you need to provide an object literal as an argument to handleValidate, as shown in caseOne.
+
+When providing a function's return value or a variable as an argument, as shown in caseTwo, excess property checks are not performed. More precisely, due to TypeScript's contravariance in function arguments, excess properties do not cause type errors. As a result, even if incorrect values are provided, handleValidate will not raise a type error, and the issue will only be discovered at runtime.
+
+```ts
+const { handleValidate } = SignInFormController
+
+const caseOne = handleValidate({
+  email: {},
+  password: {}
+})
+
+const caseTwo = handleValidate(SignValidate())
+```
+So, it cannot be emphasized enough: if you decide to using handleValidate, rather than using validate and validator objects directly, always provide an object literal as the argument!
 
 ### validator
 The validator object returned from handleValidate will have properties for each name field. This allows you to easily provide the validate object as the second argument to register, as shown below.
