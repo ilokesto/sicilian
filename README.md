@@ -219,8 +219,11 @@ The callback function *checkFn* used in customChecker takes the ***input value a
 ```ts
 customChecker?: CustomCheckerErrorObj | Array<CustomCheckerErrorObj>;
 CustomCheckerErrorObj = {
-  checkFn: (value: string, formState: Record<keyof initValue, string>>) =>
-    boolean; message?: string
+  checkFn: (
+    value: string,
+    formState: Record<keyof initValue, string>>
+  ) =>boolean;
+  message?: string
 };
 ```
 
@@ -229,8 +232,10 @@ When creating a registration form, you need to ensure that the password and pass
 
 ```ts
 customChecker: {
-  checkFn: (value: string, formState: { password: string }) => 
-    value === formState.password,
+  checkFn: (
+    value: string,
+    formState: { password: string }
+  ) => value === formState.password,
   message: "password mismatch",
 },
 ```
