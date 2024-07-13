@@ -240,31 +240,53 @@ customChecker: {
 },
 ```
 
+The customChecker field is not only useful for comparing values of different inputs but also for implementing complex validation logic. For instance, if you want to ensure that a username does not contain inappropriate words managed in a backend database, you can fetch the data from the server and use it for validation, as shown below.
+
+When a new inappropriate word is added to the database, the updated policy is applied immediately without needing to modify the frontend code. This is another advantage of the customChecker field.
 
 ```ts
-const badWordList = ["fuck", "suck", "shit"];
- 
 const isWordInclude = (wordList: string[]) => (value: string) => {
   for (const word of wordList) {
     if (value.includes(word)) return true;
   }
- 
+
   return false;
 };
- 
-nickname: {
-  customChecker: [
-    {
-      checkFn: isWordInclude(badWordList),
-      message: "닉네임에 욕설을 포함할 수 없습니다",
-    },
-    {
-      checkFn: isWordInclude(sexualWordList),
-      message: "닉네임에 성적인 단어를 포함할 수 없습니다",
-    },
-  ]
-},
+
+export const useSignValidate = () => {
+  const { data } = useQuery({ ... })
+
+  const email = { ... }
+  const password = { ... }
+  const passwordCheck = { ... }
+
+  const nickname = {
+    customChecker: [
+      {
+        checkFn: isWordInclude(data?.bad ?? []),
+        message: "닉네임에 욕설을 포함할 수 없습니다",
+      },
+      {
+        checkFn: isWordInclude(wordList(data?.sexual ?? [])),
+        message: "닉네임에 성적인 단어를 포함할 수 없습니다",
+      },
+    ]
+  }
+  
+  return { email, nickname, password, passwordCheck }
+}
 ```
+```ts
+export default function SignUp() {
+  // this pick from lodash
+  const validator = useSignValidate();
+
+  return <input {...register("nickname", validator.nickname)}>
+}
+```
+
+### validate order
+
 One important point to note is that the onBlur handler validates fields in the order they are specified in the validate object. Additionally, if an error is found during validation, the process stops immediately.
 In the first example, the minLength field is validated before the required field, making required effectively redundant since meeting minLength will naturally fulfill required. In contrast, in the second example, required first checks for the presence of a value, and then minLength checks the length of the value. If the validation result of an input is different from your expectations, you might have to check the order of the fields.
 ```ts
