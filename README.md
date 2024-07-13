@@ -182,26 +182,23 @@ The onBlur handler of register validates the input value based on the settings i
 
 For required, minLength, and maxLength, you can use primitive types such as true and number instead of an object containing a message. In such cases, if an error occurs, the default error message template is used.
 ```ts
-required?: true | {required: true, message: string}
+required?: boolean | {required: boolean, message: string}
  
 minLength?: number | { number : number, message: string}
 maxLength?: number | { number : number, message: string}
 ```
 &nbsp;
 
-For RegExp and customChecker, you can use either an object containing a message or an array of such objects. This allows you to validate the input value in multiple ways using more than one regular expression or validation function. Unlike the three fields discussed earlier, the message property for RegExp and customChecker fields is optional.
+For RegExp and customChecker, you can use either an object containing a message or an array of such objects. This allows you to validate the input value in multiple ways using more than one regular expression or validation function. Unlike the three fields discussed earlier, the message property for RegExp fields is optional.
 ```ts
 RegExp?: RegExpErrorObj | Array<RegExpErrorObj>;
 RegExpErrorObj = { RegExp: RegExp; message?: string };
- 
-customChecker?: CustomCheckerErrorObj | Array<CustomCheckerErrorObj>;
-CustomCheckerErrorObj = { checkFn: (value: string) => boolean; message?: string };
 ```
 ```ts
 email : {
     RegExp: {
       RegExp: new RegExp("^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$"),
-      message: "이메일 형식과 맞지 않습니다",
+      message: "Doesn't match email format",
     },
   },
   
@@ -209,16 +206,36 @@ password: {
   RegExp: [
     {
       RegExp: new RegExp("^[A-Za-z0-9!@#$%^&*()_+{}|:<>?~-]+$"),
-      message: "비밀번호는 공백을 포함할 수 없습니다.",
+      message: "Password cannot contain spaces.",
     },
     {
       RegExp: new RegExp("^(?=.*[0-9])(?=.*[a-zA-Z])[a-zA-Z0-9!@#$%^&*()._-]+$"),
-      message: "비밀번호는 소문자, 대문자, 숫자, 특수문자를 모두 포함해야 합니다",
+      message: "password includes lower case, number, and special character.",
     },
   ],
 },
 ```
-The checkFn used in customChecker takes the current value of the input and returns a boolean after running the validation logic. If the result is true, an error occurs; if false, no error occurs.
+The callback function *checkFn* used in customChecker takes the ***input value and the entire formState as arguments***, processes the validation logic, and returns a boolean. If the result is true, an error occurs; if false, no error occurs. Like RegExp, it can also accept an array of validation objects. This means you can validate a value in multiple ways if necessary.
+```ts
+customChecker?: CustomCheckerErrorObj | Array<CustomCheckerErrorObj>;
+CustomCheckerErrorObj = {
+  checkFn: (value: string, formState: Record<keyof initValue, string>>) =>
+    boolean; message?: string
+};
+```
+
+When creating a registration form, you need to ensure that the password and password confirmation values match. Using customChecker, you can easily validate this and return an error if they do not match.
+
+
+```ts
+customChecker: {
+  checkFn: (value: string, formState: { password: string }) => 
+    value === formState.password,
+  message: "password mismatch",
+},
+```
+
+
 ```ts
 const badWordList = ["fuck", "suck", "shit"];
  
@@ -230,12 +247,6 @@ const isWordInclude = (wordList: string[]) => (value: string) => {
   return false;
 };
  
-nickname: {
-  customChecker: { checkFn: isWordInclude(badWordList) },
-},
-```
-Like the RegExp field, customChecker can accept an array of validation objects. Therefore, you can validate a value in multiple ways if needed, as shown below.
-```ts
 nickname: {
   customChecker: [
     {
