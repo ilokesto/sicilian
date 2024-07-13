@@ -278,10 +278,12 @@ export const useSignValidate = () => {
 ```
 ```ts
 export default function SignUp() {
-  // this pick from lodash
   const validator = useSignValidate();
 
-  return <input {...register("nickname", validator.nickname)}>
+  return (
+    { ... }
+    <input {...register("nickname", validator.nickname)} />
+  )
 }
 ```
 
