@@ -41,6 +41,7 @@ export default signUpFormController
 
 The formController object returned by the playDragon function contains various methods necessary for managing form state. Each method is as follows, and we will delve into more detail in the following sections:
 
+* **initValue** : A property that retains the initialization object provided as an argument to playDragon.
 * **register** : A method to register each input.
 * **setValue** : A method used to insert the result of asynchronous communication into an input.
 * **FormState** : A method that returns the current form state as an object.
@@ -51,7 +52,7 @@ The formController object returned by the playDragon function contains various m
 
 ```tsx
 export default function SignUp() {
-  const { register, setValue, FormState, ErrorState, handleValidate, handleSubmit } = signUpFormController
+  const { initValue, register, setValue, FormState, ErrorState, handleValidate, handleSubmit } = signUpFormController
  
   return <></>
 }
