@@ -17,7 +17,12 @@ const useRegister = (Form, Error) => (name, ErrorObj) => {
         // @ts-ignore
         setError({ [e.target.name]: "" });
     };
-    const onBlur = (0, registOnBlur_1.default)({ ErrorObj, value, store, setError });
+    const onBlur = (0, registOnBlur_1.default)({
+        ErrorObj,
+        value,
+        store,
+        setError,
+    });
     return { value, onChange, onBlur, onFocus, name };
 };
 exports.default = useRegister;

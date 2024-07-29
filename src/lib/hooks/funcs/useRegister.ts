@@ -24,7 +24,12 @@ const useRegister: UseRegister = (Form, Error) => (name, ErrorObj) => {
     setError({ [e.target.name]: "" });
   };
 
-  const onBlur = registOnBlur<keyof ReturnType<typeof getStore>>({ ErrorObj, value, store, setError });
+  const onBlur = registOnBlur({
+    ErrorObj,
+    value,
+    store,
+    setError,
+  });
 
   return { value, onChange, onBlur, onFocus, name };
 };

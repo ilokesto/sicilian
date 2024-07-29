@@ -8,7 +8,7 @@ const isNumber = (thing: number | { number: number; message?: string }): thing i
   return typeof thing === "number";
 };
 
-const registOnBlur: RegistOnBlur =
+const registOnBlur: RegistOnBlur<string> =
   ({ ErrorObj, value, store, setError }) =>
   (e) => {
     if (ErrorObj) {
@@ -18,7 +18,7 @@ const registOnBlur: RegistOnBlur =
         switch (v) {
           case "required":
             if (!value.length) {
-              //@ts-ignore
+              // @ts-ignore
               setError({ [e.target.name]: ErrorObj[v]!.message ?? `${e.target.name}는 비어있을 수 없습니다.` });
               flag++;
             }
