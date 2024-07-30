@@ -1,3 +1,3 @@
 import { RegistOnChange } from "../Types";
-declare const registOnChange: RegistOnChange<string>;
+declare const registOnChange: RegistOnChange<any>;
 export default registOnChange;

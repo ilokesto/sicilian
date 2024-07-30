@@ -8,7 +8,7 @@ const isNumber = (thing: number | { number: number; message?: string }): thing i
   return typeof thing === "number";
 };
 
-const registOnBlur: RegistOnBlur<string> =
+const registOnBlur: RegistOnBlur =
   ({ ErrorObj, value, store, setError }) =>
   (e) => {
     if (ErrorObj) {

@@ -18,23 +18,24 @@ export type Store<T extends InitState> = {
     setStore: (action: SetStore<T[keyof T]>) => void;
     subscribe: (callback: () => void) => () => void;
 };
-export type UseRegister = <T extends InitState>(From: Context<Store<T>>, Error: Context<Store<T>>) => Register<T[keyof T]>;
-export type Register<K extends Key> = (name: K, ErrorObj?: RegisterErrorObj<K>) => {
+export type UseRegister = <T extends InitState>(From: Context<Store<T>>, Error: Context<Store<T>>) => Register<T>;
+export type Register<T extends InitState> = (name: T[keyof T], ErrorObj?: RegisterErrorObj<T>) => {
     value: string;
-    name: K;
-    onChange: ReturnType<RegistOnChange<K>>;
-    onBlur: ReturnType<RegistOnBlur<K>>;
+    name: T[keyof T];
+    onChange: ReturnType<RegistOnChange<T[keyof T]>>;
+    onBlur: OnBlur;
     onFocus: RegistOnFocus;
 };
-export type RegistOnBlur<K extends Key> = (onBlurProps: OnBlurProps<K>) => (e: Input<K>) => void;
-type OnBlurProps<K extends Key> = {
-    store: Record<K, string>;
+export type RegistOnBlur = <T extends InitState>(onBlurProps: OnBlurProps<T>) => OnBlur;
+export type OnBlur = <T extends InitState>(e: Input<T[keyof T]>) => void;
+type OnBlurProps<T extends InitState> = {
+    store: T;
     value: string;
-    ErrorObj?: RegisterErrorObj<K>;
-    setError: (action: SetStore<K>) => void;
+    ErrorObj?: RegisterErrorObj<T>;
+    setError: (action: SetStore<T[keyof T]>) => void;
 };
-export type Validator<T extends InitState> = Partial<Record<T[keyof T], RegisterErrorObj<T[keyof T]>>>;
-export type RegisterErrorObj<K extends Key> = {
+export type Validator<T extends InitState> = Partial<Record<T[keyof T], RegisterErrorObj<T>>>;
+export type RegisterErrorObj<T extends InitState> = {
     required?: {
         required: boolean;
         message: string;
@@ -48,14 +49,16 @@ export type RegisterErrorObj<K extends Key> = {
         message: string;
     } | number;
     RegExp?: RegExpErrorObj | Array<RegExpErrorObj>;
-    customChecker?: CustomCheckerErrorObj<K> | Array<CustomCheckerErrorObj<K>>;
+    customChecker?: CustomCheckerErrorObj<T> | Array<CustomCheckerErrorObj<T>>;
 };
 export type RegExpErrorObj = {
     RegExp: RegExp;
     message?: string;
 };
-export type CustomCheckerErrorObj<K extends Key> = {
-    checkFn: (value: string, store: Record<K, string>) => boolean;
+export type CustomCheckerErrorObj<T extends InitState> = {
+    checkFn: (value: string, store: {
+        [key in keyof T]: string;
+    }) => boolean;
     message?: string;
 };
 export type RegistOnChange<K extends Key> = (setStore: (action: SetStore<K>) => void) => (e: Input<K>) => void;
