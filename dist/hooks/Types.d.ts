@@ -1,4 +1,4 @@
-import { Context, FocusEvent, FormEvent } from "react";
+import { Context, FormEvent } from "react";
 type Key = string;
 export type Input<K> = {
     target: {
@@ -19,15 +19,15 @@ export type Store<T extends InitState> = {
     subscribe: (callback: () => void) => () => void;
 };
 export type UseRegister = <T extends InitState>(From: Context<Store<T>>, Error: Context<Store<T>>) => Register<T>;
-export type Register<T extends InitState> = (name: T[keyof T], ErrorObj?: RegisterErrorObj<T>) => {
+export type Register<T extends InitState> = (name: keyof T, ErrorObj?: RegisterErrorObj<T>) => {
     value: string;
-    name: T[keyof T];
+    name: keyof T;
     onChange: ReturnType<RegistOnChange<T[keyof T]>>;
-    onBlur: OnBlur;
-    onFocus: RegistOnFocus;
+    onBlur: OnBlur<T>;
+    onFocus: RegistOnFocus<T>;
 };
-export type RegistOnBlur = <T extends InitState>(onBlurProps: OnBlurProps<T>) => OnBlur;
-export type OnBlur = <T extends InitState>(e: Input<T[keyof T]>) => void;
+export type RegistOnBlur = <T extends InitState>(onBlurProps: OnBlurProps<T>) => OnBlur<T>;
+export type OnBlur<T extends InitState> = (e: Input<T[keyof T]>) => void;
 type OnBlurProps<T extends InitState> = {
     store: T;
     value: string;
@@ -62,7 +62,7 @@ export type CustomCheckerErrorObj<T extends InitState> = {
     message?: string;
 };
 export type RegistOnChange<K extends Key> = (setStore: (action: SetStore<K>) => void) => (e: Input<K>) => void;
-export type RegistOnFocus = (e: FocusEvent<HTMLInputElement>) => void;
+export type RegistOnFocus<T extends InitState> = (e: Input<T[keyof T]>) => void;
 export type UseContextState = <T extends InitState>(context: Context<Store<T>>) => T;
 export type RegistOnSubmit = <T extends InitState>(FormState: () => T, ErrorState: () => T) => (fn: (data: T) => void) => (e: FormEvent) => void;
 export type RegistOnValue = <T extends InitState>(setState: (action: SetStore<T[keyof T]>) => void) => (asyncState: {

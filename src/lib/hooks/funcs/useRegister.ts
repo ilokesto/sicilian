@@ -19,7 +19,7 @@ const useRegister: UseRegister = (Form, Error) => (name, ErrorObj) => {
 
   const onChange = registOnChange(setStore);
 
-  const onFocus: RegistOnFocus = (e) => {
+  const onFocus: RegistOnFocus<ReturnType<typeof getStore>> = (e) => {
     // @ts-ignore
     setError({ [e.target.name]: "" });
   };
