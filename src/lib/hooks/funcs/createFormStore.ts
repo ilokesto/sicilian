@@ -1,4 +1,4 @@
-import { CreateFormState, InitState } from "../Types";
+import { CreateFormState} from "../Types";
 
 const createFormStore: CreateFormState = (initialState) => {
   type T = typeof initialState;
@@ -7,7 +7,7 @@ const createFormStore: CreateFormState = (initialState) => {
   const callbacks = new Set<() => void>();
   const getStore = () => store;
 
-  const setStore = (nextState: InitState) => {
+  const setStore = (nextState: Partial<T>) => {
     store = { ...store, ...nextState };
     callbacks.forEach((callback) => callback());
   };

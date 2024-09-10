@@ -11,14 +11,18 @@ const registOnSubmit_1 = __importDefault(require("./funcs/registOnSubmit"));
 const createFormStore_1 = __importDefault(require("./funcs/createFormStore"));
 const asyncSetValue_1 = __importDefault(require("./funcs/asyncSetValue"));
 const Sicilian = (initValue) => {
+    const errorValue = Object.keys(initValue).reduce((acc, key) => {
+        acc[key] = "";
+        return acc;
+    }, {});
     const FormStore = (0, createFormStore_1.default)(initValue);
-    const ErrorStore = (0, createFormStore_1.default)(initValue);
+    const ErrorStore = (0, createFormStore_1.default)(errorValue);
     const Form = (0, react_1.createContext)(FormStore);
     const Error = (0, react_1.createContext)(ErrorStore);
     const register = (0, useRegister_1.default)(Form, Error);
     const FormState = () => (0, useContextState_1.default)(Form);
     const ErrorState = () => (0, useContextState_1.default)(Error);
-    const setValue = (0, asyncSetValue_1.default)(FormStore.setStore);
+    const setValue = (0, asyncSetValue_1.default)(Form);
     const handleSubmit = (0, registOnSubmit_1.default)(FormStore.getStore, ErrorStore.getStore);
     const handleValidate = (validator) => {
         return validator;

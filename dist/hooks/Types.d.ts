@@ -1,5 +1,4 @@
 import { Context, FormEvent } from "react";
-type Key = string;
 export type Input<K> = {
     target: {
         name: K;
@@ -7,19 +6,20 @@ export type Input<K> = {
     };
 };
 export type InitState = {
-    [key in Key]: string;
+    [x: string]: string;
 };
 export type CreateFormState = <T extends InitState>(initialState: T) => Store<T>;
 export type Store<T extends InitState> = {
     getStore: () => T;
-    setStore: (action: InitState) => void;
+    setStore: (value: Partial<T>) => void;
     subscribe: (callback: () => void) => () => void;
 };
 export type UseRegister = <T extends InitState>(From: Context<Store<T>>, Error: Context<Store<T>>) => Register<T>;
 export type Register<T extends InitState> = (name: keyof T, ErrorObj?: RegisterErrorObj<T>) => {
     value: string;
     name: keyof T;
-    onChange: ReturnType<RegistOnChange<T[keyof T]>>;
+    id: keyof T;
+    onChange: ReturnType<RegistOnChange<T>>;
     onBlur: OnBlur<T>;
     onFocus: RegistOnFocus<T>;
 };
@@ -29,7 +29,7 @@ type OnBlurProps<T extends InitState> = {
     store: T;
     value: string;
     ErrorObj?: RegisterErrorObj<T>;
-    setError: (action: InitState) => void;
+    setError: (action: Partial<T>) => void;
 };
 export type Validator<T extends InitState> = Partial<Record<T[keyof T], RegisterErrorObj<T>>>;
 export type RegisterErrorObj<T extends InitState> = {
@@ -58,11 +58,9 @@ export type CustomCheckerErrorObj<T extends InitState> = {
     }) => boolean;
     message?: string;
 };
-export type RegistOnChange<K extends Key> = (setStore: (action: InitState) => void) => (e: Input<K>) => void;
+export type RegistOnChange<T extends InitState> = (setStore: (value: Partial<T>) => void) => (e: Input<T[keyof T]>) => void;
 export type RegistOnFocus<T extends InitState> = (e: Input<T[keyof T]>) => void;
 export type UseContextState = <T extends InitState>(context: Context<Store<T>>) => T;
 export type RegistOnSubmit = <T extends InitState>(FormState: () => T, ErrorState: () => T) => (fn: (data: T) => void) => (e: FormEvent) => void;
-export type RegistOnValue = <T extends InitState>(setState: (action: InitState) => void) => (asyncState: {
-    [key in keyof T]?: string;
-}) => void;
+export type RegistOnValue = <T extends InitState>(Form: Context<Store<T>>) => (asyncState: Partial<T>) => void;
 export {};

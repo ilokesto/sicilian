@@ -31,7 +31,7 @@ const useRegister: UseRegister = (Form, Error) => (name, ErrorObj) => {
     setError,
   });
 
-  return { value, onChange, onBlur, onFocus, name };
+  return { value, onChange, onBlur, onFocus, name, id: name };
 };
 
 export default useRegister;

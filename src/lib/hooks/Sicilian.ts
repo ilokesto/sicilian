@@ -7,8 +7,13 @@ import { InitState, Store, Validator } from "./Types";
 import registOnValue from "./funcs/asyncSetValue";
 
 export const Sicilian = <T extends InitState>(initValue: T) => {
+  const errorValue = Object.keys(initValue).reduce((acc, key) => {
+    acc[key] = "";
+    return acc;
+  }, {} as any);
+
   const FormStore = createFormStore(initValue);
-  const ErrorStore = createFormStore(initValue);
+  const ErrorStore = createFormStore(errorValue);
 
   const Form = createContext<Store<T>>(FormStore);
   const Error = createContext<Store<T>>(ErrorStore);
@@ -18,7 +23,7 @@ export const Sicilian = <T extends InitState>(initValue: T) => {
   const FormState = () => useContextState(Form);
   const ErrorState = () => useContextState(Error);
 
-  const setValue = registOnValue<T>(FormStore.setStore);
+  const setValue = registOnValue<T>(Form);
 
   const handleSubmit = registOnSubmit(FormStore.getStore, ErrorStore.getStore);
 
