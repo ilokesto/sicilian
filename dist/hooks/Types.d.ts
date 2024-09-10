@@ -62,5 +62,5 @@ export type RegistOnChange = <T extends InitState>(setStore: (value: Partial<T>)
 export type OnChange<T extends InitState> = (e: Input<T[keyof T]>) => void;
 export type RegistOnFocus<T extends InitState> = (e: Input<T[keyof T]>) => void;
 export type UseContextState = <T extends InitState>(context: Context<Store<T>>) => T;
-export type RegistOnSubmit = <T extends InitState>(FormState: () => T, ErrorState: () => T, clearForm: () => void) => (fn: (data: T) => void) => (e: FormEvent) => void;
+export type RegistOnSubmit = <T extends InitState>(FormState: () => T, ErrorState: () => T, clearForm: () => void) => (fn: (data: T) => Promise<void>) => (e: FormEvent) => void;
 export {};

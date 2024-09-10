@@ -7,6 +7,6 @@ export declare const Sicilian: <T extends InitState>(initValue: T) => {
     ErrorState: () => any;
     setForm: (value: Partial<T>) => void;
     setError: (value: Partial<any>) => void;
-    handleSubmit: (fn: (data: any) => void) => (e: import("react").FormEvent<Element>) => void;
+    handleSubmit: (fn: (data: any) => Promise<void>) => (e: import("react").FormEvent<Element>) => void;
     handleValidate: (validator: Validator<T>) => Partial<Record<T[keyof T], import("./Types").RegisterErrorObj<T>>>;
 };
