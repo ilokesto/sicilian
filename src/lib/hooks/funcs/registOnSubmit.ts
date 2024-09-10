@@ -1,4 +1,4 @@
-import { RegistOnSubmit } from "../Types";
+import { RegistOnSubmit } from "../types";
 import isAllInputEmpty from "../utils/isAllInputEmpty";
 import isErrorExist from "../utils/isErrorExist";
 

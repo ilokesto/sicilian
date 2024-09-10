@@ -1,12 +1,13 @@
 /// <reference types="react" />
-declare const playDragon: <T extends import("./hooks/Types").InitState>(initValue: T) => {
+import { FormProvider, getContext } from "./hooks/useFormContext";
+declare const playDragon: <T extends import("./hooks/types").InitState>(initValue: T) => {
     initValue: T;
-    register: import("./hooks/Types").Register<T>;
+    register: import("./hooks/types").Register<T>;
     FormState: () => T;
-    ErrorState: () => any;
+    ErrorState: () => T;
     setForm: (value: Partial<T>) => void;
-    setError: (value: Partial<any>) => void;
-    handleSubmit: (fn: (data: any) => Promise<void>) => (e: import("react").FormEvent<Element>) => void;
-    handleValidate: (validator: Partial<Record<T[keyof T], import("./hooks/Types").RegisterErrorObj<T>>>) => Partial<Record<T[keyof T], import("./hooks/Types").RegisterErrorObj<T>>>;
+    setError: (value: Partial<T>) => void;
+    handleSubmit: (fn: (data: T) => void | Promise<void>) => (e: import("react").FormEvent<Element>) => void;
+    handleValidate: (validator: Partial<Record<keyof T, import("./hooks/types").RegisterErrorObj<T>>>) => Partial<Record<keyof T, import("./hooks/types").RegisterErrorObj<T>>>;
 };
-export { playDragon };
+export { playDragon, getContext, FormProvider };

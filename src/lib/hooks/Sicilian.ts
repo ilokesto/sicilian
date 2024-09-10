@@ -1,17 +1,10 @@
 import useRegister from "./funcs/useRegister";
 import registOnSubmit from "./funcs/registOnSubmit";
-import createFormStore from "./funcs/createFormStore";
-import { InitState, Validator } from "./Types";
-import { InputHTMLAttributes } from "react";
+import { InitState, Validator } from "./types";
+import { init } from "./funcs/init";
 
 export const Sicilian = <T extends InitState>(initValue: T) => {
-  const errorValue = Object.keys(initValue).reduce((acc, key) => {
-    acc[key] = "";
-    return acc;
-  }, {} as any);
-
-  const FormStore = createFormStore(initValue);
-  const ErrorStore = createFormStore(errorValue);
+  const {FormStore, ErrorStore} = init(initValue);
 
   const FormState = () => FormStore.getStore()
   const ErrorState = () => ErrorStore.getStore()
@@ -28,11 +21,6 @@ export const Sicilian = <T extends InitState>(initValue: T) => {
     return validator;
   };
 
-  interface props extends InputHTMLAttributes<HTMLInputElement> {};
-  const Input = (props: props) => {
-    // @ts-ignore
-    return <input {...props} />
-  }
-
   return { initValue, register, FormState, ErrorState, setForm, setError, handleSubmit, handleValidate };
 };
+
