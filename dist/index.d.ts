@@ -3,9 +3,10 @@ declare const playDragon: <T extends import("./hooks/Types").InitState>(initValu
     initValue: T;
     register: import("./hooks/Types").Register<T>;
     FormState: () => T;
-    ErrorState: () => T;
+    ErrorState: () => any;
+    setForm: (value: Partial<T>) => void;
+    setError: (value: Partial<any>) => void;
     handleSubmit: (fn: (data: any) => void) => (e: import("react").FormEvent<Element>) => void;
-    setValue: (asyncState: Partial<T>) => void;
     handleValidate: (validator: Partial<Record<T[keyof T], import("./hooks/Types").RegisterErrorObj<T>>>) => Partial<Record<T[keyof T], import("./hooks/Types").RegisterErrorObj<T>>>;
 };
 export { playDragon };

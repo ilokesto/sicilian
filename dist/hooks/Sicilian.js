@@ -4,12 +4,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Sicilian = void 0;
-const react_1 = require("react");
+const jsx_runtime_1 = require("react/jsx-runtime");
 const useRegister_1 = __importDefault(require("./funcs/useRegister"));
-const useContextState_1 = __importDefault(require("./funcs/useContextState"));
 const registOnSubmit_1 = __importDefault(require("./funcs/registOnSubmit"));
 const createFormStore_1 = __importDefault(require("./funcs/createFormStore"));
-const asyncSetValue_1 = __importDefault(require("./funcs/asyncSetValue"));
 const Sicilian = (initValue) => {
     const errorValue = Object.keys(initValue).reduce((acc, key) => {
         acc[key] = "";
@@ -17,16 +15,21 @@ const Sicilian = (initValue) => {
     }, {});
     const FormStore = (0, createFormStore_1.default)(initValue);
     const ErrorStore = (0, createFormStore_1.default)(errorValue);
-    const Form = (0, react_1.createContext)(FormStore);
-    const Error = (0, react_1.createContext)(ErrorStore);
-    const register = (0, useRegister_1.default)(Form, Error);
-    const FormState = () => (0, useContextState_1.default)(Form);
-    const ErrorState = () => (0, useContextState_1.default)(Error);
-    const setValue = (0, asyncSetValue_1.default)(Form);
-    const handleSubmit = (0, registOnSubmit_1.default)(FormStore.getStore, ErrorStore.getStore);
+    const FormState = () => FormStore.getStore();
+    const ErrorState = () => ErrorStore.getStore();
+    const setForm = FormStore.setStore;
+    const setError = ErrorStore.setStore;
+    const clearForm = () => setForm(initValue);
+    const register = (0, useRegister_1.default)(FormStore, ErrorStore);
+    const handleSubmit = (0, registOnSubmit_1.default)(FormState, ErrorState, clearForm);
     const handleValidate = (validator) => {
         return validator;
     };
-    return { initValue, register, FormState, ErrorState, handleSubmit, setValue, handleValidate };
+    ;
+    const Input = (props) => {
+        // @ts-ignore
+        return (0, jsx_runtime_1.jsx)("input", { ...props });
+    };
+    return { initValue, register, FormState, ErrorState, setForm, setError, handleSubmit, handleValidate };
 };
 exports.Sicilian = Sicilian;

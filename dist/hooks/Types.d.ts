@@ -14,19 +14,19 @@ export type Store<T extends InitState> = {
     setStore: (value: Partial<T>) => void;
     subscribe: (callback: () => void) => () => void;
 };
-export type UseRegister = <T extends InitState>(From: Context<Store<T>>, Error: Context<Store<T>>) => Register<T>;
+export type UseRegister = <T extends InitState>(FromStore: Store<T>, ErrorStore: Store<T>) => Register<T>;
 export type Register<T extends InitState> = (name: keyof T, ErrorObj?: RegisterErrorObj<T>) => {
     value: string;
     name: keyof T;
     id: keyof T;
-    onChange: ReturnType<RegistOnChange<T>>;
+    onChange: OnChange<T>;
     onBlur: OnBlur<T>;
     onFocus: RegistOnFocus<T>;
 };
 export type RegistOnBlur = <T extends InitState>(onBlurProps: OnBlurProps<T>) => OnBlur<T>;
 export type OnBlur<T extends InitState> = (e: Input<T[keyof T]>) => void;
 type OnBlurProps<T extends InitState> = {
-    store: T;
+    getStore: () => T;
     value: string;
     ErrorObj?: RegisterErrorObj<T>;
     setError: (action: Partial<T>) => void;
@@ -48,19 +48,19 @@ export type RegisterErrorObj<T extends InitState> = {
     RegExp?: RegExpErrorObj | Array<RegExpErrorObj>;
     customChecker?: CustomCheckerErrorObj<T> | Array<CustomCheckerErrorObj<T>>;
 };
-export type RegExpErrorObj = {
+type RegExpErrorObj = {
     RegExp: RegExp;
     message?: string;
 };
-export type CustomCheckerErrorObj<T extends InitState> = {
+type CustomCheckerErrorObj<T extends InitState> = {
     checkFn: (value: string, store: {
         [key in keyof T]: string;
     }) => boolean;
     message?: string;
 };
-export type RegistOnChange<T extends InitState> = (setStore: (value: Partial<T>) => void) => (e: Input<T[keyof T]>) => void;
+export type RegistOnChange = <T extends InitState>(setStore: (value: Partial<T>) => void) => OnChange<T>;
+export type OnChange<T extends InitState> = (e: Input<T[keyof T]>) => void;
 export type RegistOnFocus<T extends InitState> = (e: Input<T[keyof T]>) => void;
 export type UseContextState = <T extends InitState>(context: Context<Store<T>>) => T;
-export type RegistOnSubmit = <T extends InitState>(FormState: () => T, ErrorState: () => T) => (fn: (data: T) => void) => (e: FormEvent) => void;
-export type RegistOnValue = <T extends InitState>(Form: Context<Store<T>>) => (asyncState: Partial<T>) => void;
+export type RegistOnSubmit = <T extends InitState>(FormState: () => T, ErrorState: () => T, clearForm: () => void) => (fn: (data: T) => void) => (e: FormEvent) => void;
 export {};

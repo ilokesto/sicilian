@@ -9,8 +9,10 @@ const isNumber = (thing: number | { number: number; message?: string }): thing i
 };
 
 const registOnBlur: RegistOnBlur =
-  ({ ErrorObj, value, store, setError }) =>
+  ({ ErrorObj, value, getStore, setError }) =>
   (e) => {
+    const store = getStore();
+
     if (ErrorObj) {
       for (const v in ErrorObj) {
         let flag = 0;

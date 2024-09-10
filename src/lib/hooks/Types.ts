@@ -5,8 +5,6 @@ export type InitState = {
   [x: string]: string;
 };
 
-// export type SetStore<U extends string> =  { [K in U]: Pick<Record<U, string>, K> }[U];
-
 export type CreateFormState = <T extends InitState>(initialState: T) => Store<T>;
 
 export type Store<T extends InitState> = {
@@ -15,7 +13,7 @@ export type Store<T extends InitState> = {
   subscribe: (callback: () => void) => () => void;
 };
 
-export type UseRegister = <T extends InitState>(From: Context<Store<T>>, Error: Context<Store<T>>) => Register<T>;
+export type UseRegister = <T extends InitState>(FromStore: Store<T>, ErrorStore: Store<T>) => Register<T>;
 
 export type Register<T extends InitState> = (
   name: keyof T,
@@ -24,16 +22,15 @@ export type Register<T extends InitState> = (
   value: string;
   name: keyof T;
   id: keyof T;
-  onChange: ReturnType<RegistOnChange<T>>;
+  onChange: OnChange<T>;
   onBlur: OnBlur<T>;
   onFocus: RegistOnFocus<T>;
 };
 
 export type RegistOnBlur = <T extends InitState>(onBlurProps: OnBlurProps<T>) => OnBlur<T>;
 export type OnBlur<T extends InitState> = (e: Input<T[keyof T]>) => void;
-
 type OnBlurProps<T extends InitState> = {
-  store: T;
+  getStore: () => T;
   value: string;
   ErrorObj?: RegisterErrorObj<T>;
   setError: (action: Partial<T>) => void;
@@ -49,13 +46,14 @@ export type RegisterErrorObj<T extends InitState> = {
   customChecker?: CustomCheckerErrorObj<T> | Array<CustomCheckerErrorObj<T>>;
 };
 
-export type RegExpErrorObj = { RegExp: RegExp; message?: string };
-export type CustomCheckerErrorObj<T extends InitState> = {
+type RegExpErrorObj = { RegExp: RegExp; message?: string };
+type CustomCheckerErrorObj<T extends InitState> = {
   checkFn: (value: string, store: { [key in keyof T]: string }) => boolean;
   message?: string;
 };
 
-export type RegistOnChange<T extends InitState> = (setStore: (value: Partial<T>) => void) => (e: Input<T[keyof T]>) => void;
+export type RegistOnChange = <T extends InitState>(setStore: (value: Partial<T>) => void) => OnChange<T>
+export type OnChange<T extends InitState> = (e: Input<T[keyof T]>) => void;
 
 export type RegistOnFocus<T extends InitState> = (e: Input<T[keyof T]>) => void;
 
@@ -63,9 +61,6 @@ export type UseContextState = <T extends InitState>(context: Context<Store<T>>) 
 
 export type RegistOnSubmit = <T extends InitState>(
   FormState: () => T,
-  ErrorState: () => T
-) => (fn: (data: T) => void) => (e: FormEvent) => void;
-
-export type RegistOnValue = <T extends InitState>(
-  Form: Context<Store<T>>
-) => (asyncState: Partial<T>) => void;
+  ErrorState: () => T,
+  clearForm: () => void
+) => (fn: (data: T) => Promise<void>) => (e: FormEvent) => void;

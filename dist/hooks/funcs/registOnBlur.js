@@ -6,7 +6,8 @@ const isArray = (thing) => {
 const isNumber = (thing) => {
     return typeof thing === "number";
 };
-const registOnBlur = ({ ErrorObj, value, store, setError }) => (e) => {
+const registOnBlur = ({ ErrorObj, value, getStore, setError }) => (e) => {
+    const store = getStore();
     if (ErrorObj) {
         for (const v in ErrorObj) {
             let flag = 0;

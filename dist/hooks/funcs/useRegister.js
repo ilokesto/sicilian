@@ -6,12 +6,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = require("react");
 const registOnChange_1 = __importDefault(require("./registOnChange"));
 const registOnBlur_1 = __importDefault(require("./registOnBlur"));
-const useRegister = (Form, Error) => (name, ErrorObj) => {
-    const { getStore, setStore, subscribe } = (0, react_1.useContext)(Form);
-    const { setStore: setError } = (0, react_1.useContext)(Error);
+const useRegister = (FromStore, ErrorStore) => (name, ErrorObj) => {
+    const { getStore, setStore, subscribe } = FromStore;
+    const { setStore: setError } = ErrorStore;
     const selector = (store) => store[name];
     const value = (0, react_1.useSyncExternalStore)(subscribe, () => selector(getStore()), () => selector(getStore()));
-    const store = (0, react_1.useSyncExternalStore)(subscribe, getStore, getStore);
     const onChange = (0, registOnChange_1.default)(setStore);
     const onFocus = (e) => {
         // @ts-ignore
@@ -20,9 +19,9 @@ const useRegister = (Form, Error) => (name, ErrorObj) => {
     const onBlur = (0, registOnBlur_1.default)({
         ErrorObj,
         value,
-        store,
+        getStore,
         setError,
     });
-    return { value, onChange, onBlur, onFocus, name, id: name };
+    return { value, name, id: name, onChange, onBlur, onFocus, };
 };
 exports.default = useRegister;

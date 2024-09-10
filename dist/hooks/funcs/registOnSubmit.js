@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const registOnSubmit = (FormState, ErrorState) => (fn) => async (e) => {
+const registOnSubmit = (FormState, ErrorState, clearForm) => (fn) => async (e) => {
     e.preventDefault();
     const formState = FormState();
     const errorState = ErrorState();
@@ -21,9 +21,10 @@ const registOnSubmit = (FormState, ErrorState) => (fn) => async (e) => {
         return;
     try {
         fn(formState);
-        // 성공할 경우 value 비우는 로직
+        clearForm();
     }
     catch (e) {
+        console.log(e);
     }
 };
 exports.default = registOnSubmit;

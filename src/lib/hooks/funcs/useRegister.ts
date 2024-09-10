@@ -1,25 +1,24 @@
-import { useContext, useSyncExternalStore } from "react";
+import { useSyncExternalStore } from "react";
 import registOnChange from "./registOnChange";
 import registOnBlur from "./registOnBlur";
 import { RegistOnFocus, UseRegister } from "../Types";
 
-const useRegister: UseRegister = (Form, Error) => (name, ErrorObj) => {
-  const { getStore, setStore, subscribe } = useContext(Form);
-  const { setStore: setError } = useContext(Error);
+const useRegister: UseRegister = (FromStore, ErrorStore) => (name, ErrorObj) => {
+  const { getStore, setStore, subscribe } = FromStore
+  const { setStore: setError } = ErrorStore
 
-  const selector = (store: ReturnType<typeof getStore>) => store[name];
+  type T = ReturnType<typeof getStore>;
 
+  const selector = (store: T) => store[name];
   const value = useSyncExternalStore(
     subscribe,
     () => selector(getStore()),
     () => selector(getStore())
   );
 
-  const store = useSyncExternalStore(subscribe, getStore, getStore);
-
   const onChange = registOnChange(setStore);
 
-  const onFocus: RegistOnFocus<ReturnType<typeof getStore>> = (e) => {
+  const onFocus: RegistOnFocus<T> = (e) => {
     // @ts-ignore
     setError({ [e.target.name]: "" });
   };
@@ -27,11 +26,11 @@ const useRegister: UseRegister = (Form, Error) => (name, ErrorObj) => {
   const onBlur = registOnBlur({
     ErrorObj,
     value,
-    store,
+    getStore,
     setError,
   });
 
-  return { value, onChange, onBlur, onFocus, name, id: name };
+  return { value, name, id: name, onChange, onBlur, onFocus, };
 };
 
 export default useRegister;
