@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.init = void 0;
 const createFormStore_1 = __importDefault(require("./createFormStore"));
+const useContextState_1 = require("./useContextState");
 const init = (initValue) => {
     const errorValue = Object.keys(initValue).reduce((acc, key) => {
         // @ts-ignore
@@ -13,6 +14,15 @@ const init = (initValue) => {
     }, {});
     const FormStore = (0, createFormStore_1.default)(initValue);
     const ErrorStore = (0, createFormStore_1.default)(errorValue);
-    return { FormStore, ErrorStore };
+    function FormState(name) {
+        return name ? (0, useContextState_1.useContextState)(FormStore, name) : (0, useContextState_1.useContextState)(FormStore);
+    }
+    function ErrorState(name) {
+        return name ? (0, useContextState_1.useContextState)(FormStore, name) : (0, useContextState_1.useContextState)(FormStore);
+    }
+    const setForm = FormStore.setStore;
+    const setError = ErrorStore.setStore;
+    const clearForm = () => setForm(initValue);
+    return { FormStore, ErrorStore, FormState, ErrorState, setForm, setError, clearForm };
 };
 exports.init = init;

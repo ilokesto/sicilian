@@ -6,11 +6,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = require("react");
 const registOnChange_1 = __importDefault(require("./registOnChange"));
 const registOnBlur_1 = __importDefault(require("./registOnBlur"));
+const storeSelector_1 = require("../utils/storeSelector");
 const useRegister = (FromStore, ErrorStore) => (name, ErrorObj) => {
     const { getStore, setStore, subscribe } = FromStore;
     const { setStore: setError } = ErrorStore;
-    const selector = (store) => store[name];
-    const value = (0, react_1.useSyncExternalStore)(subscribe, () => selector(getStore()), () => selector(getStore()));
+    const value = (0, react_1.useSyncExternalStore)(subscribe, () => (0, storeSelector_1.storeSelector)(getStore(), name), () => (0, storeSelector_1.storeSelector)(getStore(), name));
     const onChange = (0, registOnChange_1.default)(setStore);
     const onFocus = (e) => {
         // @ts-ignore

@@ -2,18 +2,16 @@ import { useSyncExternalStore } from "react";
 import registOnChange from "./registOnChange";
 import registOnBlur from "./registOnBlur";
 import { RegistOnFocus, UseRegister } from "../types";
+import { storeSelector } from "../utils/storeSelector";
 
 const useRegister: UseRegister = (FromStore, ErrorStore) => (name, ErrorObj) => {
   const { getStore, setStore, subscribe } = FromStore
   const { setStore: setError } = ErrorStore
 
-  type T = ReturnType<typeof getStore>;
-
-  const selector = (store: T) => store[name];
   const value = useSyncExternalStore(
     subscribe,
-    () => selector(getStore()),
-    () => selector(getStore())
+    () => storeSelector(getStore(), name),
+    () => storeSelector(getStore(), name)
   );
 
   const onChange = registOnChange(setStore);
