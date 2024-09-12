@@ -1,4 +1,4 @@
-[Sicilian Korean Docs / 한국어 공식 문서](https://lackluster.tistory.com/98)
+[Sicilian Korean Docs / 한국어 공식 문서](https://lackluster.tistory.com/148)
 
 &nbsp;
 
@@ -10,6 +10,17 @@ Sicilian is a form state management tool that operates based on global state. It
 In the frontend field, react-hook-form, a widely used form state management tool, operates based on refs. Because of this, you need to wrap components with forwardRef or use the useFormContext provided by the library. As a developer using Next.js, these limitations can be quite inconvenient.
 
 Sicilian was developed to address these inconveniences by operating based on global state. This means Sicilian manages each input as state, helping you create forms using a controlled component approach. Additionally, since it is based on global state, you can call and use it from any component without the need for the context API or other global state management tools.
+
+&nbsp;
+
+# What's new in sicilian@2.0.0
+
+* he new version of Sicilian is designed with a focus on suppressing **component re-rendering**. Previously, FormState and ErrorState only returned global states, which made it difficult to suppress re-rendering of child nodes. Now, FormState and ErrorState can take name as an argument and **return only part of the global state**.
+* To suppress re-rendering of the form, each input needs to be componentized, so that state changes are confined within the component itself. The new version of Sicilian provides the **FormContext component and the getContext function** to assist in componentizing the input tags.
+* In previous versions, after form submission, the input values would remain, and if you wanted to clear them, you had to use setValue. Now, when you attempt to submit the form using the handleSubmit function, if there are no issues, **the input will automatically reset**.
+*  The setValue function has been **renamed to setForm**. Additionally, the **setError** function has been added, which allows you to dynamically add error messages to the error store.
+*  Internally, the type inference logic has been improved, and standard types have been applied as much as possible without using custom types like Input<K>.
+
 
 &nbsp;
 
@@ -48,7 +59,8 @@ The formController object returned by the playDragon function contains various m
 
 * **initValue** : A property that retains the initialization object provided as an argument to playDragon.
 * **register** : A method to register each input.
-* **setValue** : A method used to insert the result of asynchronous communication into an input.
+* **setForm** : A method used to insert specific values into an input. It is mainly used to insert the results of asynchronous communication.
+* **setError** : A method used to insert specific error messages into an input.
 * **FormState** : A method that returns the current form state as an object.
 * **ErrorState** : A method that returns an error message object based on the error handling results.
 * **handleValidate** : A method used to automate the error handling of inputs.
@@ -67,35 +79,50 @@ export default function SignUp() {
 
 By default, each register call matches a single input to be managed and takes a name string that helps identify the input and a validate object that assists in automatic input validation.
 
-The register method returns an object containing the necessary name variable, value state, and onChange, onBlur, and onFocus methods required to manage an input tag. Therefore, you can easily register an input using the spread syntax as shown in the example below.
+The register method returns an object containing the necessary name and id variables, value state, and onChange, onBlur, and onFocus methods required to manage an input tag. Therefore, you can easily register an input using the spread syntax as shown in the example below.
 
 ```tsx
-export default function SignUp() {
-  {...}
+const { name, id, value, onChange, onBlur, onFocus } = register("email")
  
+export default function SignUp() {
   return <input {...register("email", validator.email)}/>
 }
 ```
 
 Thanks to the initialization object provided to playDragon, TypeScript already knows which input names the register function will manage. Therefore, when using TypeScript, you can receive suggestions for valid input names from your IDE while writing the register function.
 
-<img width="771" alt="image" src="https://github.com/ayden94/sicilian/assets/144667387/aa63b0f0-7e58-42d4-874f-d38bef054790">
+<img width="771" alt="image" src="https://img1.daumcdn.net/thumb/R1600x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FdOfzxt%2FbtsJyt53cBr%2FOJdLcO955AesVrOYInrLA1%2Fimg.png">
 
 Additionally, if you enter an incorrect input name, a type error will occur. This ensures that inputs can be managed reliably.
 
-<img width="800" alt="image" src="https://github.com/ayden94/sicilian/assets/144667387/13d04c13-1444-4b35-ae41-3793981b3aa6">
+<img width="771" alt="image" src="https://img1.daumcdn.net/thumb/R1600x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fcdvh21%2FbtsJx6J157y%2Flix7SubLJa6kPqbqF9h4d1%2Fimg.png">
 
 
 
-### name
+### name and id
 
-The register function uses the *name* value provided as an argument directly as a property. Since this value can be found through the *e.target.name* field of the event object, it is used internally to identify and specify the input where the event occurred.
+register function returns the name value passed as an argument directly into the name and id properties. The id property is added in ver 2.0.0 to be used with the htmlFor attribute of the label tag.
 
-The name field is the only means for Sicilian to distinguish each input. Therefore, if the same name is provided to different inputs, Sicilian will not be able to distinguish between them. Considering the fact that Sicilian operates based on global state and this characteristic of the name, we arrive at an interesting conclusion.
+```tsx
+function register(name: string, validateOption: Validate) {
+  { ... }
+
+  return { name, id: name, ...}
+}
+```
+
+Sicilian uses **e.target.name** from the event object to identify and distinguish the input where the event occurred. Therefore, the name parameter in the register function is the only way Sicilian can differentiate between each input. As a result, if the name prop is provided multiple times, as shown below, it is highly likely to result in unintended behavior.
+
+```tsx
+// Duplicate name prop provided, but no type error occurs
+<input {...register("email")} name="e-mail" />
+```
+
+Similarly, if the same name is provided to different inputs, Sicilian will not be able to distinguish between them. When you consider the fact that Sicilian operates based on global state and this characteristic of Sicilian's name, you arrive at an interesting conclusion.
 
 Using Sicilian ensures that different inputs located in separate parts of the application will always contain the same value if they share the same name. This is similar to hard links in Unix systems. ***If the names are the same, they refer to the same value from Sicilian's internal storage.*** In the following example, the same value can be confirmed in two different components.
 
-```ts
+```tsx
 import SignInFormController from "@/hooks/FormController/signUp.ts"
 
 function Email1() {
@@ -132,17 +159,17 @@ export default function Home() {
   return <input {...emailInput} onChange={handleChange} />
 }
 ```
-One notable point is that the event object uses a unique type, ***Input<"email">***, instead of the usual ChangeEvent<HTMLInputElement>. This is one of the custom types provided by Sicilian and is used to track which input the event originated from.
-
-<img width="603" alt="image" src="https://github.com/ayden94/sicilian/assets/144667387/29e99343-f281-444b-9225-d52d2b3648b5">
-
 
 ### onBlur and onFocus
 The onBlur handler is triggered when the input tag loses focus. It automatically validates the value of the input based on the handleValidate method and the validator object returned from it. If an issue is found during the validation process, the onBlur handler immediately stops execution and sends the error information to ErrorState. The onFocus handler, on the other hand, is triggered when the input tag gains focus. If there is an error for the input in the ErrorState, it removes that error.
 
-
 &nbsp;
 
+
+So far, we have looked at how Sicilian operates through the various properties and methods returned by register. However, Sicilian's formController object also provides a variety of useful methods beyond register. From now on, let's take a look at each of these methods.
+
+
+&nbsp;
 
 ## handleValidate
 Before we begin, it's important to clarify the definitions of two similar terms used in Sicilian. The ***validate object*** is used to validate a single input, while the ***validator object*** is a multidimensional object that groups these validate objects by their name field. The handleValidate method returns a validator object, and this validator object contains multiple validate objects that can be applied to each field. In type terms, it can be described as follows:
@@ -321,9 +348,11 @@ password: { required: true, minLength: 10 }
 
 &nbsp;
 
-## setValue
-If you want to create a feature that allows users to fetch and edit a previously written review, you first need to retrieve the review data from the server and populate each input with this data. The setValue function provides the necessary functionality for this, and it should be used with useEffect to prevent infinite rendering.
-```ts
+## setForm and setError
+
+To implement a feature where users can load and edit a previously written review, you first need to fetch the review data from the server and insert the values into each input. setForm provides the functionality needed for this, and to prevent infinite rendering, it is typically called within useEffect or inside a function. 
+
+```tsx
 const { setValue } = SignInFormController
  
 const { data } = useQuery({
@@ -341,12 +370,14 @@ useEffect(() => {
 }, [data]);
 ```
 
+setError is similar to setForm, but instead of inserting values into an input, it is used to manually insert error messages.
+
 &nbsp;
 
 ## FormState & ErrorState
 The FormState function returns a formState object that stores the state of the inputs managed by formController. The ErrorState function returns an errorState object that contains error messages resulting from validation.
 
-```ts
+```tsx
 export default function SignUp() {
   const formState = FormState()
   const errorState = ErrorState()
@@ -367,13 +398,25 @@ export default function SignUp() {
 }
 ```
 
-&nbsp;
 
+The formState and errorState objects are global states themselves, which means they face similar issues as the Context API's re-rendering. In other words, no matter how well you isolate the state of individual inputs, if the formState object is present in a parent component, the entire parent component will re-render.
+
+To address this issue, the FormState and ErrorState functions now accept a name parameter **to allow subscribing to only a portion of the global state**. In type terms, this can be expressed as follows:
+
+```ts
+// It returns the global state T, if a name parameter is not provided
+function FormState<T extends InitState>() => T
+
+// It return the input value, if a name parameter is provided
+function FormState<T extends InitState>(name: keyof T) => string
+```
+
+&nbsp;
 
 ## handleSubmit
 The handleSubmit function takes a callback function as its argument. This callback function receives the entire formState as an argument. Additionally, it internally handles e.preventDefault(), preventing redirection due to form submission.
 
-```ts
+```tsx
 <form
   onSubmit={handleSubmit(async (data) => {
     const res = await fetch("URL", {
@@ -384,14 +427,90 @@ The handleSubmit function takes a callback function as its argument. This callba
   })}
 >
 ```
+
 You can retrieve the entire formState from the FormState method and implement the submit logic yourself. However, using handleSubmit provides two significant advantages.
 
 1. If there are any unresolved error messages, handleSubmit will stop the submission, preventing unwanted values from being sent to the backend.
 2. Similarly, if all inputs managed by the formController are empty, handleSubmit will also stop the submission. This ensures that even if the user accidentally clicks the submit button, no unnecessary HTTP communication occurs.
+3. If the form submission is successful, handleSubmit will automatically reset the form.
 
 
+&nbsp;
 
+# FormProvider component and getContext Fn
 
+Previously, the properties returned by the register function were passed directly as props to the input tag or Input component using the spread operator. This caused the entire form to re-render when the input was changed.
+```tsx
+<input {...register('email', validator.email)}>
+```
+To suppress this, instead of using the spread operator, you should pass register and name as props and combine them within the Input component. The problem of this solution is that register and name are inferred as very narrow types, making it quite cumbersome to pass them as props to the component.
 
+&nbsp;
 
+To address these issues, Sicilian version 2.0.0 introduced **the FormProvider component and the getContext function**. As mentioned earlier, these are implemented internally using the Context API, and since they only pass predefined values and functions.
 
+The FormProvider component takes five values and functions as props: **register, name, validateOption, FormState, and ErrorState**. Among these, **register and name are required**, and the type of name that can be used is automatically inferred based on the type of register.
+
+<img width="942" alt="스크린샷 2024-09-11 오후 8 16 46" src="https://github.com/user-attachments/assets/935c0df7-de47-48e8-90ba-6b6deed84caa">
+
+&nbsp;
+The other three props except register and name can be provided optionally. and values and functions provided in this way can be retrieved using the getContext function. If the FormProvider component is not present in the parent node, the getContext function will throw an error like the following:
+
+<img width="991" alt="스크린샷 2024-09-11 오후 8 03 26" src="https://github.com/user-attachments/assets/aeb50d35-7d52-4e24-abea-bb2d4393bfa1">
+
+&nbsp;
+
+If you attempt to access the validateOption, FormState, or ErrorState props through the getContext function without providing them to the FormProvider component, here's what happens:
+* For validateOption, it's fine because its type includes undefined, so it can be accessed without issues.
+* For FormState and ErrorState, if you try to access these functions through getContext without providing them in the FormProvider component, what you actually get is not the FormState or ErrorState functions themselves but functions that log error messages to the console. These error messages will help you identify which component is attempting to use FormState and ErrorState without having been provided these functions as props.
+
+<img width="520" alt="스크린샷 2024-09-11 오후 7 32 53" src="https://github.com/user-attachments/assets/b23cc320-af88-4c15-b3bd-409789b8170d">
+
+Here is a simple example of the Input component using FormProvider and getContext:
+```tsx
+import { register, FormState, ErrorState } from "@/hooks/FormController/signUp.ts"
+import { FormContext } from "sicilian";
+
+export default function Home() {
+  { ... }
+
+  return (
+    <>
+      { ... }
+      
+      <FormProvider name="email" register={register} ErrorState={ErrorState} >
+        <Input placeholder={placeholder} className={styles.input} />
+      </FormProvider>
+      
+      { ... }
+    </>
+  )
+}
+```
+```tsx
+import { getContext } from "sicilian";
+
+interface InputProps extends InputHTMLAttributes<HTMLInputElement> {}
+
+export default function Input({className, ...props}: InputProps) {
+  const { register, name, validateOption, ErrorState } = getContext()
+  
+  return (
+    <>
+      <input {...props} {...register(name, validateOption)} className={clsx(styles.input, className)} />
+      <Show when={!!ErrorState(name)}>
+        {ErrorState(name)}
+      </Show>
+    </>
+  );
+
+}
+```
+
+Here is an example of a login form using Sicilian version 1.1.10, inspected with Chrome's React Developer Tools. As shown, even when typing into the email input, you can see that the entire form is repeatedly re-rendering.
+
+<img width="520" alt="스크린샷 2024-09-11 오후 7 32 53" src="https://img1.daumcdn.net/thumb/R1600x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FuOzNn%2FbtsJx1WfBvB%2FLgM8R9aoNDUSLM7Z3gzFc1%2Fimg.webp">
+
+In the other hand, here is the login form re-created using Sicilian version 2.0.0. By utilizing FormProvider, getContext, and the ErrorState function that allows subscribing to only a portion of the overall state, you can see that only the Input component being typed into is re-rendered, rather than the entire form.
+
+<img width="520" alt="스크린샷 2024-09-11 오후 7 32 53" src="https://img1.daumcdn.net/thumb/R1600x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fb0bspQ%2FbtsJy2AcCYS%2Fjgz5hx0kujNfirBgvxNWc0%2Fimg.webp">
