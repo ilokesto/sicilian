@@ -13,7 +13,7 @@ declare const playDragon: <T extends import("./hooks/types").InitState>(initValu
     setError: (value: Partial<T>) => void;
     initValue: T;
     register: import("./hooks/types").Register<T>;
-    handleSubmit: (fn: (data: T) => void | Promise<void>) => (e: import("react").FormEvent<Element>) => void;
+    handleSubmit: (fn: (data: T) => unknown) => (e: import("react").FormEvent<Element>) => void;
     handleValidate: (validator: Partial<Record<keyof T, import("./hooks/types").RegisterErrorObj<T>>>) => Partial<Record<keyof T, import("./hooks/types").RegisterErrorObj<T>>>;
 };
 export { playDragon, getContext, FormProvider };

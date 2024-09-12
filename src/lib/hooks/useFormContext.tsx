@@ -5,7 +5,7 @@ const SicilianErrorHeader = "🚨 Sicilian Error : "
 const SicilianError = (text: string) => SicilianErrorHeader + `${text} property has not been passed to the FormProvider, but you are trying to use the ${text} function.`
 const polyfillWithErrorMessage = (errorMessage: string) => () => {
   console.error(SicilianError(errorMessage)) 
-  return {}
+  return ""
 }
 
 // @ts-ignore
@@ -15,10 +15,10 @@ export function FormProvider<T extends InitState>({
   children,...props }: FormProviderProps<T>) {
 
   const FormState = props.FormState ?? polyfillWithErrorMessage("FormState")
-  // const ErrorState = props.ErrorState ?? polyfillWithErrorMessage("ErrorState")
+  const ErrorState = props.ErrorState ?? polyfillWithErrorMessage("ErrorState")
 
   return (
-    <Context.Provider value={{...props, FormState }}>
+    <Context.Provider value={{...props, FormState, ErrorState }}>
       {children}
     </Context.Provider>
   );

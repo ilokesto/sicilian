@@ -18,7 +18,7 @@ const init = (initValue) => {
         return name ? (0, useContextState_1.useContextState)(FormStore, name) : (0, useContextState_1.useContextState)(FormStore);
     }
     function ErrorState(name) {
-        return name ? (0, useContextState_1.useContextState)(FormStore, name) : (0, useContextState_1.useContextState)(FormStore);
+        return name ? (0, useContextState_1.useContextState)(ErrorStore, name) : (0, useContextState_1.useContextState)(ErrorStore);
     }
     const setForm = FormStore.setStore;
     const setError = ErrorStore.setStore;

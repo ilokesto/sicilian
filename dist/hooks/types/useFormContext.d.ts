@@ -7,4 +7,6 @@ export type FormProviderProps<T extends InitState> = {
     validateOption?: RegisterErrorObj<T>;
     name: ExtractKeys<T>;
 } & Partial<Pick<ReturnType<typeof Sicilian<T>>, "FormState" | "ErrorState">>;
-export type GetContextFn<T extends InitState> = Required<Omit<FormProviderProps<T>, "children">>;
+export type GetContextFn<T extends InitState> = Required<Omit<FormProviderProps<T>, "children" | "validateOption">> & {
+    validateOption?: RegisterErrorObj<T>;
+};

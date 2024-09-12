@@ -21,7 +21,7 @@ export const init = <T extends InitState>(initValue: T) => {
   function ErrorState (): T
   function ErrorState (name: ExtractKeys<T>): string
   function ErrorState (name?: ExtractKeys<T>) {
-    return name ? useContextState<T>(FormStore, name) : useContextState<T>(FormStore)
+    return name ? useContextState<T>(ErrorStore, name) : useContextState<T>(ErrorStore)
   }
 
   const setForm = FormStore.setStore
