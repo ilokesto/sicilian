@@ -19,6 +19,10 @@
     "formula",
     "form management"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ayden94/sicilian"
+  },
   "author": "Jeong Jinho <wpfekdml@me.com>",
   "license": "MIT",
   "devDependencies": {
