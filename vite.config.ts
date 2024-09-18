@@ -1,26 +1,32 @@
 import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
 import type { UserConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import compression from 'vite-plugin-compression';
 
 export default defineConfig(({ command }): UserConfig => {
   if (command === "build") {
     return {
-      plugins: [react()],
+      mode: "production",
+      plugins: [react(),
+        compression({
+          algorithm: 'brotliCompress', 
+          ext: '.br', 
+        })
+      ],
       build: {
         outDir: "lib",
         lib: {
           entry: "src/index.ts",
           name: "caro-kann", // 자신의 패키지명 입력
-          formats: ["cjs"],
+          formats: ["es"],
           fileName: "index",
         },
         minify: false,
         rollupOptions: {
-          external: ["react", "react-dom"],
+          external: ["react"],
           output: {
             globals: {
               react: "React",
-              "react-dom": "ReactDOM",
             },
           },
         },

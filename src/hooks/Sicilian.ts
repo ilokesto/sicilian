@@ -3,7 +3,6 @@ import registOnSubmit from "./funcs/registOnSubmit";
 import { InitState, Validator } from "./types";
 import { init } from "./funcs/init";
 
-
 export const Sicilian = <T extends InitState>(initValue: T) => {
   const { FormStore, ErrorStore, clearForm, ...rest } = init<T>(initValue);
 
