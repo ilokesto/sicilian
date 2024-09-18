@@ -1,5 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 const isArray = (thing) => {
     return "at" in thing;
 };
@@ -113,4 +111,4 @@ const registOnBlur = ({ ErrorObj, value, getStore, setError }) => (e) => {
         }
     }
 };
-exports.default = registOnBlur;
+export default registOnBlur;

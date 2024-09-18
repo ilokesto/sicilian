@@ -1,6 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-function isAllInputEmpty(formState) {
+export default function isAllInputEmpty(formState) {
     let count = 0;
     let array = Object.values(formState);
     for (const v of array) {
@@ -12,4 +10,3 @@ function isAllInputEmpty(formState) {
     else
         return false;
 }
-exports.default = isAllInputEmpty;

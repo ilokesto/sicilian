@@ -1,22 +1,17 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const react_1 = require("react");
-const registOnChange_1 = __importDefault(require("./registOnChange"));
-const registOnBlur_1 = __importDefault(require("./registOnBlur"));
-const storeSelector_1 = require("../utils/storeSelector");
+import { useSyncExternalStore } from "react";
+import registOnChange from "./registOnChange";
+import registOnBlur from "./registOnBlur";
+import { storeSelector } from "../utils/storeSelector";
 const useRegister = (FromStore, ErrorStore) => (name, ErrorObj) => {
     const { getStore, setStore, subscribe } = FromStore;
     const { setStore: setError } = ErrorStore;
-    const value = (0, react_1.useSyncExternalStore)(subscribe, () => (0, storeSelector_1.storeSelector)(getStore(), name), () => (0, storeSelector_1.storeSelector)(getStore(), name));
-    const onChange = (0, registOnChange_1.default)(setStore);
+    const value = useSyncExternalStore(subscribe, () => storeSelector(getStore(), name), () => storeSelector(getStore(), name));
+    const onChange = registOnChange(setStore);
     const onFocus = (e) => {
         // @ts-ignore
         setError({ [e.target.name]: "" });
     };
-    const onBlur = (0, registOnBlur_1.default)({
+    const onBlur = registOnBlur({
         ErrorObj,
         value,
         getStore,
@@ -24,4 +19,4 @@ const useRegister = (FromStore, ErrorStore) => (name, ErrorObj) => {
     });
     return { value, name, id: name, onChange, onBlur, onFocus, };
 };
-exports.default = useRegister;
+export default useRegister;
