@@ -15,7 +15,7 @@ const registOnSubmit: RegistOnSubmit = (FormState, ErrorState, clearForm) => (fn
   if (isAllInputEmpty(formState)) return;
 
   try {
-    await fn(formState);
+    await fn(formState, e);
 
     clearForm();
   } catch (e) {

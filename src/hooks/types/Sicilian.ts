@@ -54,4 +54,4 @@ export type RegistOnSubmit = <T extends InitState>(
   FormState: () => T,
   ErrorState: () => T,
   clearForm: () => void
-) => (fn: (data: T) => Promise<unknown> | unknown) => (e: FormEvent) => void;
+) => (fn: (data: T, event?: FormEvent) => Promise<unknown> | unknown) => (e: FormEvent) => void;

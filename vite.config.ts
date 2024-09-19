@@ -14,14 +14,14 @@ export default defineConfig(({ command }): UserConfig => {
         })
       ],
       build: {
-        outDir: "lib",
+        outDir: "dist",
         lib: {
           entry: "src/index.ts",
           name: "caro-kann", // 자신의 패키지명 입력
           formats: ["es"],
           fileName: "index",
         },
-        minify: false,
+        minify: true,
         rollupOptions: {
           external: ["react"],
           output: {

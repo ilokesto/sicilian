@@ -2,11 +2,11 @@
   "name": "sicilian",
   "version": "2.0.3",
   "dependencies": {
-    "react": "^18.2.0"
   },
   "scripts": {
-    "build": "tsc"
+    "build": "tsc -b && vite build"
   },
+  "type": "module",
   "types": "dist/index.d.ts",
   "module": "dist/index.js",
   "files": [
@@ -30,9 +30,11 @@
     "@typescript-eslint/eslint-plugin": "^7.7.1",
     "@typescript-eslint/parser": "^7.7.1",
     "@vitejs/plugin-react": "^4.2.1",
+    "react": "^18.2.0",
+    "vite-plugin-compression": "^0.5.1",
     "eslint": "^8.57.0",
     "eslint-plugin-react": "^7.34.1",
     "typescript": "^5.4.5",
-    "vite": "^5.2.10"
+    "vite": "^5.4.6"
   }
 }
