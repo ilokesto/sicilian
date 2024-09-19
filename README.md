@@ -414,7 +414,7 @@ function FormState<T extends InitState>(name: keyof T) => string
 &nbsp;
 
 ## handleSubmit
-The handleSubmit function takes a callback function as its argument. This callback function receives the entire formState as an argument. Additionally, it internally handles e.preventDefault(), preventing redirection due to form submission.
+The handleSubmit function takes a callback function as an argument. This callback receives the entire formState and the event object (e) at the time the onSubmit event occurs. Additionally, e.preventDefault() is handled internally, so there is no redirection caused by the form submission.
 
 ```tsx
 <form
