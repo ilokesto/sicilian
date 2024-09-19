@@ -418,7 +418,7 @@ The handleSubmit function takes a callback function as an argument. This callbac
 
 ```tsx
 <form
-  onSubmit={handleSubmit(async (data) => {
+  onSubmit={handleSubmit(async (data, e) => {
     const res = await fetch("URL", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
