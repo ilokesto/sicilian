@@ -150,12 +150,12 @@ One of the advantages of controlled components is the ease of manipulating input
 ```ts
 export default function Home() {
   const emailInput = SignInFormController.register("email");
- 
-  const handleChange = (e: Input<"email">) => {
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     e.target.value = e.target.value.toUpperCase();
     emailInput.onChange(e);
   };
- 
+
   return <input {...emailInput} onChange={handleChange} />
 }
 ```
