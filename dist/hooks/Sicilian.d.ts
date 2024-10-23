@@ -1,4 +1,3 @@
-/// <reference types="react" />
 import { InitState, Validator } from "./types";
 export declare const Sicilian: <T extends InitState>(initValue: T) => {
     FormState: {
@@ -13,6 +12,6 @@ export declare const Sicilian: <T extends InitState>(initValue: T) => {
     setError: (value: Partial<T>) => void;
     initValue: T;
     register: import("./types").Register<T>;
-    handleSubmit: (fn: (data: T, event?: import("react").FormEvent<Element> | undefined) => unknown) => (e: import("react").FormEvent<Element>) => void;
+    handleSubmit: (fn: (data: T, event?: import("react").FormEvent) => Promise<unknown> | unknown) => (e: import("react").FormEvent) => void;
     handleValidate: (validator: Validator<T>) => Partial<Record<keyof T, import("./types").RegisterErrorObj<T>>>;
 };
