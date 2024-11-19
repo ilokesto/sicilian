@@ -1,13 +1,37 @@
 import createFormStore from "./createFormStore";
 import { useContextState } from "./useContextState";
-export const init = (initValue) => {
+// 실제 구현
+export function init(initValueOrOptions, options) {
+    let initValue;
+    let validator;
+    let validateOn = [];
+    let clearFormOn = [];
+    if (initValueOrOptions.initValue) {
+        const options = initValueOrOptions;
+        initValue = options.initValue;
+        validator = options.validator;
+        validateOn = options.validateOn ?? [];
+        clearFormOn = options.clearFormOn ?? [];
+    }
+    else {
+        initValue = initValueOrOptions;
+        validator = options?.validator;
+        validateOn = options?.validateOn ?? [];
+        clearFormOn = options?.clearFormOn ?? [];
+    }
     const errorValue = Object.keys(initValue).reduce((acc, key) => {
         // @ts-ignore
         acc[key] = "";
         return acc;
     }, {});
+    const ErrorObjValue = Object.keys(initValue).reduce((acc, key) => {
+        // @ts-ignore
+        acc[key] = "{}";
+        return acc;
+    }, {});
     const FormStore = createFormStore(initValue);
     const ErrorStore = createFormStore(errorValue);
+    const ErrorObjStore = createFormStore(ErrorObjValue);
     function FormState(name) {
         return name ? useContextState(FormStore, name) : useContextState(FormStore);
     }
@@ -17,5 +41,5 @@ export const init = (initValue) => {
     const setForm = FormStore.setStore;
     const setError = ErrorStore.setStore;
     const clearForm = () => setForm(initValue);
-    return { FormStore, ErrorStore, FormState, ErrorState, setForm, setError, clearForm };
-};
+    return { rest: { FormState, ErrorState, setForm, setError }, props: { FormStore, ErrorStore, ErrorObjStore, initValue, validator, validateOn, clearFormOn, clearForm } };
+}

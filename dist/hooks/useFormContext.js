@@ -3,15 +3,14 @@ import { createContext, useContext } from "react";
 const SicilianErrorHeader = "🚨 Sicilian Error : ";
 const SicilianError = (text) => SicilianErrorHeader + `${text} property has not been passed to the FormProvider, but you are trying to use the ${text} function.`;
 const polyfillWithErrorMessage = (errorMessage) => () => {
-    console.error(SicilianError(errorMessage));
-    return "";
+    throw new Error(SicilianError(errorMessage));
 };
 // @ts-ignore
 const Context = createContext();
-export function FormProvider({ children, ...props }) {
-    const FormState = props.FormState ?? polyfillWithErrorMessage("FormState");
-    const ErrorState = props.ErrorState ?? polyfillWithErrorMessage("ErrorState");
-    return (_jsx(Context.Provider, { value: { ...props, FormState, ErrorState }, children: children }));
+export function SicilianProvider({ children, value }) {
+    const FormState = value.FormState ?? polyfillWithErrorMessage("FormState");
+    const ErrorState = value.ErrorState ?? polyfillWithErrorMessage("ErrorState");
+    return (_jsx(Context.Provider, { value: { ...value, FormState, ErrorState }, children: children }));
 }
 export function getContext() {
     const context = useContext(Context);
