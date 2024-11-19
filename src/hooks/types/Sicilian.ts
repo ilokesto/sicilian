@@ -19,7 +19,7 @@ export type SicilianType<T extends InitState> = {
 export type SicilianReturnType<T extends InitState> = {
   initValue: T;
   register: Register<T>;
-  handleSubmit: ReturnType<RegistOnSubmit>;
+  handleSubmit: (fn: (data: T, event?: FormEvent) => Promise<unknown> | unknown) => (e: FormEvent) => void;
   handleValidate: (validator: Validator<T>) => Validator<T>;
   FormState: {
     (): T;
