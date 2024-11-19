@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.FormProvider = FormProvider;
+exports.SicilianProvider = SicilianProvider;
 exports.getContext = getContext;
 const jsx_runtime_1 = require("react/jsx-runtime");
 const react_1 = require("react");
@@ -11,10 +11,10 @@ const polyfillWithErrorMessage = (errorMessage) => () => {
 };
 // @ts-ignore
 const Context = (0, react_1.createContext)();
-function FormProvider({ children, ...props }) {
-    const FormState = props.FormState ?? polyfillWithErrorMessage("FormState");
-    const ErrorState = props.ErrorState ?? polyfillWithErrorMessage("ErrorState");
-    return ((0, jsx_runtime_1.jsx)(Context.Provider, { value: { ...props, FormState, ErrorState }, children: children }));
+function SicilianProvider({ children, value }) {
+    const FormState = value.FormState ?? polyfillWithErrorMessage("FormState");
+    const ErrorState = value.ErrorState ?? polyfillWithErrorMessage("ErrorState");
+    return ((0, jsx_runtime_1.jsx)(Context.Provider, { value: { ...value, FormState, ErrorState }, children: children }));
 }
 function getContext() {
     const context = (0, react_1.useContext)(Context);

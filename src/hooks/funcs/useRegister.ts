@@ -3,10 +3,15 @@ import registOnChange from "./registOnChange";
 import registOnBlur from "./registOnBlur";
 import { RegistOnFocus, UseRegister } from "../types";
 import { storeSelector } from "../utils/storeSelector";
+import { usePageNavigation } from "./usePageNavigation";
 
-const useRegister: UseRegister = (FromStore, ErrorStore, validateOn, validateOption) => (name, ErrorObj) => {
-  const { getStore, setStore, subscribe } = FromStore
+const useRegister: UseRegister = ({FormStore, ErrorStore, ErrorObjStore, clearForm, clearFormOn, validateOn, validateOption}) => (name, ErrorObj) => {
+  const { getStore, setStore, subscribe } = FormStore
   const { setStore: setError } = ErrorStore
+  const { setStore: setErrorObjectStore} = ErrorObjStore
+
+  // @ts-ignore
+  setErrorObjectStore({[name]: JSON.stringify(ErrorObj ?? {})})
 
   const value = useSyncExternalStore(
     subscribe,
@@ -28,13 +33,16 @@ const useRegister: UseRegister = (FromStore, ErrorStore, validateOn, validateOpt
     validateOption,
   });
 
-  // validateOn이 blur나 all이 아닌 경우
-  // 아예 onBlur를 실행하지 않는다.
-  if (validateOn !== "blur" && validateOn !== "all") {
-    return { value, name, id: name, onChange, onFocus, };
-  }
+  // 페이지 이동시에 form을 초기화 할 것인지 여부를 결정
+  // @ts-ignore
+  clearFormOn.includes("routeChange") ? usePageNavigation(() => clearForm()) : null;
 
-  return { value, name, id: name, onChange, onBlur, onFocus, };
+  // onBlur 할 것인지 여부를 결정
+  if (validateOn.includes("blur")) {
+    return { value, name, id: name, onChange, onBlur, onFocus, };
+  }
+  
+  return { value, name, id: name, onChange, onFocus, };
 };
 
 export default useRegister;

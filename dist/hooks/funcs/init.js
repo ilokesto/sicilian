@@ -3,17 +3,41 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.init = void 0;
+exports.init = init;
 const createFormStore_1 = __importDefault(require("./createFormStore"));
 const useContextState_1 = require("./useContextState");
-const init = (initValue) => {
+// 실제 구현
+function init(initValueOrOptions, options) {
+    let initValue;
+    let validateOption;
+    let validateOn = [];
+    let clearFormOn = [];
+    if (initValueOrOptions.initValue) {
+        const options = initValueOrOptions;
+        initValue = options.initValue;
+        validateOption = options.validateOption;
+        validateOn = options.validateOn ?? [];
+        clearFormOn = options.clearFormOn ?? [];
+    }
+    else {
+        initValue = initValueOrOptions;
+        validateOption = options?.validateOption;
+        validateOn = options?.validateOn ?? [];
+        clearFormOn = options?.clearFormOn ?? [];
+    }
     const errorValue = Object.keys(initValue).reduce((acc, key) => {
         // @ts-ignore
         acc[key] = "";
         return acc;
     }, {});
+    const ErrorObjValue = Object.keys(initValue).reduce((acc, key) => {
+        // @ts-ignore
+        acc[key] = "{}";
+        return acc;
+    }, {});
     const FormStore = (0, createFormStore_1.default)(initValue);
     const ErrorStore = (0, createFormStore_1.default)(errorValue);
+    const ErrorObjStore = (0, createFormStore_1.default)(ErrorObjValue);
     function FormState(name) {
         return name ? (0, useContextState_1.useContextState)(FormStore, name) : (0, useContextState_1.useContextState)(FormStore);
     }
@@ -23,9 +47,5 @@ const init = (initValue) => {
     const setForm = FormStore.setStore;
     const setError = ErrorStore.setStore;
     const clearForm = () => setForm(initValue);
-    // 라이브러리 동작 전체를 망가뜨릴 우려가 있음
-    // const useForm = () => [FormState(), setForm] as const
-    // const useError = () => [ErrorState(), setError] as const
-    return { FormStore, ErrorStore, FormState, ErrorState, setForm, setError, clearForm };
-};
-exports.init = init;
+    return { rest: { FormState, ErrorState, setForm, setError }, props: { FormStore, ErrorStore, ErrorObjStore, initValue, validateOption, validateOn, clearFormOn, clearForm } };
+}

@@ -1,16 +1,25 @@
-import { ExtractKeys, InitState } from "../types";
-export declare const init: <T extends InitState>(initValue: T) => {
-    FormStore: import("../types").Store<T>;
-    ErrorStore: import("../types").Store<T>;
-    FormState: {
-        (): T;
-        (name: ExtractKeys<T>): string;
+import { ExtractKeys, InitState, SicilianProps } from "../types";
+export declare function init<T extends InitState>(initValueOrOptions: T | SicilianProps<T>, options?: Omit<SicilianProps<T>, "initValue">): {
+    rest: {
+        FormState: {
+            (): T;
+            (name: ExtractKeys<T>): string;
+        };
+        ErrorState: {
+            (): T;
+            (name: ExtractKeys<T>): string;
+        };
+        setForm: (value: Partial<T>) => void;
+        setError: (value: Partial<T>) => void;
     };
-    ErrorState: {
-        (): T;
-        (name: ExtractKeys<T>): string;
+    props: {
+        FormStore: import("../types").Store<T>;
+        ErrorStore: import("../types").Store<T>;
+        ErrorObjStore: import("../types").Store<T>;
+        initValue: T;
+        validateOption: Partial<Record<keyof T, import("../types").RegisterErrorObj<T>>> | undefined;
+        validateOn: ("blur" | "submit")[];
+        clearFormOn: ("submit" | "routeChange")[];
+        clearForm: () => void;
     };
-    setForm: (value: Partial<T>) => void;
-    setError: (value: Partial<T>) => void;
-    clearForm: () => void;
 };

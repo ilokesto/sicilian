@@ -1,17 +1,45 @@
-import { createContext, useContext } from "react";
-import { ExtractKeys, InitState } from "../types";
+import { ExtractKeys, InitState, SicilianProps, SicilianReturnType } from "../types";
 import createFormStore from "./createFormStore";
 import { useContextState } from "./useContextState";
 
-export const init = <T extends InitState>(initValue: T) => {
+// 실제 구현
+export function init<T extends InitState>(
+  initValueOrOptions: T | SicilianProps<T>,
+  options?: Omit<SicilianProps<T>, "initValue">
+) {
+  let initValue: T;
+  let validateOption: SicilianProps<T>["validateOption"];
+  let validateOn: SicilianProps<T>["validateOn"] = [];
+  let clearFormOn: SicilianProps<T>["clearFormOn"] = []
+
+  if ((initValueOrOptions as SicilianProps<T>).initValue) {
+    const options = initValueOrOptions as SicilianProps<T>;
+    initValue = options.initValue as T;
+    validateOption = options.validateOption;
+    validateOn = options.validateOn ?? [];
+    clearFormOn = options.clearFormOn ?? [];
+  } else {
+    initValue = initValueOrOptions as T;
+    validateOption = options?.validateOption;
+    validateOn = options?.validateOn ?? [];
+    clearFormOn = options?.clearFormOn ?? [];
+  }
+
   const errorValue = Object.keys(initValue).reduce((acc, key) => {
     // @ts-ignore
     acc[key] = "";
     return acc;
   }, {} as T);
 
+  const ErrorObjValue = Object.keys(initValue).reduce((acc, key) => {
+    // @ts-ignore
+    acc[key] = "{}";
+    return acc;
+  }, {} as T);
+
   const FormStore = createFormStore(initValue);
   const ErrorStore = createFormStore(errorValue);
+  const ErrorObjStore = createFormStore(ErrorObjValue);
  
   function FormState (): T
   function FormState (name: ExtractKeys<T>): string
@@ -29,9 +57,5 @@ export const init = <T extends InitState>(initValue: T) => {
   const setError = ErrorStore.setStore
   const clearForm = () => setForm(initValue)
 
-  // 라이브러리 동작 전체를 망가뜨릴 우려가 있음
-  // const useForm = () => [FormState(), setForm] as const
-  // const useError = () => [ErrorState(), setError] as const
-
- return {FormStore, ErrorStore, FormState, ErrorState, setForm, setError, clearForm}
+ return { rest: { FormState, ErrorState, setForm, setError}, props: {FormStore, ErrorStore, ErrorObjStore, initValue, validateOption, validateOn, clearFormOn, clearForm}}
 }

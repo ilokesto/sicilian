@@ -12,9 +12,8 @@ const registOnBlur: RegistOnBlur =
   ({ ErrorObj, getStore, setError, validateOption }) =>
   (e) => {
     // 전체 필드에 대한 값 가져오기
-    const { name } = e.target;
+    const { name, value } = e.target;
     const store = getStore()
-    const value = store[name]
 
     ErrorObj = ErrorObj ?? validateOption?.[name];
 

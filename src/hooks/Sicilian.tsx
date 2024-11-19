@@ -1,28 +1,24 @@
 import useRegister from "./funcs/useRegister";
 import registOnSubmit from "./funcs/registOnSubmit";
-import { InitState, RegisterErrorObj, SicilianProps, Validator } from "./types";
-import { ComponentPropsWithoutRef, FormEvent } from "react";
+import { InitState, SicilianReturnType, SicilianProps, Validator } from "./types";
 import { init } from "./funcs/init";
 
+// 함수 시그니처 오버로딩
+export function Sicilian<T extends InitState>(optionWithInitValue: SicilianProps<T>): SicilianReturnType<T>
+export function Sicilian<T extends InitState>(initValue: T, option?: Omit<SicilianProps<T>, "initValue">): SicilianReturnType<T>
 
-interface SicilianFormProps<T> extends Omit<ComponentPropsWithoutRef<"form">, "onSubmit"> {
-  onSubmit: (data: T, event?: FormEvent) => Promise<unknown> | unknown;
-}
+// 실제 구현
+export function Sicilian<T extends InitState>(
+  initValueOrOptions: T | SicilianProps<T>,
+  options?: Omit<SicilianProps<T>, "initValue">
+) {
+  const { props, rest } = init<T>(initValueOrOptions, options);
 
-export function Sicilian <T extends InitState>({initValue, validateOption, validateOn = "all", clearFormOnSubmit = true}: SicilianProps<T>) {
-  const { FormStore, ErrorStore, clearForm, ...rest } = init<T>(initValue);
-
-  const register = useRegister<T>(FormStore, ErrorStore, validateOn, validateOption);
-
-  const handleSubmit = registOnSubmit(FormStore.getStore, ErrorStore.getStore, clearForm, clearFormOnSubmit);
-
+  const register = useRegister<T>(props);
+  const handleSubmit = registOnSubmit(props);
   const handleValidate = (validator: Validator<T>) => {
     return validator;
   };
 
-  const Form = ({noValidate = true, onSubmit, children, ...props}: SicilianFormProps<T>) => {
-    return <form noValidate={noValidate} onSubmit={handleSubmit(onSubmit)} {...props}>{children}</form>
-  };
-
-  return { initValue, register, handleSubmit, handleValidate, Form, ...rest };
+  return { initValue: props.initValue, register, handleSubmit, handleValidate, ...rest };
 };

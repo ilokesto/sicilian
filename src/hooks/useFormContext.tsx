@@ -1,5 +1,5 @@
 import { createContext, useContext } from "react"
-import { InitState, GetContextFn, FormProviderProps } from "./types";
+import { InitState, GetContextFn, SicilianProviderProps } from "./types";
 
 const SicilianErrorHeader = "🚨 Sicilian Error : "
 const SicilianError = (text: string) => SicilianErrorHeader + `${text} property has not been passed to the FormProvider, but you are trying to use the ${text} function.`
@@ -10,13 +10,13 @@ const polyfillWithErrorMessage = (errorMessage: string) => () => {
 // @ts-ignore
 const Context = createContext()
   
-export function FormProvider<T extends InitState>({ children,...props }: FormProviderProps<T>) {
+export function SicilianProvider<T extends InitState>({ children, value }: SicilianProviderProps<T>) {
 
-  const FormState = props.FormState ?? polyfillWithErrorMessage("FormState")
-  const ErrorState = props.ErrorState ?? polyfillWithErrorMessage("ErrorState")
+  const FormState = value.FormState ?? polyfillWithErrorMessage("FormState")
+  const ErrorState = value.ErrorState ?? polyfillWithErrorMessage("ErrorState")
 
   return (
-    <Context.Provider value={{...props, FormState, ErrorState }}>
+    <Context.Provider value={{...value, FormState, ErrorState }}>
       {children}
     </Context.Provider>
   );
