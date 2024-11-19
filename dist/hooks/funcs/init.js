@@ -1,13 +1,7 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.init = init;
-const createFormStore_1 = __importDefault(require("./createFormStore"));
-const useContextState_1 = require("./useContextState");
+import createFormStore from "./createFormStore";
+import { useContextState } from "./useContextState";
 // 실제 구현
-function init(initValueOrOptions, options) {
+export function init(initValueOrOptions, options) {
     let initValue;
     let validateOption;
     let validateOn = [];
@@ -35,14 +29,14 @@ function init(initValueOrOptions, options) {
         acc[key] = "{}";
         return acc;
     }, {});
-    const FormStore = (0, createFormStore_1.default)(initValue);
-    const ErrorStore = (0, createFormStore_1.default)(errorValue);
-    const ErrorObjStore = (0, createFormStore_1.default)(ErrorObjValue);
+    const FormStore = createFormStore(initValue);
+    const ErrorStore = createFormStore(errorValue);
+    const ErrorObjStore = createFormStore(ErrorObjValue);
     function FormState(name) {
-        return name ? (0, useContextState_1.useContextState)(FormStore, name) : (0, useContextState_1.useContextState)(FormStore);
+        return name ? useContextState(FormStore, name) : useContextState(FormStore);
     }
     function ErrorState(name) {
-        return name ? (0, useContextState_1.useContextState)(ErrorStore, name) : (0, useContextState_1.useContextState)(ErrorStore);
+        return name ? useContextState(ErrorStore, name) : useContextState(ErrorStore);
     }
     const setForm = FormStore.setStore;
     const setError = ErrorStore.setStore;

@@ -1,11 +1,6 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const isAllInputEmpty_1 = __importDefault(require("../utils/isAllInputEmpty"));
-const isErrorExist_1 = __importDefault(require("../utils/isErrorExist"));
-const registOnBlur_1 = __importDefault(require("./registOnBlur"));
+import isAllInputEmpty from "../utils/isAllInputEmpty";
+import isErrorExist from "../utils/isErrorExist";
+import registOnBlur from "./registOnBlur";
 const registOnSubmit = ({ FormStore, ErrorStore, ErrorObjStore, clearForm, clearFormOn, validateOn, validateOption }) => (fn) => async (e) => {
     e.preventDefault();
     const { getStore: getFormStore } = FormStore;
@@ -14,7 +9,7 @@ const registOnSubmit = ({ FormStore, ErrorStore, ErrorObjStore, clearForm, clear
     const ErrorObjectArray = Object.entries(getErrorObjStore());
     if (validateOn.includes("submit")) {
         ErrorObjectArray.forEach(([name, ErrorObj]) => {
-            (0, registOnBlur_1.default)({
+            registOnBlur({
                 getStore: getFormStore,
                 setError: setErrorStore,
                 validateOption,
@@ -25,10 +20,10 @@ const registOnSubmit = ({ FormStore, ErrorStore, ErrorObjStore, clearForm, clear
     const formState = getFormStore();
     const errorState = getErrorStore();
     // 에러가 하나라도 있으면 return
-    if ((0, isErrorExist_1.default)(errorState))
+    if (isErrorExist(errorState))
         return;
     // 모든 value가 비어있으면 return
-    if ((0, isAllInputEmpty_1.default)(formState))
+    if (isAllInputEmpty(formState))
         return;
     try {
         await fn(formState, e);
@@ -38,4 +33,4 @@ const registOnSubmit = ({ FormStore, ErrorStore, ErrorObjStore, clearForm, clear
         console.log(e);
     }
 };
-exports.default = registOnSubmit;
+export default registOnSubmit;
