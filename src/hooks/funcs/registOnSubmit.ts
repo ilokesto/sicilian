@@ -1,8 +1,9 @@
 import { RegistOnSubmit } from "../types";
 import isAllInputEmpty from "../utils/isAllInputEmpty";
 import isErrorExist from "../utils/isErrorExist";
+import registOnBlur from "./registOnBlur";
 
-const registOnSubmit: RegistOnSubmit = (FormState, ErrorState, clearForm) => (fn) => async (e) => {
+const registOnSubmit: RegistOnSubmit = (FormState, ErrorState, clearForm, clearFormOnSubmit) => (fn) => async (e) => {
   e.preventDefault();
 
   const formState = FormState();
@@ -16,8 +17,8 @@ const registOnSubmit: RegistOnSubmit = (FormState, ErrorState, clearForm) => (fn
 
   try {
     await fn(formState, e);
-
-    clearForm();
+    
+    clearFormOnSubmit ? clearForm() : null;
   } catch (e) {
     console.log(e)
   }

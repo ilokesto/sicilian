@@ -1,3 +1,5 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 const createFormStore = (initialState) => {
     let store = initialState;
     const callbacks = new Set();
@@ -14,4 +16,4 @@ const createFormStore = (initialState) => {
     };
     return { getStore, setStore, subscribe };
 };
-export default createFormStore;
+exports.default = createFormStore;

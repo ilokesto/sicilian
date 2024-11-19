@@ -4,15 +4,13 @@ import { InitState, GetContextFn, FormProviderProps } from "./types";
 const SicilianErrorHeader = "🚨 Sicilian Error : "
 const SicilianError = (text: string) => SicilianErrorHeader + `${text} property has not been passed to the FormProvider, but you are trying to use the ${text} function.`
 const polyfillWithErrorMessage = (errorMessage: string) => () => {
-  console.error(SicilianError(errorMessage)) 
-  return ""
+  throw new Error(SicilianError(errorMessage))
 }
 
 // @ts-ignore
 const Context = createContext()
   
-export function FormProvider<T extends InitState>({
-  children,...props }: FormProviderProps<T>) {
+export function FormProvider<T extends InitState>({ children,...props }: FormProviderProps<T>) {
 
   const FormState = props.FormState ?? polyfillWithErrorMessage("FormState")
   const ErrorState = props.ErrorState ?? polyfillWithErrorMessage("ErrorState")
@@ -33,6 +31,3 @@ export function getContext<T extends InitState>() {
 
   return context as GetContextFn<T>;
 }
-
-
-

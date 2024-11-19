@@ -1,3 +1,4 @@
+import { createContext, useContext } from "react";
 import { ExtractKeys, InitState } from "../types";
 import createFormStore from "./createFormStore";
 import { useContextState } from "./useContextState";
@@ -11,7 +12,7 @@ export const init = <T extends InitState>(initValue: T) => {
 
   const FormStore = createFormStore(initValue);
   const ErrorStore = createFormStore(errorValue);
-
+ 
   function FormState (): T
   function FormState (name: ExtractKeys<T>): string
   function FormState (name?: ExtractKeys<T>) {
@@ -27,6 +28,10 @@ export const init = <T extends InitState>(initValue: T) => {
   const setForm = FormStore.setStore
   const setError = ErrorStore.setStore
   const clearForm = () => setForm(initValue)
+
+  // 라이브러리 동작 전체를 망가뜨릴 우려가 있음
+  // const useForm = () => [FormState(), setForm] as const
+  // const useError = () => [ErrorState(), setError] as const
 
  return {FormStore, ErrorStore, FormState, ErrorState, setForm, setError, clearForm}
 }

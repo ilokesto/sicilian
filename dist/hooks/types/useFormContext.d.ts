@@ -1,8 +1,8 @@
-import { ReactNode } from "react";
+import { ReactElement } from "react";
 import { ExtractKeys, InitState, Register, RegisterErrorObj } from "./";
 import { Sicilian } from "../Sicilian";
 export type FormProviderProps<T extends InitState> = {
-    children: ReactNode;
+    children: ReactElement;
     register: Register<T>;
     validateOption?: RegisterErrorObj<T>;
     name: ExtractKeys<T>;

@@ -1,41 +1,24 @@
-import { defineConfig } from "vite";
-import type { UserConfig } from "vite";
-import react from "@vitejs/plugin-react";
-import compression from 'vite-plugin-compression';
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import path from 'path';
 
-export default defineConfig(({ command }): UserConfig => {
-  if (command === "build") {
-    return {
-      mode: "production",
-      plugins: [react(),
-        compression({
-          algorithm: 'brotliCompress', 
-          ext: '.br', 
-        })
-      ],
-      build: {
-        outDir: "dist",
-        lib: {
-          entry: "src/index.ts",
-          name: "caro-kann", // 자신의 패키지명 입력
-          formats: ["es"],
-          fileName: "index",
-        },
-        minify: true,
-        rollupOptions: {
-          external: ["react"],
-          output: {
-            globals: {
-              react: "React",
-            },
-          },
+export default defineConfig({
+  plugins: [react()],
+  build: {
+    lib: {
+      entry: path.resolve(__dirname, 'src/index.ts'),
+      name: 'MyReactLibrary',
+      fileName: (format) => `my-react-library.${format}.js`,
+      formats: ['es', 'umd'], // ES 모듈과 UMD 번들 생성
+    },
+    rollupOptions: {
+      external: ['react', 'react-dom'], // React와 ReactDOM은 Peer Dependency로 설정
+      output: {
+        globals: {
+          react: 'React',
+          'react-dom': 'ReactDOM',
         },
       },
-    };
-  } else {
-    // 개발 환경 설정 등이 필요한 경우 추가
-    return {
-      plugins: [react()],
-    };
-  }
+    },
+  },
 });

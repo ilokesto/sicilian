@@ -1,11 +1,17 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 const isArray = (thing) => {
     return "at" in thing;
 };
 const isNumber = (thing) => {
     return typeof thing === "number";
 };
-const registOnBlur = ({ ErrorObj, value, getStore, setError }) => (e) => {
+const registOnBlur = ({ ErrorObj, getStore, setError, validateOption }) => (e) => {
+    // 전체 필드에 대한 값 가져오기
+    const { name } = e.target;
     const store = getStore();
+    const value = store[name];
+    ErrorObj = ErrorObj ?? validateOption?.[name];
     if (ErrorObj) {
         for (const v in ErrorObj) {
             let flag = 0;
@@ -13,7 +19,7 @@ const registOnBlur = ({ ErrorObj, value, getStore, setError }) => (e) => {
                 case "required":
                     if (!value.length) {
                         // @ts-ignore
-                        setError({ [e.target.name]: ErrorObj[v].message ?? `${e.target.name}는 비어있을 수 없습니다.` });
+                        setError({ [name]: ErrorObj[v].message ?? `${name}는 비어있을 수 없습니다.` });
                         flag++;
                     }
                     break;
@@ -22,7 +28,7 @@ const registOnBlur = ({ ErrorObj, value, getStore, setError }) => (e) => {
                         if (value.length < ErrorObj[v]) {
                             // @ts-ignore
                             setError({
-                                [e.target.name]: `${e.target.name}는 ${ErrorObj[v]}자 이상이어야 합니다.`,
+                                [name]: `${name}는 ${ErrorObj[v]}자 이상이어야 합니다.`,
                             });
                             flag++;
                         }
@@ -31,7 +37,7 @@ const registOnBlur = ({ ErrorObj, value, getStore, setError }) => (e) => {
                         if (value.length < ErrorObj[v].number) {
                             // @ts-ignore
                             setError({
-                                [e.target.name]: ErrorObj[v].message ?? `${e.target.name}는 ${ErrorObj[v].number}자 이상이어야 합니다.`,
+                                [name]: ErrorObj[v].message ?? `${name}는 ${ErrorObj[v].number}자 이상이어야 합니다.`,
                             });
                             flag++;
                         }
@@ -42,7 +48,7 @@ const registOnBlur = ({ ErrorObj, value, getStore, setError }) => (e) => {
                         if (value.length > ErrorObj[v]) {
                             // @ts-ignore
                             setError({
-                                [e.target.name]: `${e.target.name}는 ${ErrorObj[v]}자 이하여야 합니다.`,
+                                [name]: `${name}는 ${ErrorObj[v]}자 이하여야 합니다.`,
                             });
                             flag++;
                         }
@@ -51,7 +57,7 @@ const registOnBlur = ({ ErrorObj, value, getStore, setError }) => (e) => {
                         if (value.length > ErrorObj[v].number) {
                             // @ts-ignore
                             setError({
-                                [e.target.name]: ErrorObj[v].message ?? `${e.target.name}는 ${ErrorObj[v].number}자 이하여야 합니다.`,
+                                [name]: ErrorObj[v].message ?? `${name}는 ${ErrorObj[v].number}자 이하여야 합니다.`,
                             });
                             flag++;
                         }
@@ -63,7 +69,7 @@ const registOnBlur = ({ ErrorObj, value, getStore, setError }) => (e) => {
                             if (!RegExp.RegExp.test(value)) {
                                 // @ts-ignore
                                 setError({
-                                    [e.target.name]: RegExp.message ?? `${e.target.name}의 값이 정규표현식을 만족하지 않습니다.`,
+                                    [name]: RegExp.message ?? `${name}의 값이 정규표현식을 만족하지 않습니다.`,
                                 });
                                 flag++;
                                 break;
@@ -74,7 +80,7 @@ const registOnBlur = ({ ErrorObj, value, getStore, setError }) => (e) => {
                         if (!ErrorObj.RegExp.RegExp.test(value)) {
                             // @ts-ignore
                             setError({
-                                [e.target.name]: ErrorObj.RegExp.message ?? `${e.target.name}의 값이 정규표현식을 만족하지 않습니다.`,
+                                [name]: ErrorObj.RegExp.message ?? `${name}의 값이 정규표현식을 만족하지 않습니다.`,
                             });
                             flag++;
                         }
@@ -86,7 +92,7 @@ const registOnBlur = ({ ErrorObj, value, getStore, setError }) => (e) => {
                             if (customChecker.checkFn(value, store)) {
                                 // @ts-ignore
                                 setError({
-                                    [e.target.name]: customChecker.message ?? `${e.target.name}의 값이 검증 함수를 만족하지 않습니다.`,
+                                    [name]: customChecker.message ?? `${name}의 값이 검증 함수를 만족하지 않습니다.`,
                                 });
                                 flag++;
                                 break;
@@ -97,7 +103,7 @@ const registOnBlur = ({ ErrorObj, value, getStore, setError }) => (e) => {
                         if (ErrorObj.customChecker.checkFn(value, store)) {
                             // @ts-ignore
                             setError({
-                                [e.target.name]: ErrorObj.customChecker.message ?? `${e.target.name}의 값이 검증 함수를 만족하지 않습니다.`,
+                                [name]: ErrorObj.customChecker.message ?? `${name}의 값이 검증 함수를 만족하지 않습니다.`,
                             });
                             flag++;
                         }
@@ -111,4 +117,4 @@ const registOnBlur = ({ ErrorObj, value, getStore, setError }) => (e) => {
         }
     }
 };
-export default registOnBlur;
+exports.default = registOnBlur;

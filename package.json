@@ -1,39 +1,36 @@
 {
   "name": "sicilian",
   "version": "2.0.5",
-  "dependencies": {},
+  "main": "index.js",
   "scripts": {
-    "build": "tsc -b && vite build"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "vite build && tsc --emitDeclarationOnly"
   },
-  "type": "module",
-  "types": "dist/index.d.ts",
-  "module": "dist/index.js",
-  "files": [
-    "dist"
-  ],
-  "keywords": [
-    "react",
-    "form",
-    "formula",
-    "form management"
-  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ayden94/sicilian"
   },
+  "keywords": [
+    "react",
+    "form",
+    "Sicilian",
+    "form management"
+  ],
   "author": "Jeong Jinho <wpfekdml@me.com>",
   "license": "MIT",
+  "description": "",
   "devDependencies": {
-    "@types/react": "^18.2.79",
-    "@types/react-dom": "^18.2.25",
+    "@types/node": "^22.9.0",
+    "@types/react": "^18.3.12",
+    "@vitejs/plugin-react": "^4.3.3",
     "@typescript-eslint/eslint-plugin": "^7.7.1",
     "@typescript-eslint/parser": "^7.7.1",
-    "@vitejs/plugin-react": "^4.2.1",
-    "react": "^18.2.0",
-    "vite-plugin-compression": "^0.5.1",
     "eslint": "^8.57.0",
     "eslint-plugin-react": "^7.34.1",
-    "typescript": "^5.4.5",
-    "vite": "^5.4.6"
+    "typescript": "^5.6.3",
+    "vite": "^5.4.11"
+  },
+  "dependencies": {
+    "react": "^18.3.1"
   }
 }
