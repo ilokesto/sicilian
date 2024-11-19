@@ -17,7 +17,7 @@ export declare function init<T extends InitState>(initValueOrOptions: T | Sicili
         ErrorStore: import("../types").Store<T>;
         ErrorObjStore: import("../types").Store<T>;
         initValue: T;
-        validateOption: Partial<Record<keyof T, import("../types").RegisterErrorObj<T>>> | undefined;
+        validator: Partial<Record<keyof T, import("../types").RegisterErrorObj<T>>> | undefined;
         validateOn: ("blur" | "submit")[];
         clearFormOn: ("submit" | "routeChange")[];
         clearForm: () => void;

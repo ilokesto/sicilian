@@ -1,7 +1,7 @@
 import isAllInputEmpty from "../utils/isAllInputEmpty";
 import isErrorExist from "../utils/isErrorExist";
 import registOnBlur from "./registOnBlur";
-const registOnSubmit = ({ FormStore, ErrorStore, ErrorObjStore, clearForm, clearFormOn, validateOn, validateOption }) => (fn) => async (e) => {
+const registOnSubmit = ({ FormStore, ErrorStore, ErrorObjStore, clearForm, clearFormOn, validateOn, validator }) => (fn) => async (e) => {
     e.preventDefault();
     const { getStore: getFormStore } = FormStore;
     const { getStore: getErrorStore, setStore: setErrorStore } = ErrorStore;
@@ -12,7 +12,7 @@ const registOnSubmit = ({ FormStore, ErrorStore, ErrorObjStore, clearForm, clear
             registOnBlur({
                 getStore: getFormStore,
                 setError: setErrorStore,
-                validateOption,
+                validator,
                 ErrorObj: ErrorObj === "{}" ? undefined : JSON.parse(ErrorObj)
             })({ target: { name: name, value: getFormStore()[name] } });
         });

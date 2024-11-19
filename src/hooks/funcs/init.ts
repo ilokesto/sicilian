@@ -8,19 +8,19 @@ export function init<T extends InitState>(
   options?: Omit<SicilianProps<T>, "initValue">
 ) {
   let initValue: T;
-  let validateOption: SicilianProps<T>["validateOption"];
+  let validator: SicilianProps<T>["validator"];
   let validateOn: SicilianProps<T>["validateOn"] = [];
   let clearFormOn: SicilianProps<T>["clearFormOn"] = []
 
   if ((initValueOrOptions as SicilianProps<T>).initValue) {
     const options = initValueOrOptions as SicilianProps<T>;
     initValue = options.initValue as T;
-    validateOption = options.validateOption;
+    validator = options.validator;
     validateOn = options.validateOn ?? [];
     clearFormOn = options.clearFormOn ?? [];
   } else {
     initValue = initValueOrOptions as T;
-    validateOption = options?.validateOption;
+    validator = options?.validator;
     validateOn = options?.validateOn ?? [];
     clearFormOn = options?.clearFormOn ?? [];
   }
@@ -57,5 +57,5 @@ export function init<T extends InitState>(
   const setError = ErrorStore.setStore
   const clearForm = () => setForm(initValue)
 
- return { rest: { FormState, ErrorState, setForm, setError}, props: {FormStore, ErrorStore, ErrorObjStore, initValue, validateOption, validateOn, clearFormOn, clearForm}}
+ return { rest: { FormState, ErrorState, setForm, setError}, props: {FormStore, ErrorStore, ErrorObjStore, initValue, validator, validateOn, clearFormOn, clearForm}}
 }

@@ -3,7 +3,7 @@ import registOnChange from "./registOnChange";
 import registOnBlur from "./registOnBlur";
 import { storeSelector } from "../utils/storeSelector";
 import { usePageNavigation } from "./usePageNavigation";
-const useRegister = ({ FormStore, ErrorStore, ErrorObjStore, clearForm, clearFormOn, validateOn, validateOption }) => (name, ErrorObj) => {
+const useRegister = ({ FormStore, ErrorStore, ErrorObjStore, clearForm, clearFormOn, validateOn, validator }) => (name, ErrorObj) => {
     const { getStore, setStore, subscribe } = FormStore;
     const { setStore: setError } = ErrorStore;
     const { setStore: setErrorObjectStore } = ErrorObjStore;
@@ -19,7 +19,7 @@ const useRegister = ({ FormStore, ErrorStore, ErrorObjStore, clearForm, clearFor
         ErrorObj,
         getStore,
         setError,
-        validateOption,
+        validator,
     });
     // 페이지 이동시에 form을 초기화 할 것인지 여부를 결정
     // @ts-ignore

@@ -4,11 +4,11 @@ const isArray = (thing) => {
 const isNumber = (thing) => {
     return typeof thing === "number";
 };
-const registOnBlur = ({ ErrorObj, getStore, setError, validateOption }) => (e) => {
+const registOnBlur = ({ ErrorObj, getStore, setError, validator }) => (e) => {
     // 전체 필드에 대한 값 가져오기
     const { name, value } = e.target;
     const store = getStore();
-    ErrorObj = ErrorObj ?? validateOption?.[name];
+    ErrorObj = ErrorObj ?? validator?.[name];
     if (ErrorObj) {
         for (const v in ErrorObj) {
             let flag = 0;

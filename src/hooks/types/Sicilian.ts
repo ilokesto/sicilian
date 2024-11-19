@@ -7,7 +7,7 @@ type ClearFormOn = Array<"submit" | "routeChange">
 export type SicilianProps<T extends InitState> = {
   initValue: T,
   validateOn?: ValidateOn,
-  validateOption?: Partial<Record<keyof T, RegisterErrorObj<T>>>,
+  validator?: Partial<Record<keyof T, RegisterErrorObj<T>>>,
   clearFormOn?: ClearFormOn
 }
 
@@ -36,7 +36,7 @@ export type SicilianReturnType<T extends InitState> = {
 // createFormStore.ts
 export type CreateFormState = <T extends InitState>(initialState: T) => Store<T>;
 
-export type UseRegister = <T extends InitState>(props: {FormStore: Store<T>, ErrorStore: Store<T>, ErrorObjStore: Store<T>, clearForm: () => void, clearFormOn: ClearFormOn, validateOn: ValidateOn, validateOption?: Partial<Record<keyof T, RegisterErrorObj<T>>>}) => Register<T>;
+export type UseRegister = <T extends InitState>(props: {FormStore: Store<T>, ErrorStore: Store<T>, ErrorObjStore: Store<T>, clearForm: () => void, clearFormOn: ClearFormOn, validateOn: ValidateOn, validator?: Partial<Record<keyof T, RegisterErrorObj<T>>>}) => Register<T>;
 
 export type Register<T extends InitState> = (
   name: ExtractKeys<T>,
@@ -56,7 +56,7 @@ type OnBlurProps<T extends InitState> = {
   getStore: () => T;
   ErrorObj?: RegisterErrorObj<T>;
   setError: (action: Partial<T>) => void;
-  validateOption?: Partial<Record<keyof T, RegisterErrorObj<T>>>;
+  validator?: Partial<Record<keyof T, RegisterErrorObj<T>>>;
 };
 
 // handleValidate
@@ -91,6 +91,6 @@ export type RegistOnSubmit = <T extends InitState>(
   clearForm: () => void,
   clearFormOn: ClearFormOn,
   validateOn: ValidateOn,
-  validateOption?: Partial<Record<keyof T, RegisterErrorObj<T>>>}
+  validator?: Partial<Record<keyof T, RegisterErrorObj<T>>>}
 ) => (fn: (data: T, event?: FormEvent) => Promise<unknown> | unknown) => (e: FormEvent) => void;
 

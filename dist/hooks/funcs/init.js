@@ -3,19 +3,19 @@ import { useContextState } from "./useContextState";
 // 실제 구현
 export function init(initValueOrOptions, options) {
     let initValue;
-    let validateOption;
+    let validator;
     let validateOn = [];
     let clearFormOn = [];
     if (initValueOrOptions.initValue) {
         const options = initValueOrOptions;
         initValue = options.initValue;
-        validateOption = options.validateOption;
+        validator = options.validator;
         validateOn = options.validateOn ?? [];
         clearFormOn = options.clearFormOn ?? [];
     }
     else {
         initValue = initValueOrOptions;
-        validateOption = options?.validateOption;
+        validator = options?.validator;
         validateOn = options?.validateOn ?? [];
         clearFormOn = options?.clearFormOn ?? [];
     }
@@ -41,5 +41,5 @@ export function init(initValueOrOptions, options) {
     const setForm = FormStore.setStore;
     const setError = ErrorStore.setStore;
     const clearForm = () => setForm(initValue);
-    return { rest: { FormState, ErrorState, setForm, setError }, props: { FormStore, ErrorStore, ErrorObjStore, initValue, validateOption, validateOn, clearFormOn, clearForm } };
+    return { rest: { FormState, ErrorState, setForm, setError }, props: { FormStore, ErrorStore, ErrorObjStore, initValue, validator, validateOn, clearFormOn, clearForm } };
 }

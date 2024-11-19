@@ -9,13 +9,13 @@ const isNumber = (thing: number | { number: number; message?: string }): thing i
 };
 
 const registOnBlur: RegistOnBlur =
-  ({ ErrorObj, getStore, setError, validateOption }) =>
+  ({ ErrorObj, getStore, setError, validator }) =>
   (e) => {
     // 전체 필드에 대한 값 가져오기
     const { name, value } = e.target;
     const store = getStore()
 
-    ErrorObj = ErrorObj ?? validateOption?.[name];
+    ErrorObj = ErrorObj ?? validator?.[name];
 
     if (ErrorObj) {
       for (const v in ErrorObj) {
