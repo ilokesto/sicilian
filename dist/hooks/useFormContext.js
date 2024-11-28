@@ -1,7 +1,7 @@
 import { jsx as _jsx } from "react/jsx-runtime";
 import { createContext, useContext } from "react";
 const SicilianErrorHeader = "🚨 Sicilian Error : ";
-const SicilianError = (text) => SicilianErrorHeader + `${text} property has not been passed to the FormProvider, but you are trying to use the ${text} function.`;
+const SicilianError = (text) => SicilianErrorHeader + `${text} property has not been passed to the SicilianProvider, but you are trying to use the ${text} function.`;
 const polyfillWithErrorMessage = (errorMessage) => () => {
     throw new Error(SicilianError(errorMessage));
 };
@@ -12,10 +12,10 @@ export function SicilianProvider({ children, value }) {
     const ErrorState = value.ErrorState ?? polyfillWithErrorMessage("ErrorState");
     return (_jsx(Context.Provider, { value: { ...value, FormState, ErrorState }, children: children }));
 }
-export function getContext() {
+export function getSicilianContext() {
     const context = useContext(Context);
     if (!context) {
-        throw new Error(SicilianErrorHeader + 'getContext must be used within a FormProvider');
+        throw new Error(SicilianErrorHeader + 'getContext must be used within a SicilianProvider');
     }
     return context;
 }
