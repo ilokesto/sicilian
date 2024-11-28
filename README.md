@@ -2,6 +2,29 @@
 
 &nbsp;
 
+- [What's new in sicilian@2.1.0](#what's-new-in-sicilian-210)
+- [install and import](#install-and-import)
+- [create a formController with playDragon](#create-a-formcontroller-with-playdragon)
+  * [options](#options)
+  * [use a formController](#use-a-formcontroller)
+  * [register](#register)
+    + [name and id](#name-and-id)
+    + [value and onChange](#value-and-onchange)
+    + [onBlur and onFocus](#onblur-and-onfocus)
+  * [handleValidate](#handlevalidate)
+    + [validator](#validator)
+    + [validate](#validate)
+    + [Validation Priority and Order](#validation-priority-and-order)
+  * [setForm and setError](#setform-and-seterror)
+  * [FormState & ErrorState](#formstate-&-errorstate)
+  * [handleSubmit](#handlesubmit)
+- [useDragon](#usedragon)
+- [SicilianProvider component and getSicilianContext Fn](#sicilianprovider-component-and-getsiciliancontext-fn)
+- [in App Router](#in-app-router)
+
+
+&nbsp;
+
 
 # Sicilian
 
