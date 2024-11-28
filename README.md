@@ -527,6 +527,56 @@ Even if the clearFormOn: ["submit"] option is provided, the form will not be res
 
 # useDragon
 
+
+Sicilian categorizes user input handling in frontend development into two main types: static forms and dynamic forms. Static forms refer to cases that are not reusable, such as signup or login forms, while dynamic forms are those that need to be reusable, like comment forms.
+
+Prior to version 2.1, implementing dynamic forms with Sicilian was almost impossible. For example, in the following case, every time the initValue changes, setForm is called. This modifies the global state and affects all inputs registered with the corresponding formController object.
+
+```tsx
+// sicilianComment.ts
+const { handleSubmit, register, setForm } = playDragon({
+  initValue: { comment: "" },
+  validator: {
+    comment: { required: true },
+  },
+  validateOn: ["submit"],
+  clearFormOn: ["routeChange", "submit"],
+});
+
+// CommentInput.tsx
+function CommentInput({
+  initValue = "",
+  inputName,
+  buttonName,
+}: {
+  initValue?: string;
+  inputName: string;
+  buttonName: string;
+}) {
+  const isLogin = useIsLogin();
+  const { onSubmit, isPending } = useCommentMutation({ initValue, depth });
+  
+  useEffect(() => {
+    setForm({ comment: initValue });
+  }, [initValue]);
+ 
+  return (
+    <Form.Textarea
+      {...register("comment")}
+      initValue={initValue}
+      className={styles.textarea}
+      disabled={!isLogin}
+    />
+  )
+}
+```
+
+<img width="520" alt="스크린샷 2024-09-11 오후 7 32 53" src="https://img1.daumcdn.net/thumb/R1600x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2F3YB2d%2FbtsKYDGyynB%2FPWrgx9SOC6KJKik76T1qy0%2Fimg.webp">
+
+
+
+
+
 &nbsp;
 
 # SicilianProvider component and getSicilianContext Fn
