@@ -573,8 +573,44 @@ function CommentInput({
 
 <img width="520" alt="스크린샷 2024-09-11 오후 7 32 53" src="https://img1.daumcdn.net/thumb/R1600x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2F3YB2d%2FbtsKYDGyynB%2FPWrgx9SOC6KJKik76T1qy0%2Fimg.webp">
 
+To address these issues and support dynamic forms, the **useDragon hook** was introduced in Sicilian version 2.1. Unlike playDragon, which had to be called outside components, the useDragon hook must be called inside components, following the role of a hook. By using the useDragon hook, you can achieve "local state behavior" that dynamically appears and disappears according to the component's lifecycle, while still utilizing all the features provided by Sicilian.
 
+```tsx
+function CommentInput({
+  initValue = "",
+  inputName,
+  buttonName,
+}: {
+  initValue?: string;
+  inputName: string;
+  buttonName: string;
+}) {
+  const isLogin = useIsLogin();
+  const { onSubmit, isPending } = useCommentMutation({ initValue, depth });
+  const { handleSubmit, register, setForm } = useDragon({
+    initValue: { comment: "" },
+    validator: {
+      comment: { required: true },
+    },
+    validateOn: ["submit"],
+  });
+  
+  useEffect(() => {
+    setForm({ comment: initValue });
+  }, [initValue]);
+ 
+  return (
+    <Form.Textarea
+      {...register("comment")}
+      initValue={initValue}
+      className={styles.textarea}
+      disabled={!isLogin}
+    />
+  )
+}
+```
 
+The useDragon hook can also be used with static forms, such as login or signup forms. However, from the perspective of **separation of concerns**, it is more advisable to use playDragon to separate form logic from the component itself.
 
 
 &nbsp;
