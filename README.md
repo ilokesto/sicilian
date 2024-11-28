@@ -16,7 +16,7 @@
     + [validate](#validate)
     + [Validation Priority and Order](#validation-priority-and-order)
   * [setForm and setError](#setform-and-seterror)
-  * [FormState & ErrorState](#formstate-&-errorstate)
+  * [FormState & ErrorState](#formstate-and-errorstate)
   * [handleSubmit](#handlesubmit)
 - [useDragon](#usedragon)
 - [SicilianProvider component and getSicilianContext Fn](#sicilianprovider-component-and-getsiciliancontext-fn)
@@ -461,7 +461,7 @@ setError is similar to setForm, but instead of inserting values into an input, i
 
 &nbsp;
 
-## FormState & ErrorState
+## FormState and ErrorState
 The FormState function returns a formState object that stores the state of the inputs managed by formController. The ErrorState function returns an errorState object that contains error messages resulting from validation.
 
 ```tsx
