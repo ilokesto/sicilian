@@ -16,7 +16,7 @@
     + [validate](#validate)
     + [Validation Priority and Order](#validation-priority-and-order)
   * [setForm and setError](#setform-and-seterror)
-  * [FormState & ErrorState](#formstate-and-errorstate)
+  * [FormState and ErrorState](#formstate-and-errorstate)
   * [handleSubmit](#handlesubmit)
 - [useDragon](#usedragon)
 - [SicilianProvider component and getSicilianContext Fn](#sicilianprovider-component-and-getsiciliancontext-fn)
