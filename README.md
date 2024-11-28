@@ -533,7 +533,7 @@ If you attempt to access the validateOption, FormState, or ErrorState props thro
 Here is a simple example of the Input component using SicilianProvider and getSicilianContext:
 ```tsx
 import { register, FormState, ErrorState } from "@/hooks/FormController/signUp.ts"
-import { FormContext } from "sicilian";
+import { SicilianProvider } from "sicilian";
 
 export default function Home() {
   { ... }
