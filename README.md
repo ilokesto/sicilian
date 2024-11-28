@@ -29,7 +29,7 @@ Sicilian was developed to address these inconveniences by operating based on glo
 npm i sicilian
 ```
 ```ts
-import { playDragon } from "Sicilian";
+import { playDragon, useDragon, SicilianProvider, getSicilianContext } from "Sicilian";
 ```
 
 &nbsp;
