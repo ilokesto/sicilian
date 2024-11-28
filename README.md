@@ -18,7 +18,7 @@ Sicilian was developed to address these inconveniences by operating based on glo
 * The new version of Sicilian is designed with a focus on **developer convenience**. Notably, the playDragon function has been enhanced with several new features.
 * The playDragon function now accepts not only initValue but also a variety of options related to Sicilian's behavior. This allows developers to manage the validator for the entire form in one place and even specify the timing of input validation—something that was previously impossible.
 * Since Sicilian is based on a global state, user-entered data remains intact even after a form submission. While this behavior can be beneficial in some cases, it may not always be desirable. Previously, developers had to use methods like **setForm(initValue)** to clear the form after submission. With the new version, Sicilian introduces the **formClearOn option**, enabling automatic form clearing upon events such as page navigation or form submission.
-*  Additionally, **FormProvider** has been renamed to **SicilianProvider** and now accepts a value prop. This change simplifies code writing, making it even more efficient for developers.
+*  Additionally, **FormProvider** has been renamed to **SicilianProvider** and now accepts a value prop. This change simplifies code writing, making it even more efficient for developers. and **getContext** function also has been renamed to **getSicilianContext**.
 
 
 &nbsp;
@@ -501,7 +501,7 @@ Even if the clearFormOn: ["submit"] option is provided, the form will not be res
 
 &nbsp;
 
-# SicilianProvider component and getContext Fn
+# SicilianProvider component and getSicilianContext Fn
 
 Previously, the properties returned by the register function were passed directly as props to the input tag or Input component using the spread operator. This caused the entire form to re-render when the input was changed.
 ```tsx
@@ -511,26 +511,26 @@ To suppress this, instead of using the spread operator, you should pass register
 
 &nbsp;
 
-To address these issues, Sicilian version 2.0.0 introduced **the SicilianProvider component and the getContext function**. As mentioned earlier, these are implemented internally using the Context API, and since they only pass predefined values and functions.
+To address these issues, Sicilian version 2.0.0 introduced **the SicilianProvider component and the getSicilianContext function**. As mentioned earlier, these are implemented internally using the Context API, and since they only pass predefined values and functions.
 
 The SicilianProvider component accepts a value object as a prop, which contains five values and methods: **register, name, validateOption, FormState, and ErrorState**. Among these, **register and name are required**, and based on the type of register, the valid string types for name are automatically inferred.
 
 <img width="942" alt="스크린샷 2024-09-11 오후 8 16 46" src="https://github.com/user-attachments/assets/935c0df7-de47-48e8-90ba-6b6deed84caa">
 
 &nbsp;
-The other three props except register and name can be provided optionally. and values and functions provided in this way can be retrieved using the getContext function. If the SicilianProvider component is not present in the parent node, the getContext function will throw an error like the following:
+The other three props except register and name can be provided optionally. and values and functions provided in this way can be retrieved using the getSicilianContext function. If the SicilianProvider component is not present in the parent node, the getSicilianContext function will throw an error like the following:
 
 <img width="991" alt="스크린샷 2024-09-11 오후 8 03 26" src="https://github.com/user-attachments/assets/aeb50d35-7d52-4e24-abea-bb2d4393bfa1">
 
 &nbsp;
 
-If you attempt to access the validateOption, FormState, or ErrorState props through the getContext function without providing them to the SicilianProvider component, here's what happens:
+If you attempt to access the validateOption, FormState, or ErrorState props through the getSicilianContext function without providing them to the SicilianProvider component, here's what happens:
 * For validateOption, it's fine because its type includes undefined, so it can be accessed without issues.
-* For FormState and ErrorState, if you try to access these functions through getContext without providing them in the SicilianProvider component, what you actually get is not the FormState or ErrorState functions themselves but functions that log error messages to the console. These error messages will help you identify which component is attempting to use FormState and ErrorState without having been provided these functions as props.
+* For FormState and ErrorState, if you try to access these functions through getSicilianContext without providing them in the SicilianProvider component, what you actually get is not the FormState or ErrorState functions themselves but functions that log error messages to the console. These error messages will help you identify which component is attempting to use FormState and ErrorState without having been provided these functions as props.
 
 <img width="520" alt="스크린샷 2024-09-11 오후 7 32 53" src="https://github.com/user-attachments/assets/b23cc320-af88-4c15-b3bd-409789b8170d">
 
-Here is a simple example of the Input component using SicilianProvider and getContext:
+Here is a simple example of the Input component using SicilianProvider and getSicilianContext:
 ```tsx
 import { register, FormState, ErrorState } from "@/hooks/FormController/signUp.ts"
 import { FormContext } from "sicilian";
@@ -556,10 +556,10 @@ export default function Home() {
 }
 ```
 ```tsx
-import { getContext } from "sicilian";
+import { getSicilianContext } from "sicilian";
 
 export default function Input({className, ...props}: InputHTMLAttributes<HTMLInputElement>) {
-  const { register, name, validateOption, ErrorState } = getContext()
+  const { register, name, validateOption, ErrorState } = getSicilianContext()
   
   const errorMessage = ErrorState(name)
   
@@ -578,7 +578,7 @@ Here is an example of a login form using Sicilian version 1.1.10, inspected with
 
 <img width="520" alt="스크린샷 2024-09-11 오후 7 32 53" src="https://img1.daumcdn.net/thumb/R1600x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FuOzNn%2FbtsJx1WfBvB%2FLgM8R9aoNDUSLM7Z3gzFc1%2Fimg.webp">
 
-In the other hand, here is the login form re-created using Sicilian version 2.0.0. By utilizing SicilianProvider, getContext, and the ErrorState function that allows subscribing to only a portion of the overall state, you can see that only the Input component being typed into is re-rendered, rather than the entire form.
+In the other hand, here is the login form re-created using Sicilian version 2.0.0. By utilizing SicilianProvider, getSicilianContext, and the ErrorState function that allows subscribing to only a portion of the overall state, you can see that only the Input component being typed into is re-rendered, rather than the entire form.
 
 <img width="520" alt="스크린샷 2024-09-11 오후 7 32 53" src="https://img1.daumcdn.net/thumb/R1600x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fb0bspQ%2FbtsJy2AcCYS%2Fjgz5hx0kujNfirBgvxNWc0%2Fimg.webp">
 
