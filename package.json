@@ -4,7 +4,6 @@
   "types": "dist/index.d.ts",
   "module": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "build": "vite build && tsc --emitDeclarationOnly"
   },
   "repository": {
@@ -30,8 +29,5 @@
     "eslint-plugin-react": "^7.34.1",
     "typescript": "^5.6.3",
     "vite": "^5.4.11"
-  },
-  "dependencies": {
-    "react-dom": "^18.3.1"
   }
 }
