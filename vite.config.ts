@@ -4,7 +4,7 @@ import react from '@vitejs/plugin-react';
 import path from 'path';
 
 export default defineConfig({
-  plugins: [react(), visualizer({ filename: './stats.html', open: true })],
+  plugins: [react()],
   build: {
     minify: true,
     lib: {
