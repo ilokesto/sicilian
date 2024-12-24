@@ -1,4 +1,3 @@
-import { Sicilian } from "./hooks/Sicilian";
-import { useDragon } from "./hooks/useDragon";
-import { SicilianProvider, getSicilianContext } from "./hooks/SicilianProvider";
-export { Sicilian as playDragon, useDragon, getSicilianContext, SicilianProvider };
+export { Sicilian as playDragon } from "./hooks/Sicilian";
+export { useDragon } from "./hooks/useDragon";
+export { SicilianProvider, getSicilianContext } from "./hooks/SicilianProvider";
