@@ -1,4 +1,4 @@
-import { useContext, useSyncExternalStore } from "react";
+import { useSyncExternalStore } from "react";
 import type { ExtractKeys, InitState, Store } from "../types";
 import { storeSelector } from "../utils/storeSelector";
 

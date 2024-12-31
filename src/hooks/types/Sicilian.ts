@@ -45,7 +45,7 @@ export type Register<T extends InitState> = (
   value: string;
   name: ExtractKeys<T>;
   id: ExtractKeys<T>;
-  onChange: OnChange;
+  onChange: RegistOnChange;
   onBlur?: OnBlur;
   onFocus: RegistOnFocus;
 };
@@ -76,8 +76,7 @@ type CustomCheckerErrorObj<T extends InitState> = {
   message?: string;
 };
 
-export type RegistOnChange = <T extends InitState>(setStore: (value: Partial<T>) => void) => OnChange
-export type OnChange = (e: { target: { name: string; value: string } }) => void;
+export type RegistOnChange = (e: { target: { name: string; value: string } }) => void;
 
 export type RegistOnFocus = (e: { target: { name: string; value: string } }) => void;
 

@@ -1,7 +1,6 @@
 import { useSyncExternalStore } from "react";
-import registOnChange from "./registOnChange";
 import registOnBlur from "./registOnBlur";
-import type { RegistOnFocus, UseRegister } from "../types";
+import type { RegistOnChange, RegistOnFocus, UseRegister } from "../types";
 import { storeSelector } from "../utils/storeSelector";
 import { usePageNavigation } from "./usePageNavigation";
 
@@ -19,7 +18,10 @@ const useRegister: UseRegister = ({FormStore, ErrorStore, ErrorObjStore, clearFo
     () => storeSelector(getStore(), name)
   );
 
-  const onChange = registOnChange(setStore);
+  const onChange: RegistOnChange = (e) => {
+    // @ts-ignore
+    setStore({ [e.target.name]: e.target.value })
+  };
 
   const onFocus: RegistOnFocus = (e) => {
     // @ts-ignore
@@ -39,10 +41,10 @@ const useRegister: UseRegister = ({FormStore, ErrorStore, ErrorObjStore, clearFo
 
   // onBlur 할 것인지 여부를 결정
   if (validateOn.includes("blur")) {
-    return { value, name, id: name, onChange, onBlur, onFocus, };
+    return { value, name, id: name, onChange, onBlur, onFocus };
   }
   
-  return { value, name, id: name, onChange, onFocus, };
-};
+  return { value, name, id: name, onChange, onFocus };
+}
 
 export default useRegister;
