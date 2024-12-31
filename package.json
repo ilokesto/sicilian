@@ -1,6 +1,6 @@
 {
   "name": "sicilian",
-  "version": "2.1.9",
+  "version": "2.1.10",
   "types": "dist/index.d.ts",
   "module": "dist/sicilian.es.js",
   "scripts": {
