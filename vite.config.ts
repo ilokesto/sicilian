@@ -1,10 +1,10 @@
 import { defineConfig } from 'vite';
-import visualizer from 'rollup-plugin-visualizer';
 import react from '@vitejs/plugin-react';
 import path from 'path';
+import viteCompression from 'vite-plugin-compression';
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), viteCompression() ],
   build: {
     minify: true,
     lib: {
