@@ -1,4 +1,4 @@
-import { ExtractKeys, InitState, SicilianProps, SicilianReturnType } from "../types";
+import type { ExtractKeys, InitState, SicilianProps, SicilianReturnType } from "../types";
 import createFormStore from "./createFormStore";
 import { useContextState } from "./useContextState";
 

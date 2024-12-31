@@ -1,6 +1,6 @@
 import useRegister from "./funcs/useRegister";
 import registOnSubmit from "./funcs/registOnSubmit";
-import { InitState, SicilianReturnType, SicilianProps, Validator } from "./types";
+import type { InitState, SicilianReturnType, SicilianProps, Validator } from "./types";
 import { init } from "./funcs/init";
 
 // 함수 시그니처 오버로딩

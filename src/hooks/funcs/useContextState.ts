@@ -1,5 +1,5 @@
-import { Context, useContext, useSyncExternalStore } from "react";
-import { ExtractKeys, InitState, Store } from "../types";
+import { useContext, useSyncExternalStore } from "react";
+import type { ExtractKeys, InitState, Store } from "../types";
 import { storeSelector } from "../utils/storeSelector";
 
 export function useContextState <T extends InitState>(store:Store<T>, name: ExtractKeys<T>): string

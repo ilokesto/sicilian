@@ -1,8 +1,5 @@
-import { InitState, ExtractKeys, Store } from "./utils";
-export type { InitState, ExtractKeys, Store }
+export type { InitState, ExtractKeys, Store } from "./utils";
 
-import { SicilianProviderProps, GetContextFn } from "./useFormContext";
-export type { SicilianProviderProps, GetContextFn }
+export type { SicilianProviderProps, GetContextFn } from "./useFormContext";
 
-import {SicilianProps, SicilianType, SicilianReturnType, CreateFormState, UseRegister, Register, RegistOnBlur, OnBlur, Validator, RegisterErrorObj, RegistOnChange, OnChange, RegistOnFocus, RegistOnSubmit} from "./Sicilian";
-export type {SicilianProps, SicilianType, SicilianReturnType, CreateFormState, UseRegister, Register, RegistOnBlur, OnBlur, Validator, RegisterErrorObj, RegistOnChange, OnChange, RegistOnFocus, RegistOnSubmit}
+export type {SicilianProps, SicilianType, SicilianReturnType, CreateFormState, UseRegister, Register, RegistOnBlur, OnBlur, Validator, RegisterErrorObj, RegistOnChange, OnChange, RegistOnFocus, RegistOnSubmit} from "./Sicilian";

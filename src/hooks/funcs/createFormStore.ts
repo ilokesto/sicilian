@@ -1,4 +1,4 @@
-import { CreateFormState } from "../types";
+import type { CreateFormState } from "../types";
 
 const createFormStore: CreateFormState = (initialState) => {
   type T = typeof initialState;

@@ -5,13 +5,15 @@
     "emitDeclarationOnly": false,
     "jsx": "react-jsx",
     "module": "ESNext",
-    "moduleResolution": "Node",
+    "moduleResolution": "bundler",
+    "verbatimModuleSyntax": true,
     "outDir": "dist",
     "target": "ESNext",
     "strict": true,
     "allowJs": true,
     "checkJs": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "removeComments": true,
   },
   "include": ["src"]
 }

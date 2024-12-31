@@ -1,5 +1,5 @@
-import { ReactElement } from "react";
-import { ExtractKeys, InitState, Register, RegisterErrorObj } from "./";
+import type { ReactElement } from "react";
+import type { ExtractKeys, InitState, Register, RegisterErrorObj } from "./";
 import { Sicilian } from "../Sicilian";
 export type SicilianProviderProps<T extends InitState> = {
     children: ReactElement;

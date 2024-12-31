@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { Sicilian } from "./Sicilian";
-import { InitState, SicilianProps } from "./types";
+import type { InitState, SicilianProps } from "./types";
 
 function isSicilianProps<T extends InitState>(value: T | SicilianProps<T>): value is SicilianProps<T> {
   return (value as SicilianProps<T>).initValue !== undefined;

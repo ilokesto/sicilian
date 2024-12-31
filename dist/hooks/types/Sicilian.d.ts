@@ -1,4 +1,4 @@
-import { FormEvent } from "react";
+import type { FormEvent } from "react";
 import type { InitState, Store, ExtractKeys } from "./";
 type ValidateOn = Array<"blur" | "submit">;
 type ClearFormOn = Array<"submit" | "routeChange">;

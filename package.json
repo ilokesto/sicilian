@@ -19,7 +19,7 @@
   "author": "Jeong Jinho <wpfekdml@me.com>",
   "license": "MIT",
   "description": "",
-  "dependencies": {
+  "peerDependencies": {
     "react": ">=18.0.0"
   },
   "devDependencies": {

@@ -1,4 +1,4 @@
-import { RegistOnChange } from "../types";
+import type { RegistOnChange } from "../types";
 
 const registOnChange: RegistOnChange = (setStore) => (e) => {
   // @ts-ignore

@@ -1,4 +1,4 @@
-import { ExtractKeys, InitState, SicilianProps } from "../types";
+import type { ExtractKeys, InitState, SicilianProps } from "../types";
 export declare function init<T extends InitState>(initValueOrOptions: T | SicilianProps<T>, options?: Omit<SicilianProps<T>, "initValue">): {
     rest: {
         FormState: {

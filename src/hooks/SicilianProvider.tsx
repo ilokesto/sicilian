@@ -1,5 +1,5 @@
 import { createContext, useContext } from "react"
-import { InitState, GetContextFn, SicilianProviderProps } from "./types";
+import type { InitState, GetContextFn, SicilianProviderProps } from "./types";
 
 const SicilianErrorHeader = "🚨 Sicilian Error : "
 const SicilianError = (text: string) => SicilianErrorHeader + `${text} property has not been passed to the SicilianProvider, but you are trying to use the ${text} function.`

@@ -1,7 +1,7 @@
 import { useSyncExternalStore } from "react";
 import registOnChange from "./registOnChange";
 import registOnBlur from "./registOnBlur";
-import { RegistOnFocus, UseRegister } from "../types";
+import type { RegistOnFocus, UseRegister } from "../types";
 import { storeSelector } from "../utils/storeSelector";
 import { usePageNavigation } from "./usePageNavigation";
 
