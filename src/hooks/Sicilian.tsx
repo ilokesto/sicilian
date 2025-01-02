@@ -4,9 +4,9 @@ import type { InitState, SicilianReturnType, SicilianProps, Validator } from "./
 import { init } from "./funcs/init";
 
 // 함수 시그니처 오버로딩
-export function Sicilian<T extends InitState>(optionWithInitValue: SicilianProps<T>): SicilianReturnType<T>
-export function Sicilian<T extends InitState>(initValue: T, option?: Omit<SicilianProps<T>, "initValue">): SicilianReturnType<T>
-export function Sicilian<T extends InitState>(
+function Sicilian<T extends InitState>(optionWithInitValue: SicilianProps<T>): SicilianReturnType<T>
+function Sicilian<T extends InitState>(initValue: T, option?: Omit<SicilianProps<T>, "initValue">): SicilianReturnType<T>
+function Sicilian<T extends InitState>(
   initValueOrOptions: T | SicilianProps<T>,
   options?: Omit<SicilianProps<T>, "initValue">
 ) {
@@ -20,3 +20,5 @@ export function Sicilian<T extends InitState>(
 
   return { initValue: props.initValue, register, handleSubmit, handleValidate, ...rest };
 };
+
+export const playDragon = Sicilian;

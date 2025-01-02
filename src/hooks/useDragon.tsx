@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { Sicilian } from "./Sicilian";
+import { playDragon } from "./Sicilian";
 import type { InitState, SicilianProps } from "./types";
 
 function isSicilianProps<T extends InitState>(value: T | SicilianProps<T>): value is SicilianProps<T> {
@@ -8,8 +8,8 @@ function isSicilianProps<T extends InitState>(value: T | SicilianProps<T>): valu
 
 export function useDragon<T extends InitState>(initValueOrOptions: T | SicilianProps<T>, options?: Omit<SicilianProps<T>, "initValue">) {
   if (isSicilianProps(initValueOrOptions)) {
-    return useMemo(() => Sicilian(initValueOrOptions), []);
+    return useMemo(() => playDragon(initValueOrOptions), []);
   } else {
-    return useMemo(() => Sicilian(initValueOrOptions, options), []);
+    return useMemo(() => playDragon(initValueOrOptions, options), []);
   }
 }
