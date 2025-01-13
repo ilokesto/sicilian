@@ -7,7 +7,7 @@ export type RegisterErrorObj<T extends InitState> = {
   minLength?: { number: number; message: string } | number;
   maxLength?: { number: number; message: string } | number;
   RegExp?: RegExpErrorObj | Array<RegExpErrorObj>;
-  customChecker?: CustomCheckerErrorObj<T> | Array<CustomCheckerErrorObj<T>>;
+  custom?: CustomCheckerErrorObj<T> | Array<CustomCheckerErrorObj<T>>;
 };
 
 type RegExpErrorObj = { RegExp: RegExp; message?: string };

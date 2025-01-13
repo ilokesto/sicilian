@@ -1,6 +1,6 @@
 import { useMemo } from "react";
-import { createForm } from "./createFrom";
+import { createForm } from "./createForm";
 import type { InitState, InitObject } from "../types";
 
-export const useFrom = <T extends InitState>(initObject: InitObject<T>) =>
+export const useForm = <T extends InitState>(initObject: InitObject<T>) =>
   useMemo(() => createForm(initObject), []);

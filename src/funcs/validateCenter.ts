@@ -78,8 +78,8 @@ export const execValidate: ExecValidate =
             break;
 
           case "customChecker":
-            if (isArray(ErrorObj.customChecker!)) {
-              for (const customChecker of ErrorObj.customChecker!) {
+            if (isArray(ErrorObj.custom!)) {
+              for (const customChecker of ErrorObj.custom!) {
                 if (!customChecker.checkFn(value, store)) {
                   message = customChecker.message ?? `${name}의 값이 검증 함수를 만족하지 않습니다.`,
                   flag++;
@@ -87,8 +87,8 @@ export const execValidate: ExecValidate =
                 }
               }
             } else {
-              if (!ErrorObj.customChecker!.checkFn(value, store)) {
-                message = ErrorObj.customChecker!.message ?? `${name}의 값이 검증 함수를 만족하지 않습니다.`,
+              if (!ErrorObj.custom!.checkFn(value, store)) {
+                message = ErrorObj.custom!.message ?? `${name}의 값이 검증 함수를 만족하지 않습니다.`,
                 flag++;
               }
             }

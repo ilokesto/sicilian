@@ -1,1 +1,1 @@
-export * from "./core/useFrom";
+export * from "./core/useForm";
