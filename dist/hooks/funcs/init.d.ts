@@ -1,14 +1,12 @@
 import type { ExtractKeys, InitState, SicilianProps } from "../types";
-export declare function init<T extends InitState>(initValueOrOptions: T | SicilianProps<T>, options?: Omit<SicilianProps<T>, "initValue">): {
+type State<T extends InitState> = {
+    (): T;
+    (name: ExtractKeys<T>): string;
+};
+export declare function init<T extends InitState>(initObject: SicilianProps<T>): {
     rest: {
-        FormState: {
-            (): T;
-            (name: ExtractKeys<T>): string;
-        };
-        ErrorState: {
-            (): T;
-            (name: ExtractKeys<T>): string;
-        };
+        FormState: State<T>;
+        ErrorState: State<T>;
         setForm: (value: Partial<T>) => void;
         setError: (value: Partial<T>) => void;
     };
@@ -17,9 +15,10 @@ export declare function init<T extends InitState>(initValueOrOptions: T | Sicili
         ErrorStore: import("../types").Store<T>;
         ErrorObjStore: import("../types").Store<T>;
         initValue: T;
-        validator: Partial<Record<keyof T, import("../types").RegisterErrorObj<T>>> | undefined;
+        validator: {};
         validateOn: ("blur" | "submit")[];
         clearFormOn: ("submit" | "routeChange")[];
         clearForm: () => void;
     };
 };
+export {};

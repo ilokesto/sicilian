@@ -12,7 +12,7 @@ const registOnSubmit: RegistOnSubmit = ({FormStore, ErrorStore, ErrorObjStore, c
 
   const ErrorObjectArray = Object.entries(getErrorObjStore())
 
-  if (validateOn.includes("submit")) {
+  if (validateOn?.includes("submit")) {
     ErrorObjectArray.forEach(([name, ErrorObj]) => {
       registOnBlur({
         getStore: getFormStore,
@@ -35,7 +35,7 @@ const registOnSubmit: RegistOnSubmit = ({FormStore, ErrorStore, ErrorObjStore, c
   try {
     await fn(formState, e);
     
-    clearFormOn.includes("submit") ? clearForm() : null;
+    clearFormOn?.includes("submit") ? clearForm() : null;
   } catch (e) {
     console.log(e)
   }

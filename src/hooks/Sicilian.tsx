@@ -1,16 +1,12 @@
 import useRegister from "./funcs/useRegister";
 import registOnSubmit from "./funcs/registOnSubmit";
-import type { InitState, SicilianReturnType, SicilianProps, Validator } from "./types";
+import type { InitState, SicilianProps, Validator } from "./types";
 import { init } from "./funcs/init";
 
-// 함수 시그니처 오버로딩
-function Sicilian<T extends InitState>(optionWithInitValue: SicilianProps<T>): SicilianReturnType<T>
-function Sicilian<T extends InitState>(initValue: T, option?: Omit<SicilianProps<T>, "initValue">): SicilianReturnType<T>
 function Sicilian<T extends InitState>(
-  initValueOrOptions: T | SicilianProps<T>,
-  options?: Omit<SicilianProps<T>, "initValue">
+  initObject: SicilianProps<T>,
 ) {
-  const { props, rest } = init<T>(initValueOrOptions, options);
+  const { props, rest } = init<T>(initObject);
 
   const register = useRegister<T>(props);
   const handleSubmit = registOnSubmit(props);

@@ -2,41 +2,17 @@ import type { FormEvent } from "react";
 import type { InitState, Store, ExtractKeys } from "./"
 
 // Sicilian.ts
-type ValidateOn = Array<"blur" | "submit">;
-type ClearFormOn = Array<"submit" | "routeChange">
-export type SicilianProps<T extends InitState> = {
+export type SicilianInitObject<T extends InitState> = {
   initValue: T,
-  validateOn?: ValidateOn,
+  validateOn?: Array<"blur" | "submit">,
   validator?: Partial<Record<keyof T, RegisterErrorObj<T>>>,
-  clearFormOn?: ClearFormOn
-}
-
-export type SicilianType<T extends InitState> = {
-  (initValue: T, option?: Omit<SicilianProps<T>, "initValue">): SicilianReturnType<T>;
-  (optionWithInitValue: SicilianProps<T>): SicilianReturnType<T>;
-}
-
-export type SicilianReturnType<T extends InitState> = {
-  initValue: T;
-  register: Register<T>;
-  handleSubmit: (fn: (data: T, event?: FormEvent) => Promise<unknown> | unknown) => (e: FormEvent) => void;
-  handleValidate: (validator: Validator<T>) => Validator<T>;
-  FormState: {
-    (): T;
-    (name: Extract<keyof T, string>): string;
-  },
-  ErrorState: {
-    (): T;
-    (name: Extract<keyof T, string>): string;
-  };
-  setForm: (value: Partial<T>) => void;
-  setError: (value: Partial<T>) => void;
+  clearFormOn?: Array<"submit" | "routeChange">
 }
 
 // createFormStore.ts
 export type CreateFormState = <T extends InitState>(initialState: T) => Store<T>;
 
-export type UseRegister = <T extends InitState>(props: {FormStore: Store<T>, ErrorStore: Store<T>, ErrorObjStore: Store<T>, clearForm: () => void, clearFormOn: ClearFormOn, validateOn: ValidateOn, validator?: Partial<Record<keyof T, RegisterErrorObj<T>>>}) => Register<T>;
+export type UseRegister = <T extends InitState>(props: {FormStore: Store<T>, ErrorStore: Store<T>, ErrorObjStore: Store<T>, clearForm: () => void, clearFormOn: SicilianInitObject<T>["clearFormOn"], validateOn: SicilianInitObject<T>["validateOn"], validator?: Partial<Record<keyof T, RegisterErrorObj<T>>>}) => Register<T>;
 
 export type Register<T extends InitState> = (
   name: ExtractKeys<T>,
@@ -88,8 +64,8 @@ export type RegistOnSubmit = <T extends InitState>(
     ErrorStore:  Store<T>,
   ErrorObjStore: Store<T>,
   clearForm: () => void,
-  clearFormOn: ClearFormOn,
-  validateOn: ValidateOn,
+  clearFormOn: SicilianInitObject<T>["clearFormOn"],
+  validateOn: SicilianInitObject<T>["validateOn"],
   validator?: Partial<Record<keyof T, RegisterErrorObj<T>>>}
 ) => (fn: (data: T, event?: FormEvent) => Promise<unknown> | unknown) => (e: FormEvent) => void;
 
