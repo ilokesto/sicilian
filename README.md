@@ -686,7 +686,7 @@ In the Next.js App Router environment, Sicilian must be used with the **'use cli
 
 ```tsx
 'use client'
-import { SicilianProvider } from "sicilian";
+import { SicilianProvider } from "sicilian/provider";
 import { register } from "@/component/play";
 import Input from "@/component/Input";
 
