@@ -8,23 +8,19 @@ type State<T extends InitState> = {
   (name: ExtractKeys<T>): string;
 }
 
+function getObjByKeys<T extends InitState>(obj: T, keys: string) {
+  return Object.keys(obj).reduce((acc, key) => {
+    // @ts-ignore
+    acc[key] = keys;
+    return acc;
+  }, {} as T); 
+}
+
 // 실제 구현
-export function init<T extends InitState>(
-  initObject: SicilianProps<T>,
-) {
+export function init<T extends InitState>(initObject: SicilianProps<T>) {
   const initValue = initObject.initValue;
-
-  const errorValue = Object.keys(initValue).reduce((acc, key) => {
-    // @ts-ignore
-    acc[key] = "";
-    return acc;
-  }, {} as T);
-
-  const ErrorObjValue = Object.keys(initValue).reduce((acc, key) => {
-    // @ts-ignore
-    acc[key] = "{}";
-    return acc;
-  }, {} as T);
+  const errorValue = getObjByKeys(initValue, "");
+  const ErrorObjValue = getObjByKeys(initValue, "{}");
 
   const FormStore = createFormStore(initValue);
   const ErrorStore = createFormStore(errorValue);
@@ -35,16 +31,12 @@ export function init<T extends InitState>(
   const ErrorState: State<T> = (name?: ExtractKeys<T>): any =>
     useContextState<T>(ErrorStore, name)
 
-  const setForm = FormStore.setStore
-  const setError = ErrorStore.setStore
-  const clearForm = () => setForm(initValue)
-
   return {
     rest: { 
       FormState, 
       ErrorState, 
-      setForm, 
-      setError
+      setForm: FormStore.setStore,
+      setError: ErrorStore.setStore,
     }, 
     props: {
       FormStore, 
@@ -54,7 +46,7 @@ export function init<T extends InitState>(
       validator: initObject.validator ?? {}, 
       validateOn: initObject.validateOn ?? [], 
       clearFormOn: initObject.clearFormOn ?? [], 
-      clearForm
+      clearForm: () => FormStore.setStore(initValue)
     }
   }
 }

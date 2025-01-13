@@ -8,7 +8,7 @@ function Sicilian<T extends InitState>(
 ) {
   const { props, rest } = init<T>(initObject);
 
-  const register = useRegister<T>(props);
+  const register = useRegister<T>({...props, FormState: rest.FormState});
   const handleSubmit = registOnSubmit(props);
   const handleValidate = (validator: Validator<T>) => {
     return validator;

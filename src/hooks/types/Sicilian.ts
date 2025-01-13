@@ -1,5 +1,6 @@
 import type { FormEvent } from "react";
 import type { InitState, Store, ExtractKeys } from "./"
+import type { init } from "../funcs/init";
 
 // Sicilian.ts
 export type SicilianInitObject<T extends InitState> = {
@@ -12,7 +13,8 @@ export type SicilianInitObject<T extends InitState> = {
 // createFormStore.ts
 export type CreateFormState = <T extends InitState>(initialState: T) => Store<T>;
 
-export type UseRegister = <T extends InitState>(props: {FormStore: Store<T>, ErrorStore: Store<T>, ErrorObjStore: Store<T>, clearForm: () => void, clearFormOn: SicilianInitObject<T>["clearFormOn"], validateOn: SicilianInitObject<T>["validateOn"], validator?: Partial<Record<keyof T, RegisterErrorObj<T>>>}) => Register<T>;
+export type UseRegister = <T extends InitState>(props: ReturnType<typeof init<T>>["props"] & { FormState:  ReturnType<typeof init<T>>["rest"]["FormState"] }) =>
+  Register<T>;
 
 export type Register<T extends InitState> = (
   name: ExtractKeys<T>,
