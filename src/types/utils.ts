@@ -1,4 +1,3 @@
-
 export type InitState = {
   [x: string]: string;
 };
