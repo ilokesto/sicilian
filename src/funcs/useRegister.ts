@@ -28,7 +28,7 @@ export const useRegister: UseRegister = ({
   setErrorObjectStore({[name]: ErrorObj ?? (validator as any)[name] ?? {}} as Partial<T>)
 
   // 페이지 이동시에 form을 초기화 할 것인지 여부를 결정
-  clearFormOn.includes("routeChange") && usePageNavigation(() => clearForm())
+  clearFormOn.includes("routeChange") && usePageNavigation(clearForm)
 
   return {
     name, id: name, value: FormState(name),
