@@ -1,4 +1,4 @@
-import type { createForm } from "../core/createFormController"
+import type { createForm } from "../core/createFrom"
 import type { ExtractKeys, InitState, RegisterErrorObj, UseRegister } from "../types"
 import type { ReactElement } from "react"
 

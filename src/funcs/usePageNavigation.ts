@@ -1,6 +1,43 @@
 import { useEffect } from "react";
 
-const isAppRouter = (): boolean => {
+export const usePageNavigation = (callback: any): void => {
+  switch (true) {
+    case isAppRouter(): // Next.js App Router용 로직
+      try {
+        const pathname = require("next/navigation").usePathname();
+
+        useEffect(() => {
+          callback();
+        }, [pathname]);
+      } catch {}
+      break;
+
+    case isPageRouter(): // Next.js Page Router용 로직
+      try {
+        const { events } = require("next/router").useRouter();
+
+        useEffect(() => {
+          events.on("routeChangeComplete", callback);
+          return () => events.off("routeChangeComplete", callback);
+        }, [events]);
+      } catch {}
+      break;
+
+    case isReactRouter(): // React Router용 로직
+      try {
+        const { pathname } = require("react-router-dom").useLocation();
+
+        useEffect(() => {
+          callback();
+        }, [pathname]);
+      } catch {}
+      break;
+
+    default:
+      throw new Error("🚨 Sicilian Error : You are using a router that Sicilian does not support.");
+}}
+
+function isAppRouter(): boolean {
   try {
     require("next/navigation");
     return true;
@@ -10,7 +47,7 @@ const isAppRouter = (): boolean => {
 };
 
 // Next.js Page Router 감지 함수
-const isPageRouter = (): boolean => {
+function isPageRouter(): boolean {
   try {
     require("next/router");
     return true;
@@ -19,7 +56,7 @@ const isPageRouter = (): boolean => {
   }
 };
 
-const isReactRouter = (): boolean => {
+function isReactRouter(): boolean {
   try {
     require("react-router-dom");
     return true;
@@ -27,42 +64,3 @@ const isReactRouter = (): boolean => {
     return false;
   }
 }
-
-// 공통 훅
-export const usePageNavigation = (callback: any): void => {
-  if (isAppRouter()) {
-    try {
-      // Next.js App Router용 로직
-      const { usePathname } = require("next/navigation");
-      const pathname = usePathname();
-
-      useEffect(() => {
-        callback(pathname);
-      }, [pathname]);
-    } catch {}
-  } else if (isPageRouter()) {
-    try {// Next.js Page Router용 로직
-      const { useRouter } = require("next/router");
-      const router = useRouter();
-
-      useEffect(() => {
-        const handleRouteChange = (url: string) => {
-          callback(url);
-        };
-
-        router.events.on("routeChangeComplete", handleRouteChange);
-        return () => {
-          router.events.off("routeChangeComplete", handleRouteChange);
-        };
-      }, [router.events]);
-    } catch {}
-  } else if (isReactRouter()) {    // React Router용 로직
-    try {
-      const { useLocation } = require("react-router-dom");
-      const location = useLocation();
-
-      useEffect(() => {
-        callback(location.pathname);
-      }, [location.pathname]);
-    } catch {}
-}}

@@ -17,6 +17,6 @@ export const SicilianProvider = <T extends InitState>({ children, value }: Sicil
     {children}
   </Context.Provider>
 
-export const getSicilianContext = <T extends InitState>() =>
+export const useSicilianContext = <T extends InitState>() =>
   useContext(Context) as Required<SicilianProviderProps<T>["value"]>
   ?? getContextErrorMessage()
