@@ -1,4 +1,4 @@
-import { init } from "../funcs/init";
+import { init } from "./init";
 import { registOnSubmit } from "../funcs/registOnSubmit";
 import { useRegister } from "../funcs/useRegister";
 import type { InitState, InitObject, Validator } from "../types";

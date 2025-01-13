@@ -1,1 +1,1 @@
-export * from "./core/createForm";
+export * from "./core/createFormController";

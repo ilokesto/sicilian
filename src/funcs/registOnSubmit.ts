@@ -1,23 +1,26 @@
 import type { RegistOnSubmit } from "../types";
-import registOnBlur from "./registOnBlur";
+import { execValidate } from "./validateCenter";
 
-export const registOnSubmit: RegistOnSubmit = ({FormStore, ErrorStore, ErrorObjStore, clearForm, clearFormOn, validateOn, validator}) => (fn) => async (e) => {
+export const registOnSubmit: RegistOnSubmit = ({
+  FormStore: {
+    getStore: getFormStore
+  },
+  ErrorStore: {
+    getStore: getErrorStore,
+    setStore: setErrorStore
+  },
+  ErrorObjStore: {
+    getStore: getErrorObjStore
+  }, clearForm, clearFormOn, validateOn}) => (fn) => async (e) => {
   e.preventDefault();
 
-  const { getStore: getFormStore } = FormStore
-  const { getStore: getErrorStore,setStore: setErrorStore } = ErrorStore
-  const { getStore: getErrorObjStore } = ErrorObjStore
-
-  const ErrorObjectArray = Object.entries(getErrorObjStore())
-
   if (validateOn?.includes("submit")) {
-    ErrorObjectArray.forEach(([name, ErrorObj]) => {
-      registOnBlur({
-        getStore: getFormStore,
-        setError: setErrorStore,
-        validator,
-        ErrorObj: ErrorObj === "{}" ? undefined : JSON.parse(ErrorObj)
-      })({target: {name: name, value: getFormStore()[name]}})
+    Object.keys(getFormStore()).forEach((name) => {
+        execValidate({
+          setError: setErrorStore,
+          getStore: getFormStore,
+          getErrorObjStore,
+        })({ target: { name: name, value: getFormStore()[name], }, })
     })
   }
 

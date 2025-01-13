@@ -1,6 +1,6 @@
-import registOnBlur from "./registOnBlur";
 import type { UseRegister, SicilianEvent } from "../types";
 import { usePageNavigation } from "./usePageNavigation";
+import { execValidate } from "./validateCenter";
 
 export const useRegister: UseRegister = ({
   FormStore: {
@@ -11,7 +11,8 @@ export const useRegister: UseRegister = ({
     setStore: setError
   },
   ErrorObjStore: {
-    setStore: setErrorObjectStore
+    setStore: setErrorObjectStore,
+    getStore: getErrorObjStore
   },
   clearForm,
   clearFormOn,
@@ -23,19 +24,19 @@ export const useRegister: UseRegister = ({
 ) => {
   type T = typeof getStore extends () => infer U ? U : never;
 
-  setErrorObjectStore({[name]: JSON.stringify(ErrorObj ?? {})} as Partial<T>)
+  // ErrorObjStore가 초기화 되는 시점은  init이 아니라 실제로는 register가 실행될 때이다.
+  setErrorObjectStore({[name]: ErrorObj ?? (validator as any)[name] ?? {}} as Partial<T>)
 
   // 페이지 이동시에 form을 초기화 할 것인지 여부를 결정
-  clearFormOn.includes("routeChange")
-    ? usePageNavigation(() => clearForm())
-    : null;
-  
+  clearFormOn.includes("routeChange") && usePageNavigation(() => clearForm())
+
   return {
-    name,
-    id: name,
-    value: FormState(name),
-    onChange: (e: SicilianEvent) => setStore({ [e.target.name]: e.target.value } as Partial<T>),
+    name, id: name, value: FormState(name),
+    onBlur: validateOn?.includes("blur") ? execValidate({ getErrorObjStore, getStore, setError }) : undefined,
     onFocus: (e: SicilianEvent) => setError({ [e.target.name]: "" } as Partial<T>),
-    onBlur: validateOn?.includes("blur") ? registOnBlur({ ErrorObj, getStore, setError, validator }) : undefined,
+    onChange: (e: SicilianEvent) => {
+      setStore({ [e.target.name]: e.target.value } as Partial<T>);
+      validateOn?.includes("change") && execValidate({ getErrorObjStore, getStore, setError })(e);
+    },
   };
 };
