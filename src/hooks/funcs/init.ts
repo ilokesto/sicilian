@@ -1,35 +1,20 @@
-import { useContext } from "react";
-import type { ExtractKeys, InitState, SicilianProps } from "../types";
-import createFormStore from "./createFormStore";
-import { useContextState } from "./useContextState";
+import type { ExtractKeys, InitState, SicilianInitObject, State } from "../types";
+import { useSyncState } from "./useSyncState";
+import { createStore } from "./createStore";
 
-type State<T extends InitState> = {
-  (): T;
-  (name: ExtractKeys<T>): string;
-}
-
-function getObjByKeys<T extends InitState>(obj: T, keys: string) {
-  return Object.keys(obj).reduce((acc, key) => {
-    // @ts-ignore
-    acc[key] = keys;
-    return acc;
-  }, {} as T); 
-}
-
-// 실제 구현
-export function init<T extends InitState>(initObject: SicilianProps<T>) {
+export function init<T extends InitState>(initObject: SicilianInitObject<T>) {
   const initValue = initObject.initValue;
   const errorValue = getObjByKeys(initValue, "");
   const ErrorObjValue = getObjByKeys(initValue, "{}");
 
-  const FormStore = createFormStore(initValue);
-  const ErrorStore = createFormStore(errorValue);
-  const ErrorObjStore = createFormStore(ErrorObjValue);
+  const FormStore = createStore(initValue);
+  const ErrorStore = createStore(errorValue);
+  const ErrorObjStore = createStore(ErrorObjValue);
 
   const FormState: State<T> = (name?: ExtractKeys<T>): any =>
-    useContextState<T>(FormStore, name)
+    useSyncState<T>(FormStore, name)
   const ErrorState: State<T> = (name?: ExtractKeys<T>): any =>
-    useContextState<T>(ErrorStore, name)
+    useSyncState<T>(ErrorStore, name)
 
   return {
     rest: { 
@@ -49,4 +34,12 @@ export function init<T extends InitState>(initObject: SicilianProps<T>) {
       clearForm: () => FormStore.setStore(initValue)
     }
   }
+}
+
+function getObjByKeys<T extends InitState>(obj: T, keys: string) {
+  return Object.keys(obj).reduce((acc, key) => {
+    // @ts-ignore
+    acc[key] = keys;
+    return acc;
+  }, {} as T);
 }

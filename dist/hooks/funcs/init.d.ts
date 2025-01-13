@@ -1,9 +1,5 @@
-import type { ExtractKeys, InitState, SicilianProps } from "../types";
-type State<T extends InitState> = {
-    (): T;
-    (name: ExtractKeys<T>): string;
-};
-export declare function init<T extends InitState>(initObject: SicilianProps<T>): {
+import type { InitState, SicilianInitObject, State } from "../types";
+export declare function init<T extends InitState>(initObject: SicilianInitObject<T>): {
     rest: {
         FormState: State<T>;
         ErrorState: State<T>;
@@ -21,4 +17,3 @@ export declare function init<T extends InitState>(initObject: SicilianProps<T>):
         clearForm: () => void;
     };
 };
-export {};

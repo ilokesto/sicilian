@@ -1,9 +1,7 @@
 import type { RegistOnSubmit } from "../types";
-import isAllInputEmpty from "../utils/isAllInputEmpty";
-import isErrorExist from "../utils/isErrorExist";
 import registOnBlur from "./registOnBlur";
 
-const registOnSubmit: RegistOnSubmit = ({FormStore, ErrorStore, ErrorObjStore, clearForm, clearFormOn, validateOn, validator}) => (fn) => async (e) => {
+export const registOnSubmit: RegistOnSubmit = ({FormStore, ErrorStore, ErrorObjStore, clearForm, clearFormOn, validateOn, validator}) => (fn) => async (e) => {
   e.preventDefault();
 
   const { getStore: getFormStore } = FormStore
@@ -41,5 +39,22 @@ const registOnSubmit: RegistOnSubmit = ({FormStore, ErrorStore, ErrorObjStore, c
   }
 };
 
-export default registOnSubmit;
+function isErrorExist<T extends object>(errorState: T) {
+  for (const v of Object.values(errorState)) {
+    if (v !== "") return true;
+  }
 
+  return false
+}
+
+function isAllInputEmpty<T extends object>(formState: T) {
+  let count = 0;
+  let array = Object.values(formState);
+
+  for (const v of array) {
+    if (v === "") count++;
+  }
+
+  if (count === array.length) return true;
+  else return false;
+}

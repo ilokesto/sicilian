@@ -14,6 +14,8 @@
     "checkJs": true,
     "esModuleInterop": true,
     "removeComments": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true
   },
   "include": ["src"]
 }

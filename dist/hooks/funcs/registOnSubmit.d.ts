@@ -1,3 +1,2 @@
 import type { RegistOnSubmit } from "../types";
-declare const registOnSubmit: RegistOnSubmit;
-export default registOnSubmit;
+export declare const registOnSubmit: RegistOnSubmit;

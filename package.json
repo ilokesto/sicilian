@@ -2,8 +2,20 @@
   "name": "sicilian",
   "version": "2.1.12",
   "types": "dist/index.d.ts",
-  "main": "dist/sicilian.umd.js",
-  "module": "dist/sicilian.es.js",
+  "module": "dist/index.js",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./provider": {
+      "import": "./dist/SicilianProvider.js",
+      "types": "./dist/SicilianProvider.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "vite build && tsc --emitDeclarationOnly"
   },

@@ -7,6 +7,10 @@ export type SicilianInitObject<T extends InitState> = {
     validator?: Partial<Record<keyof T, RegisterErrorObj<T>>>;
     clearFormOn?: Array<"submit" | "routeChange">;
 };
+export type State<T extends InitState> = {
+    (): T;
+    (name: ExtractKeys<T>): T[ExtractKeys<T>];
+};
 export type CreateFormState = <T extends InitState>(initialState: T) => Store<T>;
 export type UseRegister = <T extends InitState>(props: ReturnType<typeof init<T>>["props"] & {
     FormState: ReturnType<typeof init<T>>["rest"]["FormState"];

@@ -1,4 +1,3 @@
-
 export default function isAllInputEmpty<T extends object>(formState: T) {
   let count = 0;
   let array = Object.values(formState);

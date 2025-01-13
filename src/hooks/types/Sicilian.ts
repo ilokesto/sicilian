@@ -10,6 +10,11 @@ export type SicilianInitObject<T extends InitState> = {
   clearFormOn?: Array<"submit" | "routeChange">
 }
 
+export type State<T extends InitState> = {
+  (): T;
+  (name: ExtractKeys<T>): T[ExtractKeys<T>];
+}
+
 // createFormStore.ts
 export type CreateFormState = <T extends InitState>(initialState: T) => Store<T>;
 
