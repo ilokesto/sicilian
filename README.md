@@ -1,12 +1,10 @@
-[Sicilian Korean Docs / 한국어 공식 문서](https://lackluster.tistory.com/170)
+[Sicilian Korean Docs / 한국어 공식 문서](https://lackluster.tistory.com/70)
 
 &nbsp;
 
-- [What's new in sicilian@2.1.0](#what's-new-in-sicilian-210)
+- [What's new in sicilian@3.0.0](#what's-new-in-sicilian-300)
 - [install and import](#install-and-import)
-- [create a formController with createForm](#create-a-formcontroller-with-createForm)
-  * [options](#options)
-  * [use a formController](#use-a-formcontroller)
+- [createForm](#createForm)
   * [register](#register)
     + [name and id](#name-and-id)
     + [value and onChange](#value-and-onchange)
