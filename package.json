@@ -11,6 +11,10 @@
     "./provider": {
       "import": "./dist/SicilianProvider.js",
       "types": "./dist/SicilianProvider.d.ts"
+    },
+    "./useForm": {
+      "import": "./dist/useForm.js",
+      "types": "./dist/useForm.d.ts"
     }
   },
   "files": [

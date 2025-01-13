@@ -34,8 +34,8 @@ export const registOnSubmit: RegistOnSubmit = ({FormStore, ErrorStore, ErrorObjS
     await fn(formState, e);
     
     clearFormOn?.includes("submit") ? clearForm() : null;
-  } catch (e) {
-    console.log(e)
+  } catch (err) {
+    console.log(err);
   }
 };
 

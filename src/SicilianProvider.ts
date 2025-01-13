@@ -1,1 +1,1 @@
-export * from "./hooks/SicilianProvider";
+export * from "./core/SicilianProvider";

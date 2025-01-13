@@ -1,6 +1,6 @@
-import type { CreateFormState, InitState } from "../types";
+import type { InitState } from "../types";
 
-export const createStore: CreateFormState = <T extends InitState>(initialState: T) => {
+export const createStore = <T extends InitState>(initialState: T) => {
   let store = initialState;
   const callbacks = new Set<() => void>();
 

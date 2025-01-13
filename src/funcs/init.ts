@@ -1,8 +1,8 @@
-import type { ExtractKeys, InitState, SicilianInitObject, State } from "../types";
+import type { ExtractKeys, InitState, InitObject, State } from "../types";
 import { useSyncState } from "./useSyncState";
 import { createStore } from "./createStore";
 
-export function init<T extends InitState>(initObject: SicilianInitObject<T>) {
+export function init<T extends InitState>(initObject: InitObject<T>) {
   const initValue = initObject.initValue;
   const errorValue = getObjByKeys(initValue, "");
   const ErrorObjValue = getObjByKeys(initValue, "{}");
