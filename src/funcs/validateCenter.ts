@@ -77,7 +77,7 @@ export const execValidate: ExecValidate =
             }
             break;
 
-          case "customChecker":
+          case "custom":
             if (isArray(ErrorObj.custom!)) {
               for (const customChecker of ErrorObj.custom!) {
                 if (!customChecker.checkFn(value, store)) {

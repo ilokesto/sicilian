@@ -12,6 +12,7 @@ export const registOnSubmit: RegistOnSubmit = ({
   ErrorObjStore: {
     getStore: getErrorObjStore
   }, clearForm, clearFormOn, validateOn}) => (fn) => async (e) => {
+    
   e.preventDefault();
 
   if (validateOn?.includes("submit")) {
@@ -20,7 +21,7 @@ export const registOnSubmit: RegistOnSubmit = ({
           setError: setErrorStore,
           getStore: getFormStore,
           getErrorObjStore,
-        })({ target: { name: name, value: getFormStore()[name], }, })
+        })({ target: { name: name, value: getFormStore()[name] as string, }, })
     })
   }
 

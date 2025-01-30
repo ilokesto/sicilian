@@ -5,7 +5,7 @@ import { createStore } from "../funcs/createStore";
 export function init<T extends InitState>(initObject: InitObject<T>) {
   const initValue = initObject.initValue;
   const errorValue = getObjByKeys(initValue, '');
-  const errorObjValue = getObjByKeys(initValue, {});
+  const errorObjValue = initObject.validator as T
 
   const FormStore = createStore(initValue);
   const ErrorStore = createStore(errorValue);
@@ -36,10 +36,9 @@ export function init<T extends InitState>(initObject: InitObject<T>) {
   }
 }
 
-function getObjByKeys<T extends InitState>(obj: T, keys: any) {
+function getObjByKeys<T extends InitState>(obj: T, keys: any): T {
   return Object.keys(obj).reduce((acc, key) => {
-    // @ts-ignore
     acc[key] = keys;
     return acc;
-  }, {} as T)
+  }, {} as any)
 }

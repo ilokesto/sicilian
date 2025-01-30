@@ -16,12 +16,13 @@ export type State<T extends InitState> = {
 }
 
 export type SicilianEvent = { target: { name: string; value: string } };
-export type UseRegister = <T extends InitState>(props: ReturnType<typeof init<T>>["props"] & { FormState: ReturnType<typeof init<T>>["rest"]["FormState"] }
+export type UseRegister = <T extends InitState>(
+  props: ReturnType<typeof init<T>>["props"] & { FormState: ReturnType<typeof init<T>>["rest"]["FormState"] }
 ) => (
   name: ExtractKeys<T>,
   ErrorObj?: RegisterErrorObj<T>
 ) => {
-  value: string;
+  value: T[ExtractKeys<T>]
   name: ExtractKeys<T>;
   id: ExtractKeys<T>;
   onBlur?: ReturnType<ExecValidate>;
