@@ -1,37 +1,7 @@
 import { useEffect } from "react";
 
-
-// 1. "react-router-dom"이 있다 => React Router Dom
-// 2. "next/router"를 호출할 때 오류가 발생하지 않는다 => Next.js Page Router
-// 3. 그 외의 경우는 Next.js App Router로 간주
-
 export const usePageNavigation = (callback: any): void => {
   switch (true) {
-    case isAppRouter(): // Next.js App Router용 로직
-      try {
-        const pathname = require("next/navigation").usePathname();
-
-        console.log("approuter")
-
-        useEffect(() => {
-          callback();
-        }, [pathname]);
-      } catch {}
-      break;
-
-    case isPageRouter(): // Next.js Page Router용 로직
-      try {
-        const { events } = require("next/router").useRouter();
-
-        console.log("pagerouter")
-
-        useEffect(() => {
-          events.on("routeChangeComplete", callback);
-          return () => events.off("routeChangeComplete", callback);
-        }, [events]);
-      } catch {}
-      break;
-
     case isReactRouter(): // React Router용 로직
       try {
         const { pathname } = require("react-router-dom").useLocation();
@@ -41,6 +11,27 @@ export const usePageNavigation = (callback: any): void => {
         }, [pathname]);
       } catch {}
       break;
+
+      case isAppRouter(): // Next.js App Router용 로직 + 13버전 이상
+        try {
+          const pathname = require("next/navigation").usePathname();
+  
+          useEffect(() => {
+            callback();
+          }, [pathname]);
+        } catch {}
+        break;
+
+      case isPageRouter(): // Next.js Page Router용 로직 + 12버전 이하
+        try {
+          const { events } = require("next/router").useRouter();
+  
+          useEffect(() => {
+            events.on("routeChangeComplete", callback);
+            return () => events.off("routeChangeComplete", callback);
+          }, [events]);
+        } catch {}
+        break;
 
     default:
       throw new Error("🚨 Sicilian Error : You are using a router that Sicilian does not support.");
