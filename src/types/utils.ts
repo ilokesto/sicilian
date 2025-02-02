@@ -1,5 +1,5 @@
-export type InitState = {
-  [x: string]: unknown;
+export type InitState<T = unknown> = {
+  [x: string]: T;
 };
 export type ExtractKeys<T extends InitState> = Extract<keyof T, string> 
 export type Store<T extends InitState> = {

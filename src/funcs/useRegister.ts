@@ -11,7 +11,7 @@ export const useRegister: UseRegister = ({
     setStore: setError
   },
   ErrorObjStore: {
-    setStore: setErrorObjectStore,
+    setStore: setErrorObjStore,
     getStore: getErrorObjStore
   },
   clearForm,
@@ -24,7 +24,7 @@ export const useRegister: UseRegister = ({
   type T = typeof getStore extends () => infer U ? U : never;
 
   // ErrorObjStore 덮어쓰기
-  ErrorObj && setErrorObjectStore({[name]: ErrorObj } as Partial<T>)
+  ErrorObj && setErrorObjStore({ [name]: ErrorObj } as Partial<T>)
 
   // 페이지 이동시에 form을 초기화 할 것인지 여부를 결정
   clearFormOn.includes("routeChange") && usePageNavigation(clearForm)

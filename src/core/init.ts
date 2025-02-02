@@ -5,7 +5,7 @@ import { createStore } from "../funcs/createStore";
 export function init<T extends InitState>(initObject: InitObject<T>) {
   const initValue = initObject.initValue;
   const errorValue = getObjByKeys(initValue, '');
-  const errorObjValue = initObject.validator as T
+  const errorObjValue = initObject.validator as Partial<T>
 
   const FormStore = createStore(initValue);
   const ErrorStore = createStore(errorValue);

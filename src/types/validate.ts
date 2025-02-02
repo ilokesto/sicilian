@@ -19,5 +19,5 @@ type CustomCheckerErrorObj<T extends InitState> = {
 export type ExecValidate = <T extends InitState>(onBlurProps: {
   getStore: () => T;
   setError: (action: Partial<T>) => void;
-  getErrorObjStore: () => T;
+  getErrorObjStore: () => Partial<T>;
 }) => (e: SicilianEvent) => void;
