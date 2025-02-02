@@ -15,7 +15,7 @@ export const usePageNavigation = (callback: any): void => {
       case isAppRouter(): // Next.js App Router용 로직 + 13버전 이상
         try {
           const pathname = require("next/navigation").usePathname();
-  
+
           useEffect(() => {
             callback();
           }, [pathname]);
@@ -24,12 +24,11 @@ export const usePageNavigation = (callback: any): void => {
 
       case isPageRouter(): // Next.js Page Router용 로직 + 12버전 이하
         try {
-          const { events } = require("next/router").useRouter();
+          const { pathname } = require("next/router").useRouter();
   
           useEffect(() => {
-            events.on("routeChangeComplete", callback);
-            return () => events.off("routeChangeComplete", callback);
-          }, [events]);
+            callback();
+          }, [pathname]);
         } catch {}
         break;
 
