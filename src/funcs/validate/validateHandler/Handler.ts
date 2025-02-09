@@ -1,6 +1,6 @@
-import type { InitState, RegisterErrorObj } from "../../types";
-import { isArray } from "../typeGuard/isArray";
-import { isNumber } from "../typeGuard/isNumber";
+import type { InitState, RegisterErrorObj } from "../../../type";
+import { isArray } from "../../../utils/typeGuard/isArray";
+import { isNumber } from "../../../utils/typeGuard/isNumber";
 
 type HandleMethodProps<T extends InitState> = {value: string, ErrorObj: RegisterErrorObj<T>, name: string, store: T};
 

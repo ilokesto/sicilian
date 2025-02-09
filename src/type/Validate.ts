@@ -1,4 +1,4 @@
-import type { InitState, SicilianEvent } from "../types";
+import type { InitState } from ".";
 
 export type Validator<T extends InitState> = Partial<Record<keyof T, RegisterErrorObj<T>>>;
 
@@ -15,9 +15,3 @@ type CustomCheckerErrorObj<T extends InitState> = {
   checkFn: (value: string, store: T) => boolean;
   message?: string;
 };
-
-export type ExecValidate = <T extends InitState>(onBlurProps: {
-  getStore: () => T;
-  setError: (action: Partial<T>) => void;
-  getErrorObjStore: () => Partial<T>;
-}) => (e: SicilianEvent) => void;
