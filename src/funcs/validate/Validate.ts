@@ -17,13 +17,13 @@ export class Validate<T extends InitState> implements IValidate {
     this.handlerChain = new HandlerChain(this.setError);
   }
 
-  public doValidate = ({ target: { name, value } }: SicilianEvent) => {
+  public doValidate = ({ target: { name, value, checked } }: SicilianEvent) => {
     if (!this.ErrorObj) return;
 
     Object.keys(this.ErrorObj).forEach((handlerKey) => {
       this.handlerChain.addHandler(HandlerFactory.createHandler(handlerKey as keyof RegisterErrorObj<T>));
     })
     
-    this.handlerChain.doHandle({name, value, ErrorObj: this.ErrorObj, store: this.store});
+    this.handlerChain.doHandle({name, value, checked, ErrorObj: this.ErrorObj, store: this.store});
   }
 }

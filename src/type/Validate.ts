@@ -6,6 +6,7 @@ export type RegisterErrorObj<T extends InitState> = {
   required?: { required: boolean; message: string } | boolean;
   minLength?: { number: number; message: string } | number;
   maxLength?: { number: number; message: string } | number;
+  checked?: { checked: boolean; message: string } | boolean;
   RegExp?: RegExpErrorObj | Array<RegExpErrorObj>;
   custom?: CustomCheckerErrorObj<T> | Array<CustomCheckerErrorObj<T>>;
 };

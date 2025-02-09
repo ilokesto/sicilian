@@ -2,7 +2,13 @@ import type { InitState, RegisterErrorObj } from "../../../type";
 import { isArray } from "../../../utils/typeGuard/isArray";
 import { isNumber } from "../../../utils/typeGuard/isNumber";
 
-type HandleMethodProps<T extends InitState> = {value: string, ErrorObj: RegisterErrorObj<T>, name: string, store: T};
+type HandleMethodProps<T extends InitState> = {
+  name: string,
+  value: string,
+  checked?: boolean,
+  ErrorObj: RegisterErrorObj<T>,
+  store: T
+};
 
 export interface IHandler<T extends InitState> {
   handle(props: HandleMethodProps<T>): string | null;
@@ -18,6 +24,19 @@ export class RequiredHandler<T extends InitState> implements IHandler<T> {
     : `${name}는 비어있을 수 없습니다.`
 
     return message;
+  }
+}
+
+export class CheckedHandler<T extends InitState> implements IHandler<T> {
+  public handle({ErrorObj, checked, name}: HandleMethodProps<T>) {
+    // checked가 false이거나 value가 비어있지 않으면 null을 반환
+    if (!ErrorObj.checked) return null;
+
+    if (!checked) {
+      return typeof ErrorObj.checked === "boolean" ? `${name}는 체크되어야 합니다.` : ErrorObj.checked.message;
+    }
+
+    return null
   }
 }
 

@@ -10,7 +10,7 @@ export class HandlerChain<T extends InitState> {
     this.handlers.push(handler);
   }
 
-  public doHandle(props: {value: string, name: string, ErrorObj: RegisterErrorObj<T>, store: T}): void {
+  public doHandle(props: {value: string, name: string, checked?:boolean, ErrorObj: RegisterErrorObj<T>, store: T}): void {
     for (const handler of this.handlers) {
       const handled = handler.handle(props);
 

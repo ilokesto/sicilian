@@ -1,9 +1,10 @@
 import type { InitState, RegisterErrorObj } from "../../../type";
-import { RequiredHandler, MinLengthHandler, MaxLengthHandler, RegExpHandler, CustomHandler, type IHandler } from "./Handler";
+import { RequiredHandler, MinLengthHandler, MaxLengthHandler, RegExpHandler, CustomHandler, type IHandler, CheckedHandler } from "./Handler";
 
 export class HandlerFactory {
   private static handlerMap = new Map([
     ["required", RequiredHandler],
+    ["checked", CheckedHandler],
     ["minLength", MinLengthHandler],
     ["maxLength", MaxLengthHandler],
     ["RegExp", RegExpHandler],

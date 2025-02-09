@@ -17,4 +17,4 @@ export type InitObject<T extends InitState> = {
   clearFormOn?: Array<"submit" | "routeChange">
 }
 
-export type SicilianEvent = { target: { name: string; value: string, type?: string, checked?: boolean, files: FileList | null } };
+export type SicilianEvent = { target: { name: string; value: string, type?: string, checked?: boolean, files?: FileList | null } };

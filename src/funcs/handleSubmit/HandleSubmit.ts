@@ -22,7 +22,7 @@ export class HandleSubmit<T extends InitState> extends HandleSubmitTemplateMetho
       
       this.clearFormOn?.includes("submit") ? this.clearForm() : null;
     } catch (err) {
-      console.dir(err);
+      console.error(err);
     }
   }
 
