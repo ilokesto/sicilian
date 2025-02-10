@@ -1,1 +1,1 @@
-export * from "./core/CreateForm";
+export * from './core/CreateForm';
