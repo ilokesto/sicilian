@@ -22,8 +22,6 @@ export class Validate<T extends InitState> implements IValidate {
 
     if (!ErrorObj) return;
 
-    console.log(ErrorObj)
-
     Object.keys(ErrorObj).forEach((handlerKey) => {
       this.handlerChain.addHandler(HandlerFactory.createHandler(handlerKey as keyof RegisterErrorObj<T>));
     })
