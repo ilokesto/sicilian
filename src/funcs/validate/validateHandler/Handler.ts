@@ -59,12 +59,12 @@ export class MinLengthHandler<T extends InitState> implements IHandler<T> {
 export class MaxLengthHandler<T extends InitState> implements IHandler<T> {
   public handle({value, ErrorObj, name}: HandleMethodProps<T>) {
     if (isNumber(ErrorObj.maxLength!)) {
-      if (value.length < ErrorObj.maxLength!) {
-        return `${name}는 ${ErrorObj.maxLength!}자 이상이어야 합니다.`;
+      if (value.length > ErrorObj.maxLength!) {
+        return `${name}는 ${ErrorObj.maxLength!}자 이하여야 합니다.`;
       }
     } else {
-      if (value.length < ErrorObj.maxLength!.number) {
-        return ErrorObj.maxLength!.message ?? `${name}는 ${ErrorObj.maxLength!.number}자 이상이어야 합니다.`
+      if (value.length > ErrorObj.maxLength!.number) {
+        return ErrorObj.maxLength!.message ?? `${name}는 ${ErrorObj.maxLength!.number}자 이하여야 합니다.`
       }
     }
 
