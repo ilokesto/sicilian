@@ -12,9 +12,6 @@
 - [install and import](#install-and-import)
 - [createForm](#createForm)
   * [register](#register)
-    + [name and id](#name-and-id)
-    + [value and onChange](#value-and-onchange)
-    + [onBlur and onFocus](#onblur-and-onfocus)
   * [handleValidate](#handlevalidate)
     + [validator](#validator)
     + [validate](#validate)
@@ -32,7 +29,7 @@
 
 # Sicilian
 
-Sicilian is a form state management tool that operates based on global state. It supports TypeScript and can be used with Next.js and React.js.
+Sicilian is a form state management tool that operates based on global state. It supports TypeScript and is compatible with React.js version 18 or higher.
 
 In the frontend field, react-hook-form, a widely used form state management tool, operates based on refs. Because of this, you need to wrap components with forwardRef or use the useFormContext provided by the library. As a developer using Next.js, these limitations can be quite inconvenient.
 
@@ -42,10 +39,9 @@ Sicilian was developed to address these inconveniences by operating based on glo
 
 # What's new in sicilian@3.0.0
 
-* The new version of sicilian has improved its internal code structure and actively implemented techniques such as tree shaking. As a result, the bundle size has been reduced by up to three times compared to one of previous versions.
-* Semantics are important. Each feature and API is designed with a clear purpose and intent, enabling developers to write state management-related code in a more intuitive and intentional manner. API names and behaviors have been changed to be as intuitive as possible, minimizing ambiguity that could lead to mistakes. These semantic improvements not only enhance the way the code works but also improve the way it is read and understood, contributing to long-term maintainability and collaboration potential.
-* The createForm function has been renamed to createForm and now accepts a single object as an argument, which includes the initValue property.
-* The validateOn option has been updated to include the value 'change', allowing validation of input values to be triggered on every onChange event. However, this approach can impose a burden on the application, so it should be used with caution.
+* The playDragon function has been replaced with the CreateForm class, which now accepts a single object as an argument with initValue as its property.
+* Sicilian now supports all types of input, including type="checkbox" and type="file". To achieve this, 'checked' has been added to validate, allowing validation to check whether an input is in a checked state.
+* 'change' has been added to validateOn. This allows input values to be validated whenever the onChange event is triggered. However, using this method may impose a performance burden on the application, so caution is advised.
 
 
 &nbsp;
@@ -53,37 +49,37 @@ Sicilian was developed to address these inconveniences by operating based on glo
 # install and import
 
 ```ts
-npm i sicilian
+npm i sicilian@latest
 ```
 ```ts
-import { createForm } from "sicilian";
+import { CreateForm } from "sicilian";
 import { useForm } from "sicilian/useForm";
 import { SicilianProvider, useSicilianContext } from "sicilian/provider";
 ```
 
 &nbsp;
 
-# createForm
+# CreateForm
 
-The functionality provided by Sicilian starts with the *createForm* function. This function returns a *formController* object necessary for managing form state. As mentioned earlier, since Sicilian operates based on global state, the createForm function must be called outside of any component.
+The CreateForm class takes an initialization object that includes initValue and generates a formController object, which is essential for managing form state. Sicilian provides opt-in features through the validator, validateOn, and clearFormOn properties of the initialization object.
+
+* validator: Specifies how to validate each input value.
+* validateOn: Defines when the specified validation method should be applied.
+* clearFormOn: Automatically resets the form at a predetermined time.
+
+The formController object contains various properties and methods required for managing form state. Each method will be discussed in detail in the following sections.
 
 ```ts
-const signUpFormController = createForm({
-  initValue: { email: "", password: "", nickname: "익명" },
-  validator: {},
-  validateOn: [],
-  clearFormOn: [],
-});
-```
-
-The createForm function provides opt-in functionality through three properties: validator, validateOn, and clearFormOn. The validator object allows you to specify methods for validating each input value. The validateOn array defines the points at which the specified validation methods should be applied. Lastly, the clearFormOn array enables automatic form reset at predefined points.
-* 
-```ts
-{
-  initValue: { email: "" },
+const signUpFormController = new CreateForm({
+  initValue: {
+    email: "",
+    password: "",
+    nickname: "anonymous"
+  },
   validator: {
     email: {
       required: {},
+      checked: {},
       minLength: {},
       maxLength: {},
       RegExp: {},
@@ -92,120 +88,31 @@ The createForm function provides opt-in functionality through three properties: 
   },
   validateOn: ["submit", "blur", "change"],
   clearFormOn: ["submit", "routeChange"]
-}
-```
+});
 
-The createForm function returns a formController object that includes various properties and methods necessary for managing the form's state. Each method will be examined in detail in the following sections.
-
-```tsx
 const {
   initValue,
-  register, 
-  setForm, 
-  setError, 
-  FormState, 
-  ErrorState, 
+  register,
+  getValues,
+  getErrors,
+  setValues,
+  setErrors,
   handleValidate, 
   handleSubmit
-} = createForm({
-  initValue: { email: "", password: "", nickname: "익명" },
-  validator: {},
-  validateOn: [],
-  clearFormOn: [],
-});
+} = signUpFormController
 ```
 
 ## register
 
-By default, each register call matches a single input to be managed and takes a name string that helps identify the input and a validate object that assists in automatic input validation.
+The register function returns an object containing various values and methods for managing <input> and <textarea> elements. This function takes an object as an argument, where the name property is required to specify the input, while the type property (for handling input types) and the validate object (for input value validation) are optional.
 
-The register method returns an object containing the necessary name and id variables, value state, and onChange, onBlur, and onFocus methods required to manage an input tag. (If the blur option is not selected in the validateOn setting, the register function will not return the onBlur method.) Therefore, you can easily register an input using the spread syntax as shown in the example below.
-
-```tsx
-const { name, id, value, onChange, onBlur, onFocus } = register("email")
- 
-export default function SignUp() {
-  return <input {...register("email", validator.email)}/>
-}
-```
-
-Thanks to the initialization object provided to createForm, TypeScript already knows which input names the register function will manage. Therefore, when using TypeScript, you can receive suggestions for valid input names from your IDE while writing the register function.
+Thanks to the initValue property provided to the CreateForm class, TypeScript can infer the possible values for the name property in register. As a result, when using TypeScript, the IDE can suggest valid name strings for autocompletion.
 
 <img width="771" alt="image" src="https://img1.daumcdn.net/thumb/R1600x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FdOfzxt%2FbtsJyt53cBr%2FOJdLcO955AesVrOYInrLA1%2Fimg.png">
 
 Additionally, if you enter an incorrect input name, a type error will occur. This ensures that inputs can be managed reliably.
 
 <img width="771" alt="image" src="https://img1.daumcdn.net/thumb/R1600x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fcdvh21%2FbtsJx6J157y%2Flix7SubLJa6kPqbqF9h4d1%2Fimg.png">
-
-
-
-### name and id
-
-register function returns the name value passed as an argument directly into the name and id properties. The id property is added in ver 2.0.0 to be used with the htmlFor attribute of the label tag.
-
-```tsx
-function register(name: string, validateOption: Validate) {
-  { ... }
-
-  return { name, id: name, ...}
-}
-```
-
-Sicilian uses **e.target.name** from the event object to identify and distinguish the input where the event occurred. Therefore, the name parameter in the register function is the only way Sicilian can differentiate between each input. As a result, if the name prop is provided multiple times, as shown below, it is highly likely to result in unintended behavior.
-
-```tsx
-// Duplicate name prop provided, but no type error occurs
-<input {...register("email")} name="e-mail" />
-```
-
-Similarly, if the same name is provided to different inputs, Sicilian will not be able to distinguish between them. When you consider the fact that Sicilian operates based on global state and this characteristic of Sicilian's name, you arrive at an interesting conclusion.
-
-Using Sicilian ensures that different inputs located in separate parts of the application will always contain the same value if they share the same name. This is similar to hard links in Unix systems. ***If the names are the same, they refer to the same value from Sicilian's internal storage.*** In the following example, the same value can be confirmed in two different components.
-
-```tsx
-import SignInFormController from "@/hooks/FormController/signUp.ts"
-
-function Email1() {
-  const { register } = SignInFormController;
-
-  return (
-    <input {...register('email')} />
-  );
-}
-
-function Email2() {
-  const { register } = SignInFormController;
-
-  return (
-    <input {...register('email')} />
-  );
-}
-```
-
-### value and onChange
-When a specific value is entered into a registered input, the *onChange* event handler returned from register is triggered with each keystroke. This handler analyzes the event object and sends *e.target.name* and *e.target.value* to the formController object. As a result, the value state of register is updated with each input value.
-
-One of the advantages of controlled components is the ease of manipulating input values. Sicilian allows you to leverage this advantage easily. The following example demonstrates how to transform all input values to uppercase.
-
-```ts
-export default function Home() {
-  const emailInput = SignInFormController.register("email");
-
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    e.target.value = e.target.value.toUpperCase();
-    emailInput.onChange(e);
-  };
-
-  return <input {...emailInput} onChange={handleChange} />
-}
-```
-
-### onBlur and onFocus
-The onBlur handler is triggered when the input tag loses focus. It automatically validates the value of the input based on the handleValidate method and the validator object returned from it. If an issue is found during the validation process, the onBlur handler immediately stops execution and sends the error information to ErrorState. The onFocus handler, on the other hand, is triggered when the input tag gains focus. If there is an error for the input in the ErrorState, it removes that error.
-
-&nbsp;
-
-So far, we have looked at how Sicilian operates through the various properties and methods returned by register. However, Sicilian's formController object also provides a variety of useful methods beyond register. From now on, let's take a look at each of these methods.
 
 
 &nbsp;
