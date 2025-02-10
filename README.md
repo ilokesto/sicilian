@@ -157,9 +157,9 @@ export default function SignUp() {
  
   return (
     <>
-      <input {...register("email", validator.email)}/>
-      <input {...register("password", validator.password)}/>
-      <input {...register("nickname")}/>
+      <input {...register({ name: "email", validate: validator.email })}/>
+      <input {...register({ name: "password", validate: validator.password })}/>
+      <input {...register({ name: "nickname")}/>
     </>
   )
 }
@@ -169,19 +169,20 @@ export default function SignUp() {
 The onBlur handler of register validates the input value based on the settings in the validate object. Sicilian uses the following four fields to validate each input, specifying the validation method and the error message to be sent to ErrorState if validation fails. If no error message is provided, Sicilian uses a default error message template in Korean (the reason is that i am a korean).
 
 * **required** : Validates if the input value is required.
+* **checked** : Validates if the input is checked.
 * **minLength & maxLength** : Validates the minimum and maximum length of the input value.
 * **RegExp** : Validates the input value using a regular expression.
 * **custon** : Validates the input value using a custom method defined by the user.
 
 &nbsp;
 
-For required, minLength, and maxLength, you can use primitive types such as true and number instead of an object containing a message. In such cases, if an error occurs, the default error message template is used.
+For required, checked, minLength, and maxLength, you can use primitive types such as true and number instead of an object containing a message. In such cases, if an error occurs, the default error message template is used.
 
 ```ts
 required?: boolean | {required: boolean, message: string}
- 
-minLength?: number | { number : number, message: string}
-maxLength?: number | { number : number, message: string}
+checked?: boolean | {checked: boolean, message: string}
+minLength?: number | { number: number, message: string}
+maxLength?: number | { number: number, message: string}
 ```
 &nbsp;
 
@@ -287,12 +288,10 @@ export default function SignUp() {
 
 ### Validation Priority and Order
 
-There are several important considerations when validating inputs with Sicilian. One key point is that if a validate object is provided to the register function, the validator option in the createForm function will be ignored. This is referred to as the validation priority of the validate object in the register function over the validator option in createForm.
-
-For example, in the following case, validation for maxLength and minLength will be ignored, and only the required validation will be applied.
+There are a few important considerations when validating inputs in Sicilian. One key point is that if a validate object is provided in register, the validator option specified in the CreateForm class will be ignored. This is referred to as the validation priority of the validate object in register over the validator option in CreateForm. For example, in the following case, validation for maxLength and minLength will be ignored, and only the required validation will be applied.
 
 ```tsx
-const signInFormController = createForm({
+export const { register } = createForm({
   initValue: { email: "" },
   validator: {
     email: {
@@ -302,16 +301,8 @@ const signInFormController = createForm({
   },
 })
 
-export default function Comp() {
-  const { register, handleValidate } = signInFormController
-  
-  const validator = handleValidate({
-    email: {
-      required: true
-    }
-  })
-  
-  return <input {...register("email", validator.email)}>
+export default function Comp() {  
+  return <input {...register({ name: "email", validate: { required: true } })}>
 }
 ```
 
@@ -329,21 +320,23 @@ password: { required: true, minLength: 10 }
 
 &nbsp;
 
-## setForm and setError
+## Values and Errors
 
-To implement a feature where users can load and edit a previously written review, you first need to fetch the review data from the server and insert the values into each input. setForm provides the functionality needed for this, and to prevent infinite rendering, it is typically called within useEffect or inside a function. 
+Form state and error messages are automatically managed by Sicilian, but there are times when you need to manually control these values. For example, if a user needs to edit a previously written review, you must fetch the review data from the server and populate each input field with the received values.
+
+In such cases, you can use setValues. To prevent infinite re-renders, it is typically used in combination with useEffect.
 
 ```tsx
-const { setValue } = SignInFormController
- 
+const { setValues } = ArticleFormController
+
 const { data } = useQuery({
   queryKey: ["review", reviewId],
   queryFn: getReview(reviewId)
   }
 });
- 
+
 useEffect(() => {
-  setValue({
+  setValues({
     title: data?.title ?? "",
     author: data?.author ?? "",
     description: data?.description ?? ""
@@ -351,45 +344,16 @@ useEffect(() => {
 }, [data]);
 ```
 
-setError is similar to setForm, but instead of inserting values into an input, it is used to manually insert error messages.
+The objects returned by getValues and getErrors represent the global state itself, which means they share structural issues similar to the re-rendering behavior of the Context API. In other words, even if the input states are well-isolated, if a parent component contains the getValues object, the entire parent component will re-render.
 
-&nbsp;
-
-## FormState and ErrorState
-The FormState function returns a formState object that stores the state of the inputs managed by formController. The ErrorState function returns an errorState object that contains error messages resulting from validation.
-
-```tsx
-export default function SignUp() {
-  const formState = FormState()
-  const errorState = ErrorState()
-  
-  return (
-    <>
-      {...}
-      
-      <p>form & error state</p>
-      <p>email : {formState.email}</p>
-      <p style={{ color: "red" }}>{errorState.email}</p>
-      <p>password : {formState.password}</p>
-      <p style={{ color: "red" }}>{errorState.password}</p>
-      <p>nickname : {formState.nickname}</p>
-      <p style={{ color: "red" }}>{errorState.nickname}</p>
-    </>
-  );
-}
-```
-
-
-The formState and errorState objects are global states themselves, which means they face similar issues as the Context API's re-rendering. In other words, no matter how well you isolate the state of individual inputs, if the formState object is present in a parent component, the entire parent component will re-render.
-
-To address this issue, the FormState and ErrorState functions now accept a name parameter **to allow subscribing to only a portion of the global state**. In type terms, this can be expressed as follows:
+To address this issue, the getValues and getErrors functions allow subscribing to only a portion of the global state by accepting a selecting name as an argument. In TypeScript, this can be represented as follows:
 
 ```ts
 // It returns the global state T, if a name parameter is not provided
-function FormState<T extends InitState>() => T
+function getValues<T extends InitState>() => T
 
 // It return the input value, if a name parameter is provided
-function FormState<T extends InitState>(name: keyof T) => string
+function getValues<T extends InitState, K extends ExtractKeys<T>>(name: K) => T[K]
 ```
 
 &nbsp;
