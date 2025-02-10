@@ -10,6 +10,8 @@ export interface IRegister<T extends InitState> {
   name: ExtractKeys<T>
   id: ExtractKeys<T>
   type: HTMLInputElement["type"]
+  value?: string
+  checked?: boolean
 }
 
 export class Register<T extends InitState> implements IRegister<T> {
