@@ -12,7 +12,7 @@ export type SicilianProviderProps<T extends InitState> = {
     name: ExtractKeys<T>,
     type?: ValidInputTypes,
     getValues?: State<T>,
-    getErrors?: State<T>,
+    getErrors?: State<{ [key in keyof T]: string }>,
   }
 }
 
