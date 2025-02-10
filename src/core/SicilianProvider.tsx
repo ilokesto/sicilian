@@ -8,7 +8,7 @@ export type SicilianProviderProps<T extends InitState> = {
   children: ReactElement,
   value: {
     register: register<T>,
-    validateOption?: RegisterErrorObj<T>,
+    validate?: RegisterErrorObj<T>,
     name: ExtractKeys<T>,
     type?: ValidInputTypes,
     getValues?: State<T>,
