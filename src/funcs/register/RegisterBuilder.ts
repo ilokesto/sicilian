@@ -1,4 +1,4 @@
-import type { InitState, IStore, RegisterErrorObj, InitObject, Validator, ExtractKeys } from "../../type"
+import type { InitState, IStore, RegisterErrorObj, InitObject, Validator, ExtractKeys, ValidInputTypes } from "../../type"
 import { usePageNavigation } from "../usePageNavigation"
 import { Register, type IRegister } from "./Register"
 import type { IRegisterOnBlur } from "./RegisterOnBlur"
@@ -10,7 +10,7 @@ export class RegisterBuilder<T extends InitState> {
   private RegisterOnFocus?: IRegisterOnFocus
   private RegisterOnBlur?: IRegisterOnBlur
   public id?: ExtractKeys<T>
-  public type?: HTMLInputElement["type"]
+  public type?: ValidInputTypes
   public value?: T[ExtractKeys<T>]
 
   constructor(
@@ -66,7 +66,7 @@ export class RegisterBuilder<T extends InitState> {
     return this
   }
 
-  public setType (type: HTMLInputElement["type"]) {
+  public setType (type: ValidInputTypes) {
     this.type = type
     return this
   }

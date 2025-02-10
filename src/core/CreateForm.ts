@@ -1,26 +1,16 @@
-import type { ExtractKeys, InitObject, InitState, IStore, State, RegisterErrorObj, Validator } from "../type";
+import type { ExtractKeys, InitObject, InitState, IStore, RegisterErrorObj, State, Validator, ValidInputTypes } from "../type";
 import { Store } from "./Store";
 import { RegisterOnFocus } from "../funcs/register/RegisterOnFocus";
 import { RegisterOnChange } from "../funcs/register/RegisterOnChange";
 import { RegisterOnBlur } from "../funcs/register/RegisterOnBlur";
 import { RegisterBuilder } from "../funcs/register/RegisterBuilder";
-import { SyncState } from "../utils/SyncState";
 import { Validate } from "../funcs/validate/Validate";
 import { HandleSubmitBuilder } from "../funcs/handleSubmit/HandleSubmitBuilder";
 import { getObjByKeys } from "../utils/getObjByKeys";
 import type { FormEvent } from "react";
+import { SyncState } from "../utils/SyncState";
 
-interface ICreateForm<T extends InitState> {
-  getValues: State<T>;
-  getErrors: State<T>;
-  setValues: IStore<T>["setStore"];
-  setErrors: IStore<T>["setStore"];
-  initValue: T
-  clearForm: () => void
-  handleValidate: (validator: Validator<T>) => Validator<T>
-}
-
-export class CreateForm<T extends InitState> implements ICreateForm<T> {
+export class CreateForm<T extends InitState> {
   // Store 
   private ValueStore: IStore<T>
   private ErrorStore: IStore<T>
@@ -32,9 +22,9 @@ export class CreateForm<T extends InitState> implements ICreateForm<T> {
 
   // Public
   public getValues: State<T>;
+  public getErrors: State<{ [key in keyof T]: string }>;
   public setValues: IStore<T>["setStore"];
-  public getErrors: State<T>;
-  public setErrors: IStore<T>["setStore"];
+  public setErrors: IStore<{ [key in keyof T]: string }>["setStore"];
   public initValue: T
   public clearForm: () => void
   public handleValidate = (validator: Partial<Record<keyof T, RegisterErrorObj<T>>>) => validator
@@ -46,16 +36,16 @@ export class CreateForm<T extends InitState> implements ICreateForm<T> {
     this.validateOn = validateOn ?? []
     this.clearFormOn = clearFormOn ?? []
     this.getValues = (name?: ExtractKeys<T>) => SyncState.doSync(this.ValueStore, name)
-    this.setValues = this.ValueStore.setStore
     this.getErrors = (name?: ExtractKeys<T>) => SyncState.doSync(this.ErrorStore, name)
-    this.setErrors = this.ErrorStore.setStore
+    this.setValues = this.ValueStore.setStore
+    this.setErrors = this.ErrorStore.setStore as IStore<{ [key in keyof T]: string }>["setStore"]
     this.initValue = initValue
     this.clearForm = () => {
       this.setValues(this.initValue)
     }
   }
 
-  public register = ({ name, ErrorObj, type = "text" }: {name: ExtractKeys<T>, ErrorObj?: RegisterErrorObj<T>, type?: string}) =>
+  public register = ({ name, ErrorObj, type = "text" }: {name: ExtractKeys<T>, ErrorObj?: RegisterErrorObj<T>, type?: ValidInputTypes}) =>
     new RegisterBuilder(name, this.ErrorObjStore, ErrorObj, this.clearFormOn, this.clearForm)
       .setRegisterOnChange(new RegisterOnChange(
         this.validateOn,

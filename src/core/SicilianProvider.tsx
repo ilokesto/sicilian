@@ -1,8 +1,8 @@
 import { createContext, useContext, type ReactElement } from "react"
-import type { ExtractKeys, InitState, RegisterErrorObj, State } from "../type"
+import type { ExtractKeys, InitState, RegisterErrorObj, State, ValidInputTypes } from "../type"
 import type { IRegister } from "../funcs/register/Register"
 
-type register<T extends InitState> = ({ name, ErrorObj, type }: { name: ExtractKeys<T>; ErrorObj?: RegisterErrorObj<T>; type?: string }) => IRegister<T>
+type register<T extends InitState> = ({ name, ErrorObj, type }: { name: ExtractKeys<T>; ErrorObj?: RegisterErrorObj<T>; type?: ValidInputTypes }) => IRegister<T>
 
 export type SicilianProviderProps<T extends InitState> = {
   children: ReactElement,
@@ -10,9 +10,9 @@ export type SicilianProviderProps<T extends InitState> = {
     register: register<T>,
     validateOption?: RegisterErrorObj<T>,
     name: ExtractKeys<T>,
-    type?: HTMLInputElement["type"],
-    FormState?: State<T>,
-    ErrorState?: State<T>,
+    type?: ValidInputTypes,
+    getValues?: State<T>,
+    getErrors?: State<T>,
   }
 }
 
@@ -23,14 +23,13 @@ const getContextErrorMessage = () => { throw new Error(SicilianErrorHeader + 'ge
 
 const Context = createContext<SicilianProviderProps<any>["value"] | undefined>(undefined)
 
-export const SicilianProvider = <T extends InitState>({ children, value }: SicilianProviderProps<T>) =>
-  <Context.Provider value={{
-    ...value,
-    FormState: value.FormState ?? polyfillWithErrorMessage("FormState"),
-    ErrorState: value.ErrorState ?? polyfillWithErrorMessage("ErrorState")
-  }}>
-    {children}
-  </Context.Provider>
+export const SicilianProvider = <T extends InitState>({ children, value }: SicilianProviderProps<T>) => <Context.Provider value={{
+  ...value,
+  getValues: value.getValues ?? polyfillWithErrorMessage("getValues"),
+  getErrors: value.getErrors ?? polyfillWithErrorMessage("getErrors")
+}}>
+  {children}
+</Context.Provider>
 
-export const useSicilianContext = () =>
-  useContext(Context) ?? getContextErrorMessage()
+export const useSicilianContext = () => useContext(Context) as Required<SicilianProviderProps<InitState>["value"]> ?? getContextErrorMessage()
+

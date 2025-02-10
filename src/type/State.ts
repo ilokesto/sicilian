@@ -2,5 +2,5 @@ import type { InitState, ExtractKeys } from ".";
 
 export type State<T extends InitState> = {
   (): T;
-  (name: ExtractKeys<T>): T[ExtractKeys<T>];
+  <K extends ExtractKeys<T>>(name: K): T[K];
 }
