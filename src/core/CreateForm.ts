@@ -53,7 +53,7 @@ export class CreateForm<T extends InitState> {
         this.ErrorStore.setStore,
         new Validate(
           this.ValueStore.getStore(),
-          this.ErrorObjStore.getStore()[name] as RegisterErrorObj<T>,
+          this.ErrorObjStore,
           this.ErrorStore.setStore
         )
       ))
@@ -62,7 +62,7 @@ export class CreateForm<T extends InitState> {
         this.validateOn,
         new Validate(
           this.ValueStore.getStore(),
-          this.ErrorObjStore.getStore()[name] as RegisterErrorObj<T>,
+          this.ErrorObjStore,
           this.ErrorStore.setStore
         )
       ))

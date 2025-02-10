@@ -1,4 +1,4 @@
-import type { InitState, RegisterErrorObj, SicilianEvent } from "../../type";
+import type { InitState, IStore, RegisterErrorObj, SicilianEvent, Validator } from "../../type";
 import { HandlerChain } from "./validateHandler/HandlerChain";
 import { HandlerFactory } from "./validateHandler/HandlerFactory";
 
@@ -11,19 +11,23 @@ export class Validate<T extends InitState> implements IValidate {
 
   constructor(
     private store: T,
-    private ErrorObj: RegisterErrorObj<T>,
+    private ErrorObjStore: IStore<Validator<T>>,
     private setError: (action: Partial<T>) => void,
   ) {
     this.handlerChain = new HandlerChain(this.setError);
   }
 
   public doValidate = ({ target: { name, value, checked } }: SicilianEvent) => {
-    if (!this.ErrorObj) return;
+    const ErrorObj = this.ErrorObjStore.getStore()[name];
 
-    Object.keys(this.ErrorObj).forEach((handlerKey) => {
+    if (!ErrorObj) return;
+
+    console.log(ErrorObj)
+
+    Object.keys(ErrorObj).forEach((handlerKey) => {
       this.handlerChain.addHandler(HandlerFactory.createHandler(handlerKey as keyof RegisterErrorObj<T>));
     })
     
-    this.handlerChain.doHandle({name, value, checked, ErrorObj: this.ErrorObj, store: this.store});
+    this.handlerChain.doHandle({name, value, checked, ErrorObj: ErrorObj, store: this.store});
   }
 }
