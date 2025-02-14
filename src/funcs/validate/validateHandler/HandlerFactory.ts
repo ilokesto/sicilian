@@ -12,7 +12,12 @@ export class HandlerFactory {
   ])
 
   static createHandler<T extends InitState>(handlerKey: keyof RegisterErrorObj<T>)  {
+    if (!this.handlerMap.has(handlerKey)) {
+      throw new Error(`"${handlerKey}" is not a valid handler key`);
+    }
+    
     const Handler = this.handlerMap.get(handlerKey)!;
-    return new Handler() as unknown as IHandler<T>
+
+    return new Handler() as IHandler<T>
   }
 }
