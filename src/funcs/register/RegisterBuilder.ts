@@ -9,12 +9,12 @@ export class RegisterBuilder<T extends InitState> {
   private RegisterOnChange?: IRegisterOnChange
   private RegisterOnFocus?: IRegisterOnFocus
   private RegisterOnBlur?: IRegisterOnBlur
-  public id?: ExtractKeys<T>
+  public id?: ExtractKeys<T> | string
   public type?: ValidInputTypes
   public value?: T[ExtractKeys<T>]
 
   constructor(
-    public name: ExtractKeys<T>,
+    public name: ExtractKeys<T> | string,
     private ErrorObjStore: IStore<Validator<T>>,
     private ErrorObj?: RegisterErrorObj<T>,
     private clearFormOn?: InitObject<T>["clearFormOn"],
@@ -33,7 +33,7 @@ export class RegisterBuilder<T extends InitState> {
     if (!this.RegisterOnChange) throw new Error("RegisterOnChange is required")
     if (!this.RegisterOnFocus) throw new Error("RegisterOnFocus is required")
     if (!this.RegisterOnBlur) throw new Error("RegisterOnBlur is required")
-    if (this.value === undefined) throw new Error("value is required")
+    if (this.value === undefined) this.value = "" as T[ExtractKeys<T>]
     
     return new Register(
       this.RegisterOnChange!,
@@ -42,7 +42,7 @@ export class RegisterBuilder<T extends InitState> {
       this.name,
       this.id!,
       this.type,
-      this.value!
+      this.value
     )
   }
 

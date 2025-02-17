@@ -9,6 +9,7 @@ import { HandleSubmitBuilder } from "../funcs/handleSubmit/HandleSubmitBuilder";
 import { getObjByKeys } from "../utils/getObjByKeys";
 import type { FormEvent } from "react";
 import { SyncState } from "../utils/SyncState";
+import type { IRegister } from "../funcs/register/Register";
 
 export class CreateForm<T extends InitState> {
   // Store 
@@ -29,14 +30,14 @@ export class CreateForm<T extends InitState> {
   public clearForm: () => void
   public handleValidate = (validator: Partial<Record<keyof T, RegisterErrorObj<T>>>) => validator
 
-  constructor({ initValue, validator, validateOn, clearFormOn }: InitObject<T>) {
+  constructor({ initValue = {} as T, validator, validateOn, clearFormOn }: InitObject<T>) {
     this.ValueStore = new Store(initValue)
     this.ErrorStore = new Store(getObjByKeys(initValue, ""))
     this.ErrorObjStore = new Store(validator ?? {})
     this.validateOn = validateOn ?? []
     this.clearFormOn = clearFormOn ?? []
-    this.getValues = (name?: ExtractKeys<T>) => SyncState.doSync(this.ValueStore, name)
-    this.getErrors = (name?: ExtractKeys<T>) => SyncState.doSync(this.ErrorStore, name)
+    this.getValues = (name?: ExtractKeys<T> | string) => SyncState.doSync(this.ValueStore, name)
+    this.getErrors = (name?: ExtractKeys<T> | string) => SyncState.doSync(this.ErrorStore, name)
     this.setValues = this.ValueStore.setStore
     this.setErrors = this.ErrorStore.setStore as IStore<{ [key in keyof T]: string }>["setStore"]
     this.initValue = initValue
@@ -45,7 +46,7 @@ export class CreateForm<T extends InitState> {
     }
   }
 
-  public register = ({ name, validate, type = "text" }: {name: ExtractKeys<T>, validate?: RegisterErrorObj<T>, type?: ValidInputTypes}) =>
+  public register : TRegister<T> = ({ name, validate, type = "text" }: {name: ExtractKeys<T> | string, validate?: RegisterErrorObj<T>, type?: ValidInputTypes}): IRegister<T> =>
     new RegisterBuilder(name, this.ErrorObjStore, validate, this.clearFormOn, this.clearForm)
       .setRegisterOnChange(new RegisterOnChange(
         this.validateOn,
@@ -66,7 +67,7 @@ export class CreateForm<T extends InitState> {
           this.ErrorStore.setStore
         )
       ))
-      .setValue(this.getValues(name))
+      .setValue(this.getValues(name) as T[ExtractKeys<T>])
       .setType(type)
       .build()
 
@@ -80,4 +81,9 @@ export class CreateForm<T extends InitState> {
       .setValidateOn(this.validateOn)
       .build()
       .doHandle(e)
+}
+
+type TRegister<T extends InitState> = {
+  <K extends ExtractKeys<T>>(params: { name: K; validate?: RegisterErrorObj<T>; type?: ValidInputTypes }): IRegister<T>,
+  (params: { name: string; validate?: RegisterErrorObj<T>; type?: ValidInputTypes }): IRegister<T>;
 }

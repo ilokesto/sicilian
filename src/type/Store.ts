@@ -11,7 +11,7 @@ export type InitState = {
 };
 
 export type InitObject<T extends InitState> = {
-  initValue: T,
+  initValue?: T,
   validateOn?: Array<"blur" | "submit" | "change">,
   validator?: Validator<T>,
   clearFormOn?: Array<"submit" | "routeChange">

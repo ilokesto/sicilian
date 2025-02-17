@@ -7,8 +7,8 @@ export interface IRegister<T extends InitState> {
   onChange: (e: SicilianEvent) => void
   onFocus: (e: SicilianEvent) => void
   onBlur: (e: SicilianEvent) => void
-  name: ExtractKeys<T>
-  id: ExtractKeys<T>
+  name: ExtractKeys<T> | string
+  id: ExtractKeys<T> | string
   type: HTMLInputElement["type"]
   value?: string
   checked?: boolean
@@ -25,8 +25,8 @@ export class Register<T extends InitState> implements IRegister<T> {
     RegisterOnChange: IRegisterOnChange,
     RegisterOnFocus: IRegisterOnFocus,
     RegisterOnBlur: IRegisterOnBlur,
-    public name: ExtractKeys<T>,
-    public id: ExtractKeys<T>,
+    public name: ExtractKeys<T> | string,
+    public id: ExtractKeys<T> | string,
     public type: HTMLInputElement["type"] = "text",
     value: T[ExtractKeys<T>],
   ) {
@@ -35,6 +35,8 @@ export class Register<T extends InitState> implements IRegister<T> {
     this.#RegisterOnBlur = RegisterOnBlur
 
     if (type === "checkbox") {
+      this.checked = value as boolean
+    } else if (type === "radio") {
       this.checked = value as boolean
     } else if (type === "file") {
   
