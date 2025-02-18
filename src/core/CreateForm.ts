@@ -30,7 +30,9 @@ export class CreateForm<T extends InitState> {
   public clearForm: () => void
   public handleValidate = (validator: Partial<Record<keyof T, RegisterErrorObj<T>>>) => validator
 
-  constructor({ initValue = {} as T, validator, validateOn, clearFormOn }: InitObject<T>) {
+  constructor(props?: InitObject<T>) {
+    const { initValue = {} as T, validator, validateOn, clearFormOn } = props ?? {}
+
     this.ValueStore = new Store(initValue)
     this.ErrorStore = new Store(getObjByKeys(initValue, ""))
     this.ErrorObjStore = new Store(validator ?? {})
