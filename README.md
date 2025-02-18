@@ -38,9 +38,12 @@ Sicilian was developed to address these inconveniences by operating based on glo
 
 # What's new in sicilian@3.0.0
 
-* The playDragon function has been replaced with the CreateForm class, which now accepts a single object as an argument with initValue as its property.
-* Sicilian now supports all types of input, including type="checkbox" and type="file". To achieve this, 'checked' has been added to validate, allowing validation to check whether an input is in a checked state.
-* 'change' has been added to validateOn. This allows input values to be validated whenever the onChange event is triggered. However, using this method may impose a performance burden on the application, so caution is advised.
+* The playDragon function has been changed to the CreateForm class.
+* Previously, initValue was required, but now all parameters of the CreateForm class can be provided optionally.
+* Until now, sicilian only handled text-based input types. However, starting from version 3, it supports all types of inputs, including type="checkbox" and type="file". To accommodate this, validate now includes a checked property to verify whether an input is checked.
+* InitValue is now optional, the parameters of the register function have been modified. More details on this will be covered below.
+* The validateOn option now includes 'change'. This allows input values to be validated whenever the onChange event is triggered. However, this approach may put a load on the application, so it should be used with caution.
+* The function names for managing form state and error state have been changed from setForm, FormState, setError, and ErrorState to getValues, setValues, getErrors, and setErrors, respectively.
 
 
 &nbsp;
@@ -60,13 +63,12 @@ import { SicilianProvider, useSicilianContext } from "sicilian/provider";
 
 # CreateForm
 
-The CreateForm class takes an initialization object that includes initValue and generates a formController object, which is essential for managing form state. Sicilian provides opt-in features through the validator, validateOn, and clearFormOn properties of the initialization object.
+The CreateForm class takes an initialization object and generates a formController object, which is necessary for managing form state. sicilian provides opt-in features through the initValue, validator, validateOn, and clearFormOn properties of the initialization object.
 
-* validator: Specifies how to validate each input value.
-* validateOn: Defines when the specified validation method should be applied.
-* clearFormOn: Automatically resets the form at a predetermined time.
-
-The formController object contains various properties and methods required for managing form state. Each method will be discussed in detail in the following sections.
+* initValue: Used when an input needs an initial value.
+* validator: Specifies how to validate each input value. More details on each validation method will be covered below.
+* validateOn: Defines when validation should be applied. Currently, input values can be validated when the form is submitted ("submit"), when the input loses focus ("blur"), or when the input changes ("change"). It is also possible to apply multiple validation triggers simultaneously by passing an array.
+* clearFormOn: Unlike other form management libraries, sicilian retains user input even when navigating to a different page. Therefore, if a form needs to be reset in certain situations, clearFormOn can be used. The currently supported reset triggers are when the form is submitted ("submit") and when the route changes ("routeChange"). Like validateOn, multiple reset triggers can be applied simultaneously using an array.
 
 ```ts
 const signUpFormController = new CreateForm({
@@ -88,7 +90,11 @@ const signUpFormController = new CreateForm({
   validateOn: ["submit", "blur", "change"],
   clearFormOn: ["submit", "routeChange"]
 });
+```
 
+The formController instance obtained through the CreateForm class includes various properties and methods that help manage the form state. The following sections will provide a detailed explanation of each property and method and their respective functionalities.
+
+```ts
 const {
   initValue,
   register,
@@ -103,15 +109,32 @@ const {
 
 ## register
 
-The register function returns an object containing various values and methods for managing <input> and <textarea> elements. This function takes an object as an argument, where the name property is required to specify the input, while the type property (for handling input types) and the validate object (for input value validation) are optional.
+The register function returns an object that contains various values and methods for managing input and textarea tags. This function takes an object as an argument, and the name property, which specifies the input, is required. The type property for handling the input type and the validate object for validating the input value are optional.
 
-Thanks to the initValue property provided to the CreateForm class, TypeScript can infer the possible values for the name property in register. As a result, when using TypeScript, the IDE can suggest valid name strings for autocompletion.
+```ts
+function register(
+  props: {
+    name: string,
+    validate?: RegisterErrorObj,
+    type?: ValidInputTypes
+  }): {
+    id: string,
+    name: string,
+    value?: string,
+    checked?: boolean,
+    onBlur: (e: SicilianEvent) => void,
+    onFocus: (e: SicilianEvent) => void,
+    onChange: (e: SicilianEvent) => void,
+  }
+```
 
-<img width="771" alt="image" src="https://img1.daumcdn.net/thumb/R1600x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FdOfzxt%2FbtsJyt53cBr%2FOJdLcO955AesVrOYInrLA1%2Fimg.png">
+If the CreateForm class provides initValue or validator properties, TypeScript will infer the possible name values. If you are using TypeScript, you can get suggested name strings through your IDE.
 
-Additionally, if you enter an incorrect input name, a type error will occur. This ensures that inputs can be managed reliably.
+<img width="771" alt="image" src="https://img1.daumcdn.net/thumb/R1600x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FLFHIF%2FbtsMohmyAAl%2FKEokgRpkpyDl6aBbcbOv5k%2Fimg.png">
 
-<img width="771" alt="image" src="https://img1.daumcdn.net/thumb/R1600x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fcdvh21%2FbtsJx6J157y%2Flix7SubLJa6kPqbqF9h4d1%2Fimg.png">
+Although the nickname field is not included in initValue or validator, it can still be registered without issues. Since all parameters in CreateForm are optional, fields that are not explicitly defined will still work properly. This allows for flexible form handling without needing to predefine every input field.
+
+<img width="771" alt="image" src="https://img1.daumcdn.net/thumb/R1600x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FwA8VV%2FbtsMmcm5wp8%2FImz4n4kYcKhIiE2BHknJK0%2Fimg.png">
 
 
 &nbsp;
