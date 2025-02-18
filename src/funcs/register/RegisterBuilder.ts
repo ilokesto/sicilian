@@ -9,6 +9,7 @@ export class RegisterBuilder<T extends InitState> {
   private RegisterOnChange?: IRegisterOnChange
   private RegisterOnFocus?: IRegisterOnFocus
   private RegisterOnBlur?: IRegisterOnBlur
+  private setStore?: IStore<T>["setStore"]
   public id?: ExtractKeys<T> | string
   public type?: ValidInputTypes
   public value?: T[ExtractKeys<T>]
@@ -33,6 +34,7 @@ export class RegisterBuilder<T extends InitState> {
     if (!this.RegisterOnChange) throw new Error("RegisterOnChange is required")
     if (!this.RegisterOnFocus) throw new Error("RegisterOnFocus is required")
     if (!this.RegisterOnBlur) throw new Error("RegisterOnBlur is required")
+    if (!this.setStore) throw new Error("setStore is required")
     if (this.value === undefined) this.value = "" as T[ExtractKeys<T>]
     
     return new Register(
@@ -42,6 +44,7 @@ export class RegisterBuilder<T extends InitState> {
       this.name,
       this.id!,
       this.type,
+      this.setStore,
       this.value
     )
   }
@@ -58,6 +61,11 @@ export class RegisterBuilder<T extends InitState> {
 
   public setRegisterOnBlur(registerOnBlur: IRegisterOnBlur) {
     this.RegisterOnBlur = registerOnBlur
+    return this
+  }
+
+  public setSetStore(setter: IStore<T>["setStore"]) {
+    this.setStore = setter
     return this
   }
 

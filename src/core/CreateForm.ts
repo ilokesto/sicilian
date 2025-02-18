@@ -69,6 +69,7 @@ export class CreateForm<T extends InitState> {
           this.ErrorStore.setStore
         )
       ))
+      .setSetStore(this.ValueStore.setStore)
       .setValue(this.getValues(name) as T[ExtractKeys<T>])
       .setType(type)
       .build()

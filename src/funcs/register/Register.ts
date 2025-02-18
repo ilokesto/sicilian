@@ -1,4 +1,5 @@
-import type { ExtractKeys, InitState, SicilianEvent } from "../../type";
+import { useEffect } from "react";
+import type { ExtractKeys, InitState, IStore, SicilianEvent } from "../../type";
 import type { IRegisterOnBlur } from "./RegisterOnBlur";
 import type { IRegisterOnChange } from "./RegisterOnChange";
 import type { IRegisterOnFocus } from "./RegisterOnFocus";
@@ -28,11 +29,16 @@ export class Register<T extends InitState> implements IRegister<T> {
     public name: ExtractKeys<T> | string,
     public id: ExtractKeys<T> | string,
     public type: HTMLInputElement["type"] = "text",
+    setStore: IStore<T>["setStore"],
     value: T[ExtractKeys<T>],
   ) {
     this.#RegisterOnChange = RegisterOnChange
     this.#RegisterOnFocus = RegisterOnFocus
     this.#RegisterOnBlur = RegisterOnBlur
+
+    useEffect(() => {
+      setStore({ [name]: value } as unknown as Partial<T>)
+    }, [])
 
     if (type === "checkbox") {
       this.checked = value as boolean
