@@ -30,6 +30,7 @@ export class Register<T extends InitState> implements IRegister<T> {
     public id: ExtractKeys<T> | string,
     public type: HTMLInputElement["type"] = "text",
     setStore: IStore<T>["setStore"],
+    getStore: IStore<T>["getStore"],
     value: T[ExtractKeys<T>],
   ) {
     this.#RegisterOnChange = RegisterOnChange
@@ -37,6 +38,7 @@ export class Register<T extends InitState> implements IRegister<T> {
     this.#RegisterOnBlur = RegisterOnBlur
 
     useEffect(() => {
+      if (getStore()[name]) return
       setStore({ [name]: value } as unknown as Partial<T>)
     }, [])
 

@@ -70,6 +70,7 @@ export class CreateForm<T extends InitState> {
         )
       ))
       .setSetStore(this.ValueStore.setStore)
+      .setGetStore(this.ValueStore.getStore)
       .setValue(this.getValues(name) as T[ExtractKeys<T>])
       .setType(type)
       .build()
