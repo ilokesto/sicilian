@@ -2,15 +2,24 @@ import { useEffect } from "react";
 
 export const usePageNavigation = (callback: any): void => {
   switch (true) {
-    case isReactRouter(): // React Router용 로직
+    case isReactRouterDom(): // React Router Dom용 로직
       try {
         const { pathname } = require("react-router-dom").useLocation();
-
         useEffect(() => {
           callback();
         }, [pathname]);
       } catch {}
       break;
+
+      case isReactRouter(): // React Router용 로직
+        try {
+          const { pathname } = window.location;
+          useEffect(() => {
+            callback();
+          }, [pathname]);
+        } catch {
+        }
+        break;
 
       case isAppRouter(): // Next.js App Router용 로직 + 13버전 이상
         try {
@@ -55,9 +64,18 @@ function isPageRouter(): boolean {
   }
 };
 
-function isReactRouter(): boolean {
+function isReactRouterDom(): boolean {
   try {
     require("react-router-dom");
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function isReactRouter(): boolean {
+  try {
+    require("react-router");
     return true;
   } catch {
     return false;

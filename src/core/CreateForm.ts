@@ -45,6 +45,7 @@ export class CreateForm<T extends InitState> {
     this.initValue = initValue
     this.clearForm = () => {
       this.setValues(this.initValue)
+      this.setErrors(getObjByKeys(this.initValue, ""))
     }
   }
 
