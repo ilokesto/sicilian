@@ -7,7 +7,7 @@
 
 &nbsp;
 
-[official documents(en/ko)]([https://lackluster.tistory.com/70](https://sicilian-nextra.vercel.app/en))
+[Official documents](https://sicilian-nextra.vercel.app/en)
 
 &nbsp;
 
