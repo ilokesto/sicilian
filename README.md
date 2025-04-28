@@ -7,7 +7,7 @@
 
 &nbsp;
 
-[Sicilian Korean Docs / 한국어 공식 문서](https://lackluster.tistory.com/70)
+[official documents(en/ko)]([https://lackluster.tistory.com/70](https://sicilian-nextra.vercel.app/en))
 
 &nbsp;
 
