@@ -1,4 +1,5 @@
-![sicilian](https://github.com/user-attachments/assets/8b31fafe-108f-4d2e-a1f4-0b1b53fc049a)
+![sicilian](https://github.com/user-attachments/assets/a6d12ab5-ecfd-4671-a286-b286dd3d454d)
+
 
 [![Build Size](https://img.shields.io/bundlephobia/minzip/sicilian?label=bundle%20size&style=flat&colorA=000000&colorB=000000)](https://bundlephobia.com/result?p=sicilian)
 [![Version](https://img.shields.io/npm/v/sicilian?style=flat&colorA=000000&colorB=000000)](https://www.npmjs.com/package/sicilian)
