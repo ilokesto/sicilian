@@ -1,4 +1,4 @@
-import type { ExtractKeys, InitObject, InitState, IStore, RegisterErrorObj, State, Validator, ValidInputTypes } from "../type";
+import type { ExtractKeys, InitObject, InitState, IStore, RegisterErrorObj, Schema, State, Validator, ValidInputTypes } from "../type";
 import { Store } from "./Store";
 import { RegisterOnFocus } from "../funcs/register/RegisterOnFocus";
 import { RegisterOnChange } from "../funcs/register/RegisterOnChange";
@@ -17,6 +17,8 @@ export class CreateForm<T extends InitState> {
   private ErrorStore: IStore<T>
   private ErrorObjStore: IStore<Validator<T>>
 
+  private SchemaStore: IStore<Schema<T> | undefined>
+
   // Config
   private validateOn: InitObject<T>["validateOn"]
   private clearFormOn: InitObject<T>["clearFormOn"]
@@ -31,11 +33,12 @@ export class CreateForm<T extends InitState> {
   public handleValidate = (validator: Partial<Record<keyof T, RegisterErrorObj<T>>>) => validator
 
   constructor(props?: InitObject<T>) {
-    const { initValue = {} as T, validator, validateOn, clearFormOn } = props ?? {}
+    const { initValue = {} as T, validator, schema, validateOn, clearFormOn } = props ?? {}
 
     this.ValueStore = new Store(initValue)
     this.ErrorStore = new Store(getObjByKeys(initValue, ""))
     this.ErrorObjStore = new Store(validator ?? {})
+    this.SchemaStore = new Store(schema);
     this.validateOn = validateOn ?? []
     this.clearFormOn = clearFormOn ?? []
     this.getValues = (name?: ExtractKeys<T> | string) => SyncState.doSync(this.ValueStore, name)
@@ -58,7 +61,8 @@ export class CreateForm<T extends InitState> {
         new Validate(
           this.ValueStore.getStore(),
           this.ErrorObjStore,
-          this.ErrorStore.setStore
+          this.ErrorStore.setStore,
+          this.SchemaStore
         )
       ))
       .setRegisterOnFocus(new RegisterOnFocus(this.ErrorStore.setStore))
@@ -67,7 +71,8 @@ export class CreateForm<T extends InitState> {
         new Validate(
           this.ValueStore.getStore(),
           this.ErrorObjStore,
-          this.ErrorStore.setStore
+          this.ErrorStore.setStore,
+          this.SchemaStore
         )
       ))
       .setSetStore(this.ValueStore.setStore)

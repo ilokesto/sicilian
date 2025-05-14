@@ -19,6 +19,7 @@ export class Register<T extends InitState> implements IRegister<T> {
   #RegisterOnChange: IRegisterOnChange
   #RegisterOnFocus: IRegisterOnFocus
   #RegisterOnBlur: IRegisterOnBlur
+  #radioValue: string
   public value?: string
   public checked?: boolean
 
@@ -32,11 +33,12 @@ export class Register<T extends InitState> implements IRegister<T> {
     setStore: IStore<T>["setStore"],
     getStore: IStore<T>["getStore"],
     value: T[ExtractKeys<T>],
-    private radioValue: string,
+    radioValue: string,
   ) {
     this.#RegisterOnChange = RegisterOnChange
     this.#RegisterOnFocus = RegisterOnFocus
     this.#RegisterOnBlur = RegisterOnBlur
+    this.#radioValue = radioValue
 
     useEffect(() => {
       if (getStore()[name]) return
@@ -46,8 +48,8 @@ export class Register<T extends InitState> implements IRegister<T> {
     if (type === "checkbox") {
       this.checked = value as boolean
     } else if (type === "radio") {
-      this.checked = value === this.radioValue
-      this.value = this.radioValue
+      this.checked = value === this.#radioValue
+      this.value = this.#radioValue
     } else if (type === "file") {
   
     } else {

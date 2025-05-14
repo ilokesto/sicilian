@@ -1,4 +1,4 @@
-import type { Validator } from ".";
+import type { Validator,Schema } from ".";
 
 export interface IStore<T> {
   getStore: () => T;
@@ -14,6 +14,7 @@ export type InitObject<T extends InitState> = {
   initValue?: T,
   validateOn?: Array<"blur" | "submit" | "change">,
   validator?: Validator<T>,
+  schema?: Schema<T>,
   clearFormOn?: Array<"submit" | "routeChange">
 }
 
