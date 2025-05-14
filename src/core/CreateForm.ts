@@ -49,8 +49,8 @@ export class CreateForm<T extends InitState> {
     }
   }
 
-  public register : TRegister<T> = ({ name, validate, type = "text" }: {name: ExtractKeys<T> | string, validate?: RegisterErrorObj<T>, type?: ValidInputTypes}): IRegister<T> =>
-    new RegisterBuilder(name, this.ErrorObjStore, validate, this.clearFormOn, this.clearForm)
+  public register : TRegister<T> = ({ name, validate, type = "text", value }: {name: ExtractKeys<T> | string, validate?: RegisterErrorObj<T>, type?: ValidInputTypes, value?: string}): IRegister<T> =>
+    new RegisterBuilder(name, value, this.ErrorObjStore, validate, this.clearFormOn, this.clearForm)
       .setRegisterOnChange(new RegisterOnChange(
         this.validateOn,
         this.ValueStore.setStore,
@@ -89,6 +89,13 @@ export class CreateForm<T extends InitState> {
 }
 
 type TRegister<T extends InitState> = {
-  <K extends ExtractKeys<T>>(params: { name: K; validate?: RegisterErrorObj<T>; type?: ValidInputTypes }): IRegister<T>,
-  (params: { name: string; validate?: RegisterErrorObj<T>; type?: ValidInputTypes }): IRegister<T>;
+  // radio 타입일 경우 - ExtractKeys<T> 버전
+  <K extends ExtractKeys<T>>(params: { name: K; validate?: RegisterErrorObj<T>; type: 'radio'; value: string}): IRegister<T>,
+  // radio 타입이 아닌 경우 - ExtractKeys<T> 버전
+  <K extends ExtractKeys<T>>(params: { name: K; validate?: RegisterErrorObj<T>; type?: Exclude<ValidInputTypes, 'radio'> }): IRegister<T>,
+  
+  // radio 타입일 경우 - string 버전
+  (params: { name: string; validate?: RegisterErrorObj<T>; type: 'radio'; value: string }): IRegister<T>,
+  // radio 타입이 아닌 경우 - string 버전
+  (params: { name: string; validate?: RegisterErrorObj<T>; type?: Exclude<ValidInputTypes, 'radio'> }): IRegister<T>;
 }

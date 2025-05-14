@@ -17,6 +17,7 @@ export class RegisterBuilder<T extends InitState> {
 
   constructor(
     public name: ExtractKeys<T> | string,
+    private radioValue: string = "",
     private ErrorObjStore: IStore<Validator<T>>,
     private ErrorObj?: RegisterErrorObj<T>,
     private clearFormOn?: InitObject<T>["clearFormOn"],
@@ -48,7 +49,8 @@ export class RegisterBuilder<T extends InitState> {
       this.type,
       this.setStore,
       this.getStore,
-      this.value
+      this.value,
+      this.radioValue
     )
   }
 

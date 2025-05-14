@@ -32,6 +32,7 @@ export class Register<T extends InitState> implements IRegister<T> {
     setStore: IStore<T>["setStore"],
     getStore: IStore<T>["getStore"],
     value: T[ExtractKeys<T>],
+    private radioValue: string,
   ) {
     this.#RegisterOnChange = RegisterOnChange
     this.#RegisterOnFocus = RegisterOnFocus
@@ -45,7 +46,8 @@ export class Register<T extends InitState> implements IRegister<T> {
     if (type === "checkbox") {
       this.checked = value as boolean
     } else if (type === "radio") {
-      this.checked = value as boolean
+      this.checked = value === this.radioValue
+      this.value = this.radioValue
     } else if (type === "file") {
   
     } else {
