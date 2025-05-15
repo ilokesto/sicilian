@@ -91,17 +91,17 @@ export class RegExpHandler<T extends InitState> implements IHandler<T> {
 }
 
 export class CustomHandler<T extends InitState> implements IHandler<T> {
-  public handle({value, ErrorObj, name, store}: HandleMethodProps<T>) {
+  public handle({value, ErrorObj, checked, name, store}: HandleMethodProps<T>) {
     if (!store) return null;
 
     if (isArray(ErrorObj.custom!)) {
       for (const customChecker of ErrorObj.custom!) {
-        if (!customChecker.checkFn(value, store)) {
+        if (!customChecker.checkFn(value, store, checked)) {
           return customChecker.message ?? `${name}의 값이 검증 함수를 만족하지 않습니다.`
         }
       }
     } else {
-      if (!ErrorObj.custom!.checkFn(value, store)) {
+      if (!ErrorObj.custom!.checkFn(value, store, checked)) {
         return ErrorObj.custom!.message ?? `${name}의 값이 검증 함수를 만족하지 않습니다.`
       }
     }

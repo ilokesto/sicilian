@@ -15,6 +15,14 @@
     "./useForm": {
       "import": "./dist/useForm.js",
       "types": "./dist/useForm.d.ts"
+    },
+    "./resolver": {
+      "import": "./dist/resolver.js",
+      "types": "./dist/resolver.d.ts"
+    },
+    "./utils": {
+      "import": "./dist/utils.js",
+      "types": "./dist/utils.d.ts"
     }
   },
   "files": [
@@ -37,7 +45,10 @@
   "license": "MIT",
   "description": "",
   "peerDependencies": {
-    "react": ">=18.0.0"
+    "react": ">=18.0.0",
+    "zod": ">=3.0.0",
+    "yup": ">=1.0.0",
+    "superstruct": ">=2.0.0"
   },
   "devDependencies": {
     "@types/node": "^22.9.0",

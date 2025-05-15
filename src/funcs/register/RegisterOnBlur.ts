@@ -1,5 +1,4 @@
-import type { InitObject, InitState, SicilianEvent } from "../../type"
-import type { IValidate } from "../validate/Validate"
+import type { InitObject, InitState, SicilianEvent, IValidate } from "../../type"
 
 export interface IRegisterOnBlur {
   onBlur: (e: SicilianEvent) => void

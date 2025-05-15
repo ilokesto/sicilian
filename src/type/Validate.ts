@@ -1,5 +1,8 @@
-import type { InitState } from ".";
+import type { InitState, SicilianEvent } from ".";
 
+export interface IValidate {
+  doValidate: (e: SicilianEvent) => void;
+}
 export type Validator<T extends InitState> = Partial<Record<keyof T, RegisterErrorObj<T>>>;
 
 export type RegisterErrorObj<T extends InitState> = {
@@ -13,6 +16,6 @@ export type RegisterErrorObj<T extends InitState> = {
 
 type RegExpErrorObj = { RegExp: RegExp; message?: string };
 type CustomCheckerErrorObj<T extends InitState> = {
-  checkFn: (value: string, store: T) => boolean;
+  checkFn: (value: string, store: T & { [x: string]: string | boolean | FileList }, checked?: boolean) => boolean;
   message?: string;
 };

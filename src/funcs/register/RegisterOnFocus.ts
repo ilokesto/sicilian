@@ -10,6 +10,6 @@ export class RegisterOnFocus<T extends InitState> implements IRegisterOnFocus {
   ) {}
 
   public onFocus = ({ target: { name }}: SicilianEvent) => {
-    this.setErrorStore({ [name]: "" } as Partial<T>);
+    this.setErrorStore({ [name]: "" } as Partial<T> & { [x: string]: string | boolean | FileList });
   }
 }
