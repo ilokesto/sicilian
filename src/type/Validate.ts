@@ -14,8 +14,8 @@ export type RegisterErrorObj<T extends InitState> = {
   custom?: CustomCheckerErrorObj<T> | Array<CustomCheckerErrorObj<T>>;
 };
 
-type RegExpErrorObj = { RegExp: RegExp; message: string };
+type RegExpErrorObj = { RegExp: RegExp; message?: string };
 type CustomCheckerErrorObj<T extends InitState> = {
-  checkFn: (value: string, store: T, checked?: boolean) => boolean;
-  message: string;
+  checkFn: (value: string, store: T & { [x: string]: string | boolean | FileList }, checked?: boolean) => boolean;
+  message?: string;
 };
