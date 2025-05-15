@@ -6,7 +6,7 @@ export class Validate<T extends InitState> implements IValidate {
   private handlerChain: HandlerChain<T>;
 
   constructor(
-    private store: T,
+    private store: IStore<T>,
     private ErrorObjStore: IStore<Validator<T>>,
     private setError: (action: Partial<T>) => void,
     private resolver: Resolver<T> | undefined
@@ -16,9 +16,10 @@ export class Validate<T extends InitState> implements IValidate {
 
   public doValidate = ({ target: { name, value, checked } }: SicilianEvent) => {
     const ErrorObj = this.ErrorObjStore.getStore()[name];
-
-    if (this.resolver && !this.resolver.validate(value as T[ExtractKeys<T>], name)) {
-      this.setError({ [name]: this.resolver.formatError(value as T[ExtractKeys<T>], name) ?? "" } as Partial<T>);
+    const storeValue = this.store.getStore()[name];
+    
+    if (this.resolver && !this.resolver.validate(storeValue as T[ExtractKeys<T>], name)) {
+      this.setError({ [name]: this.resolver.formatError(storeValue as T[ExtractKeys<T>], name) ?? "" } as Partial<T>);
       return;
     }
 
@@ -27,7 +28,7 @@ export class Validate<T extends InitState> implements IValidate {
         this.handlerChain.addHandler(HandlerFactory.createHandler(handlerKey as keyof RegisterErrorObj<T>));
       })
 
-      this.handlerChain.doHandle({name, value, checked, ErrorObj: ErrorObj, store: this.store});
+      this.handlerChain.doHandle({name, value, checked, ErrorObj: ErrorObj, store: this.store.getStore()});
     }
   }
 }

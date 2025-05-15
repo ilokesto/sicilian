@@ -46,7 +46,8 @@ export class Register<T extends InitState> implements IRegister<T> {
     }, [])
 
     if (type === "checkbox") {
-      this.checked = value as boolean
+      this.checked = value as boolean;
+      this.value = value as unknown as string
     } else if (type === "radio") {
       this.checked = value === this.#radioValue
       this.value = this.#radioValue

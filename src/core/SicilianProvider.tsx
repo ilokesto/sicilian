@@ -11,8 +11,8 @@ export type SicilianProviderProps<T extends InitState> = {
     validate?: RegisterErrorObj<T>,
     name: ExtractKeys<T>,
     type?: ValidInputTypes,
-    getValues?: State<T>,
-    getErrors?: State<{ [key in keyof T]: string }>,
+    getValues?: State<T, unknown>,
+    getErrors?: State<{ [key in keyof T]: string }, string>,
   }
 }
 

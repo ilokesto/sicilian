@@ -1,12 +1,38 @@
+import { z } from "zod";
 import { type InitState, type Resolver, type ValidateSchema } from "../../type";
 import * as yup from "yup";
 
+// export function zodResolver<T extends InitState>(schema: ValidateSchema<T>["zod"]): Resolver<T> {
+//   return {
+//     validate: (state, name) => schema.shape[name].safeParse(state).success,
+//     formatError: (state, name) => schema.shape[name].safeParse(state).error?.format()?._errors[0] ?? "",
+//   };
+// };
+
 export function zodResolver<T extends InitState>(schema: ValidateSchema<T>["zod"]): Resolver<T> {
   return {
-    validate: (state, name) => schema.shape[name].safeParse(state).success,
-    formatError: (state, name) => schema.shape[name].safeParse(state).error?.format()?._errors[0] ?? "",
+    validate: (state, name) => {
+      // 스키마에서 해당 필드의 유효성 검사
+      const fieldSchema = getFieldSchema(schema, name);
+
+      return fieldSchema.safeParse(state).success;
+
+    },
+    formatError: (state, name) => {
+      // 오류 메시지 형식 지정
+      const fieldSchema = getFieldSchema(schema, name);
+
+      return fieldSchema.safeParse(state).error?.format()?._errors?.[0] ?? "";
+    },
   };
 };
+
+// 스키마에서 필드 스키마 가져오는 헬퍼 함수
+function getFieldSchema<T extends InitState>(schema: ValidateSchema<T>["zod"], name: string) {
+  // ZodEffects(예: schema.transform()된 경우)인지 확인하고 내부 스키마 가져오기
+  const actualSchema = schema instanceof z.ZodEffects ? schema._def?.schema : schema;
+  return actualSchema.shape?.[name];
+}
 
 // yup 스키마 래퍼
 export function yupResolver<T extends InitState>(schema: ValidateSchema<T>["yup"]): Resolver<T> {

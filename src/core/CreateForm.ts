@@ -59,7 +59,7 @@ export class CreateForm<T extends InitState> {
         this.ValueStore.setStore,
         this.ErrorStore.setStore,
         new Validate(
-          this.ValueStore.getStore(),
+          this.ValueStore,
           this.ErrorObjStore,
           this.ErrorStore.setStore,
           this.resolver
@@ -69,7 +69,7 @@ export class CreateForm<T extends InitState> {
       .setRegisterOnBlur(new RegisterOnBlur(
         this.validateOn,
         new Validate(
-          this.ValueStore.getStore(),
+          this.ValueStore,
           this.ErrorObjStore,
           this.ErrorStore.setStore,
           this.resolver

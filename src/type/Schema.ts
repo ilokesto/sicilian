@@ -7,7 +7,9 @@ import type { ExtractKeys } from "./utils";
 export type Schema<T extends InitState> = ValidateSchema<T>[keyof ValidateSchema<T>]
 
 export type ValidateSchema<T extends InitState> = {
-  zod: z.ZodObject<z.ZodRawShape, z.UnknownKeysParam, z.ZodTypeAny, T>;
+  zod:
+    | z.ZodObject<z.ZodRawShape, z.UnknownKeysParam, z.ZodTypeAny, T>
+    | z.ZodEffects<z.ZodObject<z.ZodRawShape, z.UnknownKeysParam, z.ZodTypeAny, T>>;
   yup: yup.ObjectSchema<T>;
   superstruct: Struct<T>;
 }
