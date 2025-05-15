@@ -1,7 +1,7 @@
-import { isSuperstructSchema, isYupSchema, isZodSchema, type InitState, type Schema, type SchemaValidator, type ValidateSchema } from "../../type";
+import { type InitState, type Resolver, type ValidateSchema } from "../../type";
 import * as yup from "yup";
 
-function zodValidator<T extends InitState>(schema: ValidateSchema<T>["zod"]): SchemaValidator {
+export function zodResolver<T extends InitState>(schema: ValidateSchema<T>["zod"]): Resolver<T> {
   return {
     validate: (state, name) => schema.shape[name].safeParse(state).success,
     formatError: (state, name) => schema.shape[name].safeParse(state).error?.format()?._errors[0] ?? "",
@@ -9,7 +9,8 @@ function zodValidator<T extends InitState>(schema: ValidateSchema<T>["zod"]): Sc
 };
 
 // yup 스키마 래퍼
-function yupValidator<T extends InitState>(schema: ValidateSchema<T>["yup"]): SchemaValidator {
+export function yupResolver<T extends InitState>(schema: ValidateSchema<T>["yup"]): Resolver<T> {
+  // yup 스키마를 사용하여 validate 및 formatError 메서드를 구현합니다.{
   return {
     validate: (state, name) => {
       try {
@@ -30,7 +31,7 @@ function yupValidator<T extends InitState>(schema: ValidateSchema<T>["yup"]): Sc
   };
 }
 
-function superstructValidator<T extends InitState>(schema: ValidateSchema<T>["superstruct"]): SchemaValidator {
+export function superstructResolver<T extends InitState>(schema: ValidateSchema<T>["superstruct"]): Resolver<T> {
   const { validate: ssValidate, object } = require("superstruct");
 
   return {
@@ -74,17 +75,4 @@ function superstructValidator<T extends InitState>(schema: ValidateSchema<T>["su
       }
     }
   };
-}
-
-// 수정된 함수
-export function getSchemaValidator<T extends InitState>(validator: Schema<T>) {
-  if (isZodSchema<T>(validator)) {
-    return zodValidator(validator);
-  } else if (isYupSchema<T>(validator)) {
-    return yupValidator(validator);
-  } else if (isSuperstructSchema<T>(validator)) {
-    return superstructValidator(validator);
-  } else {
-    throw new Error("Unsupported validation library");  
-  }
 }

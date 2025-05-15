@@ -15,6 +15,10 @@
     "./useForm": {
       "import": "./dist/useForm.js",
       "types": "./dist/useForm.d.ts"
+    },
+    "./resolver": {
+      "import": "./dist/resolver.js",
+      "types": "./dist/resolver.d.ts"
     }
   },
   "files": [
