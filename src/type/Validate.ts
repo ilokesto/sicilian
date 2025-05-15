@@ -1,5 +1,8 @@
-import type { InitState } from ".";
+import type { InitState, SicilianEvent } from ".";
 
+export interface IValidate {
+  doValidate: (e: SicilianEvent) => void;
+}
 export type Validator<T extends InitState> = Partial<Record<keyof T, RegisterErrorObj<T>>>;
 
 export type RegisterErrorObj<T extends InitState> = {

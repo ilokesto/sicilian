@@ -1,5 +1,4 @@
-import type { InitState, InitObject, IStore, SicilianEvent } from "../../type";
-import type { IValidate } from "../validate/Validate";
+import type { InitState, InitObject, IStore, SicilianEvent, IValidate } from "../../type";
 
 export interface IRegisterOnChange {
   onChange: (e: SicilianEvent) => void
