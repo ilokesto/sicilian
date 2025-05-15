@@ -20,25 +20,21 @@ Sicilian was developed to address these inconveniences by operating based on glo
 
 &nbsp;
 
-## What's new in sicilian@3.0.0
+##  What's new in sicilian@3.1.0
 
-* The playDragon function has been changed to the CreateForm class.
-* Previously, initValue was required, but now all parameters of the CreateForm class can be provided optionally.
-* Until now, sicilian only handled text-based input types. However, starting from version 3, it supports all types of inputs, including type="checkbox" and type="file". To accommodate this, validate now includes a checked property to verify whether an input is checked.
-* InitValue is now optional, the parameters of the register function have been modified. More details on this will be covered below.
-* The validateOn option now includes 'change'. This allows input values to be validated whenever the onChange event is triggered. However, this approach may put a load on the application, so it should be used with caution.
-* The function names for managing form state and error state have been changed from setForm, FormState, setError, and ErrorState to getValues, setValues, getErrors, and setErrors, respectively.
-
+* Now supports runtime validation using zod, yup, and superstruct.
+* Fixed a bug where the register function was not working properly with type="radio".
+* The validateOptions function, which can be used more generally instead of handleValidate, has been added.
 
 &nbsp;
 
 ## install and import
 
-```ts
+Sicilian is available as a package on NPM for use:
+
+```bash
 npm i sicilian@latest
-```
-```ts
-import { CreateForm } from "sicilian";
-import { useForm } from "sicilian/useForm";
-import { SicilianProvider, useSicilianContext } from "sicilian/provider";
+pnpm add sicilian@latest
+yarn add sicilian@latest
+bun add sicilian@latest
 ```
