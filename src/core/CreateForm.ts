@@ -24,13 +24,12 @@ export class CreateForm<T extends InitState> {
   private clearFormOn: InitObject<T>["clearFormOn"]
 
   // Public
-  public getValues: State<T, unknown>;
+  public getValues: State<T, string | boolean | FileList>;
   public getErrors: State<{ [key in keyof T]: string }, string>;
   public setValues: IStore<T>["setStore"];
   public setErrors: IStore<{ [key in keyof T]: string }>["setStore"];
   public initValue: T
   public clearForm: () => void
-  public handleValidate = (validator: Partial<Record<keyof T, RegisterErrorObj<T>>>) => validator
 
   constructor(props?: InitObject<T>) {
     const { initValue = {} as T, validator, resolver, validateOn, clearFormOn } = props ?? {}

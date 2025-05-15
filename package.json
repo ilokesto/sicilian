@@ -19,6 +19,10 @@
     "./resolver": {
       "import": "./dist/resolver.js",
       "types": "./dist/resolver.d.ts"
+    },
+    "./utils": {
+      "import": "./dist/utils.js",
+      "types": "./dist/utils.d.ts"
     }
   },
   "files": [

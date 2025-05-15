@@ -42,7 +42,7 @@ export class Register<T extends InitState> implements IRegister<T> {
 
     useEffect(() => {
       if (getStore()[name]) return
-      setStore({ [name]: value } as unknown as Partial<T>)
+      setStore({ [name]: value } as unknown as Partial<T> & { [x: string]: string | boolean | FileList })
     }, [])
 
     if (type === "checkbox") {

@@ -8,7 +8,7 @@ export class Validate<T extends InitState> implements IValidate {
   constructor(
     private store: IStore<T>,
     private ErrorObjStore: IStore<Validator<T>>,
-    private setError: (action: Partial<T>) => void,
+    private setError: (action: Partial<T> & { [x: string]: string | boolean | FileList }) => void,
     private resolver: Resolver<T> | undefined
   ) {
     this.handlerChain = new HandlerChain(this.setError);
@@ -19,7 +19,7 @@ export class Validate<T extends InitState> implements IValidate {
     const storeValue = this.store.getStore()[name];
     
     if (this.resolver && !this.resolver.validate(storeValue as T[ExtractKeys<T>], name)) {
-      this.setError({ [name]: this.resolver.formatError(storeValue as T[ExtractKeys<T>], name) ?? "" } as Partial<T>);
+      this.setError({ [name]: this.resolver.formatError(storeValue as T[ExtractKeys<T>], name) ?? "" } as Partial<T> & { [x: string]: string | boolean | FileList });
       return;
     }
 
