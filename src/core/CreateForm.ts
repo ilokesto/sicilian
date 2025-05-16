@@ -1,4 +1,4 @@
-import type { ExtractKeys, InitObject, InitState, IStore, RegisterErrorObj, Resolver, State, Validator, ValidInputTypes } from "../type";
+import type { ExtractKeys, InitObject, InitState, IStore, RegisterErrorObj, State, Validator, ValidInputTypes } from "../type";
 import { Store } from "./Store";
 import { RegisterOnFocus } from "../funcs/register/RegisterOnFocus";
 import { RegisterOnChange } from "../funcs/register/RegisterOnChange";
@@ -10,6 +10,7 @@ import { getObjByKeys } from "../utils/getObjByKeys";
 import type { FormEvent } from "react";
 import { SyncState } from "../utils/SyncState";
 import type { IRegister } from "../funcs/register/Register";
+import type { Resolver } from "common-resolver/types";
 
 export class CreateForm<T extends InitState> {
   // Store 

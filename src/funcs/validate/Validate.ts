@@ -1,4 +1,5 @@
-import type { InitState, IStore, IValidate, RegisterErrorObj, Resolver, SicilianEvent, Validator } from "../../type";
+import type { Resolver } from "common-resolver/types";
+import type { InitState, IStore, IValidate, RegisterErrorObj, SicilianEvent, Validator } from "../../type";
 import { HandlerChain } from "./validateHandler/HandlerChain";
 import { HandlerFactory } from "./validateHandler/HandlerFactory";
 
@@ -17,10 +18,14 @@ export class Validate<T extends InitState> implements IValidate {
   public doValidate = ({ target: { name, value, checked } }: SicilianEvent) => {
     const ErrorObj = this.ErrorObjStore.getStore()[name];
     const store = this.store.getStore();
-    
-    if (this.resolver && !this.resolver.validate(store as T, name)) {
-      this.setError({ [name]: this.resolver.formatError(store as T, name) ?? "" } as Partial<T> & { [x: string]: string | boolean | FileList });
-      return;
+
+    if (this.resolver) {
+      const { valid, error } = this.resolver.validate(store as T, name);
+
+      if (!valid) {
+        this.setError({ [name]: error ?? "" } as Partial<T> & { [x: string]: string | boolean | FileList });
+        return;
+      }
     }
 
     if (ErrorObj) {

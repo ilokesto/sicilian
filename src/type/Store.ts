@@ -1,4 +1,5 @@
-import type { Validator, Resolver } from ".";
+import type { Resolver } from "common-resolver/types";
+import type { Validator } from ".";
 
 export interface IStore<T> {
   getStore: () => T;
