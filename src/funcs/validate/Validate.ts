@@ -20,10 +20,10 @@ export class Validate<T extends InitState> implements IValidate {
     const store = this.store.getStore();
 
     if (this.resolver) {
-      const { valid, error } = this.resolver.validate(store as T, name);
+      const { valid, error } = this.resolver.validate(store);
 
       if (!valid) {
-        this.setError({ [name]: error ?? "" } as Partial<T> & { [x: string]: string | boolean | FileList });
+        this.setError({ [name]: typeof error[name] === "string" ? error[name] : "" } as Partial<T> & { [x: string]: string | boolean | FileList });
         return;
       }
     }
