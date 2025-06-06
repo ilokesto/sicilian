@@ -1,0 +1,1 @@
+export { superstructResolver } from "common-resolver/superstruct";

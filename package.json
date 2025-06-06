@@ -16,9 +16,17 @@
       "import": "./dist/useForm.js",
       "types": "./dist/useForm.d.ts"
     },
-    "./resolver": {
-      "import": "./dist/resolver.js",
-      "types": "./dist/resolver.d.ts"
+    "./resolver/zod": {
+      "import": "./dist/funcs/resolver/zodResolver.js",
+      "types": "./dist/funcs/resolver/zodResolver.d.ts"
+    },
+    "./resolver/yup": {
+      "import": "./dist/funcs/resolver/yupResolver.js",
+      "types": "./dist/funcs/resolver/yupResolver.d.ts"
+    },
+    "./resolver/superstruct": {
+      "import": "./dist/funcs/resolver/ssResolver.js",
+      "types": "./dist/funcs/resolver/ssResolver.d.ts"
     },
     "./utils": {
       "import": "./dist/utils.js",
@@ -49,6 +57,17 @@
   },
   "peerDependencies": {
     "react": ">=18.0.0"
+  },
+  "peerDependenciesMeta": {
+    "zod": {
+      "optional": true
+    },
+    "yup": {
+      "optional": true
+    },
+    "superstruct": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@types/node": "^22.9.0",
