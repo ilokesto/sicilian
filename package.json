@@ -53,7 +53,7 @@
   "license": "MIT",
   "description": "",
   "dependencies": {
-    "common-resolver": "^0.0.13"
+    "common-resolver": "^0.0.17"
   },
   "peerDependencies": {
     "react": ">=18.0.0"
