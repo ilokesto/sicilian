@@ -11,6 +11,8 @@ import type { FormEvent } from "react";
 import { SyncState } from "../utils/SyncState";
 import type { IRegister } from "../funcs/register/Register";
 import type { Resolver } from "common-resolver/types";
+import { HandleSubmit } from "../funcs/handleSubmit/HandleSubmit";
+import { HandleServerAction } from "../funcs/handleSubmit/HandleServerAction";
 
 export class CreateForm<T extends InitState> {
   // Store 
@@ -83,6 +85,7 @@ export class CreateForm<T extends InitState> {
 
   public handleSubmit = (SubmitFn: (data: T, event?: FormEvent) => (Promise<unknown> | unknown)) => (e: FormEvent) =>
     new HandleSubmitBuilder<T>()
+      .setHandleSubmit(HandleSubmit)
       .setValueStore(this.ValueStore)
       .setErrorStore(this.ErrorStore)
       .setClearForm(this.clearForm)
@@ -91,4 +94,16 @@ export class CreateForm<T extends InitState> {
       .setValidateOn(this.validateOn)
       .build()
       .doHandle(e)
+
+  public handleServerAction = (SubmitFn: (data: T) => (Promise<unknown> | unknown)) => () =>
+    new HandleSubmitBuilder<T>()
+      .setHandleSubmit(HandleServerAction)
+      .setValueStore(this.ValueStore)
+      .setErrorStore(this.ErrorStore)
+      .setClearForm(this.clearForm)
+      .setClearFormOn(this.clearFormOn)
+      .setSubmitFn(SubmitFn)
+      .setValidateOn(this.validateOn)
+      .build()
+      .doHandle()
 }

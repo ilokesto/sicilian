@@ -1,6 +1,6 @@
 import type { FormEvent } from "react";
 import type { InitObject, InitState, IStore } from "../../type";
-import { HandleSubmit } from "./HandleSubmit";
+import type { IHandleSubmit } from "./HandleSubmitTemplateMethod";
 
 export class HandleSubmitBuilder<T extends InitState> {
   private ValueStore?: IStore<T>
@@ -9,6 +9,14 @@ export class HandleSubmitBuilder<T extends InitState> {
   private clearFormOn?: InitObject<T>["clearFormOn"]
   private validateOn?: InitObject<T>["validateOn"]
   private submitFn?: (data: T, event?: FormEvent) => (Promise<unknown> | unknown)
+  private HandleSubmit?: new (
+    valueStore: IStore<T>,
+    errorStore: IStore<T>,
+    clearForm: () => void,
+    clearFormOn: InitObject<T>["clearFormOn"],
+    validateOn: InitObject<T>["validateOn"],
+    submitFn: (data: T, event?: FormEvent) => (Promise<unknown> | unknown)
+  ) => IHandleSubmit
 
   build() {
     if (!this.ValueStore) throw new Error("ValueStore is required")
@@ -17,8 +25,9 @@ export class HandleSubmitBuilder<T extends InitState> {
     if (!this.clearFormOn) throw new Error("clearFormOn is required")
     if (!this.validateOn) throw new Error("validateOn is required")
     if (!this.submitFn) throw new Error("SubmitFn is required")
+    if (!this.HandleSubmit) throw new Error("HandleSubmit is not defined")
 
-    return new HandleSubmit(
+    return new this.HandleSubmit(
       this.ValueStore,
       this.ErrorStore,
       this.clearForm, 
@@ -50,6 +59,18 @@ export class HandleSubmitBuilder<T extends InitState> {
 
   setValidateOn(validateOn: InitObject<T>["validateOn"]) {
     this.validateOn = validateOn;
+    return this
+  }
+
+  setHandleSubmit(handleSubmit: new (
+    valueStore: IStore<T>,
+    errorStore: IStore<T>,
+    clearForm: () => void,
+    clearFormOn: InitObject<T>["clearFormOn"],
+    validateOn: InitObject<T>["validateOn"],
+    submitFn: (data: T, event?: FormEvent) => (Promise<unknown> | unknown)
+  ) => IHandleSubmit) {
+    this.HandleSubmit = handleSubmit
     return this
   }
 
