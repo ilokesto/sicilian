@@ -1,4 +1,4 @@
-import type { ExtractKeys, InitObject, InitState, IStore, RegisterErrorObj, State, Validator, ValidInputTypes } from "../type";
+import type { ExtractKeys, InitObject, InitState, IStore, RegisterErrorObj, State, TRegister, Validator, ValidInputTypes } from "../type";
 import { Store } from "./Store";
 import { RegisterOnFocus } from "../funcs/register/RegisterOnFocus";
 import { RegisterOnChange } from "../funcs/register/RegisterOnChange";
@@ -91,16 +91,4 @@ export class CreateForm<T extends InitState> {
       .setValidateOn(this.validateOn)
       .build()
       .doHandle(e)
-}
-
-type TRegister<T extends InitState> = {
-  // radio 타입일 경우 - ExtractKeys<T> 버전
-  <K extends ExtractKeys<T>>(params: { name: K; validate?: RegisterErrorObj<T>; type: 'radio'; value: string}): IRegister<T>,
-  // radio 타입이 아닌 경우 - ExtractKeys<T> 버전
-  <K extends ExtractKeys<T>>(params: { name: K; validate?: RegisterErrorObj<T>; type?: Exclude<ValidInputTypes, 'radio'> }): IRegister<T>,
-  
-  // radio 타입일 경우 - string 버전
-  (params: { name: string; validate?: RegisterErrorObj<T>; type: 'radio'; value: string }): IRegister<T>,
-  // radio 타입이 아닌 경우 - string 버전
-  (params: { name: string; validate?: RegisterErrorObj<T>; type?: Exclude<ValidInputTypes, 'radio'> }): IRegister<T>;
 }

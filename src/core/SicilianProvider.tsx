@@ -1,13 +1,10 @@
 import { createContext, useContext, type ReactElement } from "react"
-import type { ExtractKeys, InitState, RegisterErrorObj, State, ValidInputTypes } from "../type"
-import type { IRegister } from "../funcs/register/Register"
-
-type register<T extends InitState> = ({ name, validate, type }: { name: ExtractKeys<T>; validate?: RegisterErrorObj<T>; type?: ValidInputTypes }) => IRegister<T>
+import type { ExtractKeys, InitState, RegisterErrorObj, State, TRegister, ValidInputTypes } from "../type"
 
 export type SicilianProviderProps<T extends InitState> = {
   children: ReactElement,
   value: {
-    register: register<T>,
+    register: TRegister<T> ,
     validate?: RegisterErrorObj<T>,
     name: ExtractKeys<T>,
     type?: ValidInputTypes,
