@@ -1,4 +1,6 @@
-![sicilian](https://github.com/user-attachments/assets/a6d12ab5-ecfd-4671-a286-b286dd3d454d)
+
+![ilokestoSicilian](https://github.com/user-attachments/assets/a2e9c05c-7249-4b83-b50f-3194e1943481)
+
 
 
 [![Build Size](https://img.shields.io/bundlephobia/minzip/sicilian?label=bundle%20size&style=flat&colorA=000000&colorB=000000)](https://bundlephobia.com/result?p=sicilian)
