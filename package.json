@@ -1,6 +1,6 @@
 {
   "name": "@ilokesto/sicilian",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "types": "dist/index.d.ts",
   "module": "dist/index.js",
   "exports": {
