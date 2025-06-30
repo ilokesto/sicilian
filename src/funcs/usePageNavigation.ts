@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-export const usePageNavigation = (callback: any): void => {
+export const usePageNavigation = (callback: () => void): void => {
   switch (true) {
     case isReactRouterDom(): // React Router Dom용 로직
       try {

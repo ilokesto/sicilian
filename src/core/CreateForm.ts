@@ -55,7 +55,7 @@ export class CreateForm<T extends InitState> {
   }
 
   public register : TRegister<T> = ({ name, validate, type = "text", value }: {name: ExtractKeys<T> | string, validate?: RegisterErrorObj<T>, type?: ValidInputTypes, value?: string}): IRegister<T> =>
-    new RegisterBuilder(name, value, this.ErrorObjStore, validate, this.clearFormOn, this.clearForm)
+    new RegisterBuilder(name, value, this.ErrorObjStore, this.clearForm, validate, this.clearFormOn)
       .setRegisterOnChange(new RegisterOnChange(
         this.validateOn,
         this.ValueStore.setStore,

@@ -19,9 +19,9 @@ export class RegisterBuilder<T extends InitState> {
     public name: ExtractKeys<T> | string,
     private radioValue: string = "",
     private ErrorObjStore: IStore<Validator<T>>,
+    private clearForm: () => void,
     private ErrorObj?: RegisterErrorObj<T>,
     private clearFormOn?: InitObject<T>["clearFormOn"],
-    private clearForm?: () => void
   ) {
     this.id = name
 
