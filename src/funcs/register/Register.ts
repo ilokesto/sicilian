@@ -41,7 +41,7 @@ export class Register<T extends InitState> implements IRegister<T> {
     this.#radioValue = radioValue
 
     useEffect(() => {
-      if (getStore()[name]) return
+      if (getStore()[name] !== undefined) return
       setStore({ [name]: value } as unknown as Partial<T> & { [x: string]: string | boolean | FileList })
     }, [])
 
