@@ -1,6 +1,6 @@
 {
   "name": "@ilokesto/sicilian",
-  "version": "3.1.0",
+  "version": "3.1.1",
   "types": "dist/index.d.ts",
   "module": "dist/index.js",
   "exports": {
@@ -36,8 +36,11 @@
   "files": [
     "dist"
   ],
+  "bin": {
+    "sicilian": "dist/cli/index.js"
+  },
   "scripts": {
-    "build": "vite build && tsc --emitDeclarationOnly"
+    "build": "rm -rf dist && tsc"
   },
   "repository": {
     "type": "git",
@@ -53,16 +56,16 @@
   "license": "MIT",
   "description": "",
   "dependencies": {
-    "@ilokesto/common-resolver": "^1.0.0"
+    "@ilokesto/common-resolver": "^1.0.1"
   },
   "publishConfig": {
     "access": "public"
   },
   "peerDependencies": {
     "react": ">=18.0.0",
-    "zod": "^3.0.0",
+    "superstruct": "^2.0.0",
     "yup": "^1.0.0",
-    "superstruct": "^2.0.0"
+    "zod": "^3.0.0"
   },
   "peerDependenciesMeta": {
     "zod": {
@@ -76,20 +79,16 @@
     }
   },
   "devDependencies": {
-    "@types/node": "^22.9.0",
-    "@types/react": "^18.3.12",
-    "@typescript-eslint/eslint-plugin": "^7.7.1",
-    "@typescript-eslint/parser": "^7.7.1",
-    "@vitejs/plugin-react": "^4.3.3",
-    "eslint": "^8.57.0",
-    "eslint-plugin-react": "^7.34.1",
-    "rollup-plugin-visualizer": "^5.12.0",
-    "typescript": "^5.6.3",
-    "vite": "^5.4.11",
-    "vite-plugin-compression": "^0.5.1",
-    "common-resolver": "^0.0.19",
-    "zod": "^3.0.0",
-    "yup": "^1.0.0",
-    "superstruct": "^2.0.0"
+    "@types/node": "^24.3.0",
+    "@types/react": "^19.1.10",
+    "@typescript-eslint/eslint-plugin": "^8.39.1",
+    "@typescript-eslint/parser": "^8.39.1",
+    "common-resolver": "^1.0.1",
+    "eslint": "^9.33.0",
+    "eslint-plugin-react": "^7.37.5",
+    "superstruct": "^2.0.2",
+    "typescript": "^5.9.2",
+    "yup": "^1.7.0",
+    "zod": "^3.25.76"
   }
 }
