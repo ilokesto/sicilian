@@ -24,13 +24,10 @@ export const handleGenerate = (filePathArg: string, args: string[]) => {
     }
 
     if (fs.existsSync(targetPath)) {
-      fs.appendFileSync(targetPath, `
-${snippetToUse.trim()}
-`);
+      fs.appendFileSync(targetPath, `${snippetToUse.trim()}`);
       console.log(`Success: Code snippet appended to ${targetPath}`);
     } else {
-      fs.writeFileSync(targetPath, `${snippetToUse.trim()}
-`);
+      fs.writeFileSync(targetPath, `${snippetToUse.trim()}`);
       console.log(`Success: Created file and generated code at ${targetPath}`);
     }
   } catch (error) {
