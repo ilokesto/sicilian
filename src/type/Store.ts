@@ -15,11 +15,11 @@ export type InitState = {
 };
 
 export type InitObject<T extends InitState> = {
-  initValue?: T,
-  validateOn?: Array<"blur" | "submit" | "change">,
-  validator?: Validator<T>,
-  resolver?: Resolver<T>,
-  clearFormOn?: Array<"submit" | "routeChange">
+  initValue?: T
+  resolver?: Resolver<T>
+  validator?: Validator<T>
+  validateOn?: Array<'blur' | 'submit' | 'change'>
+  clearFormOn?: Array<'submit' | 'routeChange'>
 }
 
 export type SicilianEvent = { target: { name: string; value: string, type?: string, checked?: boolean, files?: FileList | null } };

@@ -16,7 +16,7 @@ export type SicilianProviderProps<T extends InitState> = {
 const SicilianErrorHeader = "🚨 Sicilian Error : "
 const SicilianError = (text: string) => SicilianErrorHeader + `${text} property has not been passed to the SicilianProvider, but you are trying to use the ${text} function.`
 const polyfillWithErrorMessage = (errorMessage: string) => () => { throw new Error(SicilianError(errorMessage)) }
-const getContextErrorMessage = () => { throw new Error(SicilianErrorHeader + 'getContext must be used within a SicilianProvider') }
+const getContextErrorMessage = () => { throw new Error(SicilianErrorHeader + 'useSicilianContext must be used within a SicilianProvider') }
 
 const Context = createContext<SicilianProviderProps<any>["value"] | undefined>(undefined)
 

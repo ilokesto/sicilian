@@ -1,18 +1,18 @@
-import type { ExtractKeys, InitObject, InitState, IStore, RegisterErrorObj, State, TRegister, Validator, ValidInputTypes } from "../type";
-import { Store } from "./Store";
-import { RegisterOnFocus } from "../funcs/register/RegisterOnFocus";
-import { RegisterOnChange } from "../funcs/register/RegisterOnChange";
-import { RegisterOnBlur } from "../funcs/register/RegisterOnBlur";
-import { RegisterBuilder } from "../funcs/register/RegisterBuilder";
-import { Validate } from "../funcs/validate/Validate";
-import { HandleSubmitBuilder } from "../funcs/handleSubmit/HandleSubmitBuilder";
-import { getObjByKeys } from "../utils/getObjByKeys";
-import type { FormEvent } from "react";
-import { SyncState } from "../utils/SyncState";
-import type { IRegister } from "../funcs/register/Register";
 import type { Resolver } from "common-resolver/types";
-import { HandleSubmit } from "../funcs/handleSubmit/HandleSubmit";
+import type { FormEvent } from "react";
 import { HandleServerAction } from "../funcs/handleSubmit/HandleServerAction";
+import { HandleSubmit } from "../funcs/handleSubmit/HandleSubmit";
+import { HandleSubmitBuilder } from "../funcs/handleSubmit/HandleSubmitBuilder";
+import type { IRegister } from "../funcs/register/Register";
+import { RegisterBuilder } from "../funcs/register/RegisterBuilder";
+import { RegisterOnBlur } from "../funcs/register/RegisterOnBlur";
+import { RegisterOnChange } from "../funcs/register/RegisterOnChange";
+import { RegisterOnFocus } from "../funcs/register/RegisterOnFocus";
+import { Validate } from "../funcs/validate/Validate";
+import type { ExtractKeys, InitObject, InitState, IStore, RegisterErrorObj, State, TRegister, Validator, ValidInputTypes } from "../type";
+import { getObjByKeys } from "../utils/getObjByKeys";
+import { SyncState } from "../utils/SyncState";
+import { Store } from "./Store";
 
 export class CreateForm<T extends InitState> {
   // Store 
