@@ -10,33 +10,86 @@
 
 &nbsp;
 
-[Official documents](https://sicilian-nextra.vercel.app/en)
+[Official documents](https://ilokesto.vercel.app/sicilian)
 
 &nbsp;
 
-Sicilian is a form state management tool that operates based on global state. It supports TypeScript and is compatible with React.js version 18 or higher.
+react-hook-form, a widely used form state library in frontend development, operates around refs. That often requires wrapping components with forwardRef or using useFormContext. For many React developers, that constraint can be inconvenient.
 
-In the frontend field, react-hook-form, a widely used form state management tool, operates based on refs. Because of this, you need to wrap components with forwardRef or use the useFormContext provided by the library. As a developer using Next.js, these limitations can be quite inconvenient.
-
-Sicilian was developed to address these inconveniences by operating based on global state. This means Sicilian manages each input as state, helping you create forms using a controlled component approach. Additionally, since it is based on global state, you can call and use it from any component without the need for the context API or other global state management tools.
+sicilian addresses these issues by building on a global state approach. It manages each input as state and helps you write forms in a controlled-component style. Sicilian uses React's Context API internally to manage form state globally, so any component can access and manipulate form state without adding a separate global state library (e.g., Redux, Zustand).
 
 &nbsp;
 
 ##  What's new in sicilian@3.1.0
 
-* Now supports runtime validation using zod, yup, and superstruct.
-* Fixed a bug where the register function was not working properly with type="radio".
-* The validateOptions function, which can be used more generally instead of handleValidate, has been added.
+* Runtime validation support using zod, yup, and superstruct.
+* Fixed a bug in register for type="radio".
+* Added validateOptions as a general replacement for handleValidate.
+* Added handleServerAction to support server actions.
+* A CLI to generate code snippets quickly has been added. See the CLI usage page for details.
 
 &nbsp;
 
 ## install and import
 
-Sicilian is available as a package on NPM for use:
+sicilian can be installed using several methods listed below.
 
 ```bash
-npm i sicilian@latest
-pnpm add sicilian@latest
-yarn add sicilian@latest
-bun add sicilian@latest
+npm i @ilokesto/sicilian
+pnpm add @ilokesto/sicilian
+yarn add @ilokesto/sicilian
+bun add @ilokesto/sicilian
+```
+
+&nbsp;
+
+## Quick start
+
+The example below shows basic sicilian usage. It implements a simple login form including validation for email and password fields. See how the sicilian form controller manages state and displays error messages for inputs.
+
+```tsx
+import { useForm } from '@ilokesto/sicilian';
+
+export default function MySimpleForm() {
+  const { register, handleSubmit, getErrors } = useForm({
+    initValue: {
+      name: '',
+      email: ''
+    },
+    validator: {
+      name: {
+        required: { required: true, message: 'name is required' }
+      },
+      email: {
+        required: { required: true, message: 'email is required' },
+        RegExp: {
+          RegExp: /^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$/,
+          message: 'email format is invalid'
+        }
+      }
+    }
+  });
+
+  const onSubmit = (data) => {
+    console.log('data:', data);
+  };
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <div>
+        <label htmlFor="name">name:</label>
+        <input id="name" {...register({ name: 'name', type: 'text' })} />
+        {getErrors('name')}
+      </div>
+
+      <div>
+        <label htmlFor="email">email:</label>
+        <input id="email" {...register({ name: 'email', type: 'email' })} />
+        {getErrors('email')}
+      </div>
+
+      <button type="submit">login</button>
+    </form>
+  );
+}
 ```

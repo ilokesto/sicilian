@@ -46,6 +46,7 @@
     "type": "git",
     "url": "git+https://github.com/ilokesto/sicilian"
   },
+  "homepage": "https://ilokesto.vercel.app/sicilian",
   "keywords": [
     "react",
     "form",
