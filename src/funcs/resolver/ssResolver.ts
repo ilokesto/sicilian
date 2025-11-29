@@ -1,1 +1,1 @@
-export { superstructResolver } from "common-resolver/superstruct";
+export { superstructResolver } from "@ilokesto/common-resolver/superstruct";

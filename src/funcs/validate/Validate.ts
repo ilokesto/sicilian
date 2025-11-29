@@ -1,4 +1,4 @@
-import type { Resolver } from "common-resolver/types";
+import type { Resolver } from "@ilokesto/common-resolver/types";
 import type { InitState, IStore, IValidate, RegisterErrorObj, SicilianEvent, Validator } from "../../type";
 import { HandlerChain } from "./validateHandler/HandlerChain";
 import { HandlerFactory } from "./validateHandler/HandlerFactory";

@@ -1,4 +1,4 @@
-import type { Resolver } from "common-resolver/types";
+import type { Resolver } from "@ilokesto/common-resolver/types";
 import type { ExtractKeys, RegisterErrorObj, Validator, ValidInputTypes } from ".";
 import type { IRegister } from "../funcs/register/Register";
 

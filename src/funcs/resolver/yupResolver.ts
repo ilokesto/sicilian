@@ -1,1 +1,1 @@
-export { yupResolver } from "common-resolver/yup";
+export { yupResolver } from "@ilokesto/common-resolver/yup";

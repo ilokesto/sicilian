@@ -57,7 +57,7 @@
   "license": "MIT",
   "description": "",
   "dependencies": {
-    "@ilokesto/common-resolver": "^1.0.1"
+    "@ilokesto/common-resolver": "^1.0.2"
   },
   "publishConfig": {
     "access": "public"
@@ -66,7 +66,7 @@
     "react": ">=18.0.0",
     "superstruct": "^2.0.0",
     "yup": "^1.0.0",
-    "zod": "^3.0.0"
+    "zod": "^3.0.0 || ^4.0.0"
   },
   "peerDependenciesMeta": {
     "zod": {
@@ -80,16 +80,15 @@
     }
   },
   "devDependencies": {
-    "@types/node": "^24.3.0",
-    "@types/react": "^19.1.10",
-    "@typescript-eslint/eslint-plugin": "^8.39.1",
-    "@typescript-eslint/parser": "^8.39.1",
-    "common-resolver": "^1.0.1",
-    "eslint": "^9.33.0",
+    "@types/node": "^24.10.1",
+    "@types/react": "^19.2.7",
+    "@typescript-eslint/eslint-plugin": "^8.48.0",
+    "@typescript-eslint/parser": "^8.48.0",
+    "eslint": "^9.39.1",
     "eslint-plugin-react": "^7.37.5",
     "superstruct": "^2.0.2",
-    "typescript": "^5.9.2",
-    "yup": "^1.7.0",
+    "typescript": "^5.9.3",
+    "yup": "^1.7.1",
     "zod": "^3.25.76"
   }
 }

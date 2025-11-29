@@ -1,1 +1,1 @@
-export { zodResolver } from "common-resolver/zod";
+export { zodResolver } from "@ilokesto/common-resolver/zod";

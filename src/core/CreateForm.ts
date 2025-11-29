@@ -1,4 +1,4 @@
-import type { Resolver } from "common-resolver/types";
+import type { Resolver } from "@ilokesto/common-resolver/types";
 import type { FormEvent } from "react";
 import { HandleServerAction } from "../funcs/handleSubmit/HandleServerAction";
 import { HandleSubmit } from "../funcs/handleSubmit/HandleSubmit";
