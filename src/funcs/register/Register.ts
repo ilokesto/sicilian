@@ -1,5 +1,4 @@
-import { useEffect } from "react";
-import type { ExtractKeys, InitState, IStore, SicilianEvent } from "../../type";
+import type { ExtractKeys, InitState, SicilianEvent } from "../../type";
 import type { IRegisterOnBlur } from "./RegisterOnBlur";
 import type { IRegisterOnChange } from "./RegisterOnChange";
 import type { IRegisterOnFocus } from "./RegisterOnFocus";
@@ -30,8 +29,6 @@ export class Register<T extends InitState> implements IRegister<T> {
     public name: ExtractKeys<T> | string,
     public id: ExtractKeys<T> | string,
     public type: HTMLInputElement["type"] = "text",
-    setStore: IStore<T>["setStore"],
-    getStore: IStore<T>["getStore"],
     value: T[ExtractKeys<T>],
     radioValue: string,
   ) {
@@ -40,11 +37,7 @@ export class Register<T extends InitState> implements IRegister<T> {
     this.#RegisterOnBlur = RegisterOnBlur
     this.#radioValue = radioValue
 
-    useEffect(() => {
-      const value = getStore()[name] 
-      if (value !== undefined) return
-      setStore({ [name]: "" } as unknown as Partial<T> & { [x: string]: string | boolean | FileList })
-    }, [])
+
 
     if (type === "checkbox") {
       this.checked = value as boolean;

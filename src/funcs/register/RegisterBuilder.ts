@@ -1,4 +1,4 @@
-import type { InitState, IStore, RegisterErrorObj, InitObject, Validator, ExtractKeys, ValidInputTypes } from "../../type"
+import type { ExtractKeys, InitObject, InitState, IStore, RegisterErrorObj, Validator, ValidInputTypes } from "../../type"
 import { usePageNavigation } from "../usePageNavigation"
 import { Register, type IRegister } from "./Register"
 import type { IRegisterOnBlur } from "./RegisterOnBlur"
@@ -9,8 +9,6 @@ export class RegisterBuilder<T extends InitState> {
   private RegisterOnChange?: IRegisterOnChange
   private RegisterOnFocus?: IRegisterOnFocus
   private RegisterOnBlur?: IRegisterOnBlur
-  private setStore?: IStore<T>["setStore"]
-  private getStore?: IStore<T>["getStore"]
   public id?: ExtractKeys<T> | string
   public type?: ValidInputTypes
   public value?: T[ExtractKeys<T>]
@@ -36,8 +34,7 @@ export class RegisterBuilder<T extends InitState> {
     if (!this.RegisterOnChange) throw new Error("RegisterOnChange is required")
     if (!this.RegisterOnFocus) throw new Error("RegisterOnFocus is required")
     if (!this.RegisterOnBlur) throw new Error("RegisterOnBlur is required")
-    if (!this.setStore) throw new Error("setStore is required")
-    if (!this.getStore) throw new Error("getStore is required")
+
     if (this.value === undefined) this.value = "" as T[ExtractKeys<T>]
     
     return new Register(
@@ -47,8 +44,7 @@ export class RegisterBuilder<T extends InitState> {
       this.name,
       this.id!,
       this.type,
-      this.setStore,
-      this.getStore,
+
       this.value,
       this.radioValue
     )
@@ -69,15 +65,7 @@ export class RegisterBuilder<T extends InitState> {
     return this
   }
 
-  public setSetStore(setter: IStore<T>["setStore"]) {
-    this.setStore = setter
-    return this
-  }
 
-  public setGetStore(getter: IStore<T>["getStore"]) {
-    this.getStore = getter
-    return this
-  }
 
   public setValue (value: T[ExtractKeys<T>]) {
     this.value = value

@@ -11,13 +11,12 @@ import { RegisterOnFocus } from "../funcs/register/RegisterOnFocus";
 import { Validate } from "../funcs/validate/Validate";
 import type { ExtractKeys, InitObject, InitState, IStore, RegisterErrorObj, State, TRegister, Validator, ValidInputTypes } from "../type";
 import { getObjByKeys } from "../utils/getObjByKeys";
-import { SyncState } from "../utils/SyncState";
 import { Store } from "./Store";
 
 export class CreateForm<T extends InitState> {
   // Store 
-  private ValueStore: IStore<T>
-  private ErrorStore: IStore<T>
+  public ValueStore: IStore<T>
+  public ErrorStore: IStore<T>
   private ErrorObjStore: IStore<Validator<T>>
 
   private resolver: Resolver<T>| undefined
@@ -43,8 +42,8 @@ export class CreateForm<T extends InitState> {
     this.resolver = resolver;
     this.validateOn = validateOn ?? []
     this.clearFormOn = clearFormOn ?? []
-    this.getValues = (name?: ExtractKeys<T> | string) => SyncState.doSync(this.ValueStore, name)
-    this.getErrors = (name?: ExtractKeys<T> | string) => SyncState.doSync(this.ErrorStore, name)
+    this.getValues = (name?: ExtractKeys<T> | string) => (name ? (this.ValueStore.getStore()[name] ?? "") : this.ValueStore.getStore()) as any
+    this.getErrors = (name?: ExtractKeys<T> | string) => (name ? this.ErrorStore.getStore()[name] : this.ErrorStore.getStore()) as any
     this.setValues = this.ValueStore.setStore
     this.setErrors = this.ErrorStore.setStore as IStore<{ [key in keyof T]: string }>["setStore"]
     this.initValue = initValue
@@ -77,8 +76,6 @@ export class CreateForm<T extends InitState> {
           this.resolver
         )
       ))
-      .setSetStore(this.ValueStore.setStore)
-      .setGetStore(this.ValueStore.getStore)
       .setValue(this.getValues(name) as T[ExtractKeys<T>])
       .setType(type)
       .build()
